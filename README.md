@@ -66,3 +66,8 @@
 - **styled-components:** CSS-in-JS 라이브러리로, JavaScript 파일 내에서 CSS를 작성할 수 있게 해줍니다.
 
 - **react-router-dom:** React 애플리케이션에서 여러 페이지를 구현하기 위한 라이브러리입니다.
+
+## 사용 API
+
+- **amadeusApi** https://developers.amadeus.com/  
+- **exchangerateApi** https://app.exchangerate-api.com/  
