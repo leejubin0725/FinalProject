@@ -69,5 +69,3 @@
 
 ## 사용 API
 
-- **amadeusApi**: https://developers.amadeus.com/  
-- **exchangerateApi**: https://app.exchangerate-api.com/  
