@@ -1,6 +1,4 @@
-// src/pages/MainPage.js
 import React from 'react';
-import Navbar from '../components/Navbar';
 import '../App.css';
 
 // 이미지 파일을 동적으로 가져오기
@@ -19,7 +17,6 @@ const MainPage = () => {
 
   return (
     <div className="container main-page-container">
-      <Navbar />
       <section className="main">
         <div className="main-banner">
           <div className="main-banner-content">
