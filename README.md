@@ -39,7 +39,7 @@
   빌드 : `npm run build` (배포시 사용)
   node_modules : 공유시 제외하고 공유해야 용량문제가 안생김.  
   npm install --save bootstrap 부트스트랩 패키지 설치.  
-  npm install --save ractstrap 리액트스트랩 패키지 설치.  
+  npm install --save reactstrap 리액트스트랩 패키지 설치.  
 
 ## 기본 개념
 
