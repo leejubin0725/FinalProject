@@ -1,69 +1,38 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+// src/pages/MainPage.js
+import React from 'react';
 import Navbar from '../components/Navbar';
 import '../App.css';
 
+// 이미지 파일을 동적으로 가져오기
+const images = require.context('../assets/images', false, /\.(png|jpe?g|svg)$/);
+
 const MainPage = () => {
-  const [file, setFile] = useState(null);
-  const [videos, setVideos] = useState([]);
-
-  const handleChange = (event) => {
-    setFile(event.target.files[0]);
-  };
-
-  const handleUpload = async () => {
-    if (!file) return;
-
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('title', 'Sample Video');
-    formData.append('description', 'This is a sample video description.');
-
-    try {
-      await axios.post('http://localhost:8088/api/videos/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      fetchVideos();
-    } catch (err) {
-      console.error('File upload failed:', err);
-    }
-  };
-
-  const fetchVideos = async () => {
-    try {
-      const response = await axios.get('http://localhost:8088/api/videos');
-      setVideos(response.data);
-    } catch (err) {
-      console.error('Failed to fetch videos:', err);
-    }
-  };
-
-  useEffect(() => {
-    fetchVideos();
-  }, []);
+  const movieItems = images.keys().map((path, index) => {
+    const image = images(path);
+    return (
+      <div className="movie-item" key={index}>
+        <img src={image} alt={`Movie ${index + 1}`} />
+        <p>Movie {index + 1}</p>
+      </div>
+    );
+  });
 
   return (
-    <div className="container">
+    <div className="container main-page-container">
       <Navbar />
       <section className="main">
-        <div className="main-overlay">
-          <h1>Welcome to the Movie App</h1>
-          <p>Explore and watch your favorite movies</p>
-          <div>
-            <input type="file" onChange={handleChange} />
-            <button onClick={handleUpload}>Upload Video</button>
+        <div className="main-banner">
+          <div className="main-banner-content">
+            <h1>Rick and Morty</h1>
+            <p>New Episodes Every Sunday</p>
+            <button>More info</button>
           </div>
-          <div>
-            {videos.map((video) => (
-              <div key={video.id}>
-                <h2>{video.title}</h2>
-                <p>{video.description}</p>
-                <video src={video.url} controls width="600" />
-              </div>
-            ))}
-          </div>
+        </div>
+      </section>
+      <section className="movie-section">
+        <h2>Top 10 in India Today</h2>
+        <div className="movie-list">
+          {movieItems}
         </div>
       </section>
       <footer className="footer">
