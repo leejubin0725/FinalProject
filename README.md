@@ -15,7 +15,7 @@
   
 - **Spring Boot:** 3.3.2  
 
-- **Spring Tool Suite (STS):** 3.9.18.RELEASE  
+- **Spring Tool Suite (STS):** sts-4.24.0.RELEASE  
   [다운로드 링크](https://github.com/spring-attic/toolsuite-distribution/wiki/Spring-Tool-Suite-3)
 
 - **SQL Developer:** 23.1.1.345  
