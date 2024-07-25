@@ -18,19 +18,19 @@ public class VideoService {
     @Autowired
     private AmazonS3 amazonS3;
 
-    @Value("${aws.s3.bucketName}")
-    private String bucketName;
-
     @Autowired
     private VideoRepository videoRepository;
+
+    @Value("${aws.s3.bucketName}")
+    private String awsS3BucketName;
 
     public Video uploadVideo(MultipartFile file, String title, String description) throws IOException {
         String key = file.getOriginalFilename();
 
-        // ACL 없이 객체 업로드
-        amazonS3.putObject(new PutObjectRequest(bucketName, key, file.getInputStream(), null));
+        // 객체 업로드
+        amazonS3.putObject(new PutObjectRequest(awsS3BucketName, key, file.getInputStream(), null));
 
-        String url = amazonS3.getUrl(bucketName, key).toString();
+        String url = amazonS3.getUrl(awsS3BucketName, key).toString();
 
         Video video = new Video();
         video.setTitle(title);
