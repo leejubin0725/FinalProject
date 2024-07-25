@@ -10,13 +10,12 @@
 
 ## 버전 정보
 
-- **JDK:** Amazon Corretto 11  
+- **JDK:** Amazon Corretto 17  
   [다운로드 링크](https://docs.aws.amazon.com/ko_kr/corretto/latest/corretto-11-ug/downloads-list.html)
   
-- **Spring Boot:** 2.7.5  
-  pom.xml에서 다운그레이드 필요. JDK 11버전부터는 Spring Boot 3.x버전 사용 불가.
+- **Spring Boot:** 3.3.2  
 
-- **Spring Tool Suite (STS):** 3.9.18.RELEASE  
+- **Spring Tool Suite (STS):** sts-4.24.0.RELEASE  
   [다운로드 링크](https://github.com/spring-attic/toolsuite-distribution/wiki/Spring-Tool-Suite-3)
 
 - **SQL Developer:** 23.1.1.345  
