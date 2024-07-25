@@ -1,0 +1,25 @@
+.video-upload {
+    padding: 20px;
+}
+
+.video-upload form {
+    display: flex;
+    flex-direction: column;
+}
+
+.video-upload input,
+.video-upload textarea {
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+}
+
+.video-upload button {
+    padding: 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
