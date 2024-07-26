@@ -14,7 +14,7 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/api/**")
-                        .allowedOrigins("http://localhost:3000" ,"http://localhost:3001")
+                        .allowedOrigins("http://localhost:3000" ,"http://localhost:3001") // 여기에 넣는 포트에 한해서 연결 허용.
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowCredentials(true);
             }
