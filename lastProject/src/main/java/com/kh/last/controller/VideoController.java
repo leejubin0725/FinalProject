@@ -26,6 +26,7 @@ public class VideoController {
 
     private final VideoRepository videoRepository;
 
+    //업로드기능
     @PostMapping("/upload")
     public Video uploadVideo(@RequestParam("file") MultipartFile file,
                              @RequestParam("title") String title,
