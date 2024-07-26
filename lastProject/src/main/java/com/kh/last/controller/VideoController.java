@@ -15,15 +15,16 @@ import com.kh.last.model.vo.Video;
 import com.kh.last.repository.VideoRepository;
 import com.kh.last.service.VideoService;
 
+import lombok.RequiredArgsConstructor;
+
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/videos")
 public class VideoController {
 
-    @Autowired
-    private VideoService videoService;
+    private final VideoService videoService;
 
-    @Autowired
-    private VideoRepository videoRepository;
+    private final VideoRepository videoRepository;
 
     @PostMapping("/upload")
     public Video uploadVideo(@RequestParam("file") MultipartFile file,

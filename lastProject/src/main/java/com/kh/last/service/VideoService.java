@@ -12,14 +12,14 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.kh.last.model.vo.Video;
 import com.kh.last.repository.VideoRepository;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class VideoService {
+    private final AmazonS3 amazonS3;
 
-    @Autowired
-    private AmazonS3 amazonS3;
-
-    @Autowired
-    private VideoRepository videoRepository;
+    private final VideoRepository videoRepository;
 
     @Value("${aws.s3.bucketName}")
     private String awsS3BucketName;
