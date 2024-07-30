@@ -1,0 +1,158 @@
+.headerBackground {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  margin: 0 !important;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: var(--color-gray-100);
+}
+
+.a,
+.logoText2 {
+  position: relative;
+}
+
+.logoText2 {
+  height: 55px;
+  width: 278px;
+  object-fit: contain;
+  z-index: 2;
+}
+
+.a {
+  text-decoration: none;
+  align-self: stretch;
+  font-weight: 700;
+  color: inherit;
+  z-index: 1;
+}
+
+.homeButton {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-7xs) 0 0;
+}
+
+.fesearchIcon {
+  width: 24px;
+  height: 24px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+.searchNav {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-9xs) var(--padding-2xs) 0 0;
+}
+
+.faSolidbellIcon {
+  width: 32px;
+  height: 32px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+.notificationsNav {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 0 var(--padding-2xs) 0 0;
+}
+
+.profileBackgroundIcon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: var(--br-81xl);
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+  z-index: 1;
+}
+
+.antDesigncaretDownFilledIcon {
+  position: absolute;
+  top: 8px;
+  left: 37px;
+  width: 19px;
+  height: 16px;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.profileNav {
+  height: 32px;
+  flex: 1;
+  position: relative;
+}
+
+.homeNav {
+  align-self: stretch;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: var(--gap-sm);
+}
+
+.header,
+.Header,
+.navigation {
+  display: flex;
+  align-items: flex-start;
+  box-sizing: border-box;
+}
+
+.navigation {
+  width: 234px;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: var(--padding-2xs) 0 0;
+}
+
+.header,
+.Header {
+  flex-direction: row;
+  max-width: 100%;
+}
+
+.header {
+  flex: 1;
+  justify-content: space-between;
+  padding: var(--padding-3xs) var(--padding-38xl) var(--padding-4xs) var(--padding-8xl);
+  position: sticky;
+  top: 0;
+  z-index: 99;
+  gap: var(--gap-xl);
+  text-align: center;
+  font-size: var(--font-size-base);
+  color: var(--text-light-primary);
+  font-family: var(--font-roboto);
+}
+
+.Header {
+  align-self: stretch;
+  justify-content: flex-start;
+  padding: 0 0 var(--padding-120xl-6);
+}
+
+@media screen and (max-width: 1250px) {
+  .header {
+    padding-right: var(--padding-9xl);
+    box-sizing: border-box;
+  }
+}

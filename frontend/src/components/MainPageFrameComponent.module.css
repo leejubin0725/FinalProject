@@ -1,0 +1,131 @@
+.questionsCall00080004018 {
+  width: 327px;
+  position: relative;
+  font-weight: 300;
+  display: inline-block;
+  max-width: 100%;
+}
+.faq,
+.investorRelations,
+.privacy,
+.speedTest {
+  margin: 0;
+}
+.faqInvestorRelationsContainer {
+  width: 181px;
+  position: relative;
+  line-height: 170.69%;
+  font-weight: 300;
+  display: inline-block;
+  flex-shrink: 0;
+}
+.contactUs,
+.mediaCentre,
+.termsOfUse {
+  margin: 0;
+}
+.mediaCentreTermsContainer {
+  height: 98px;
+  width: 130px;
+  position: relative;
+  line-height: 170.69%;
+  font-weight: 300;
+  display: inline-block;
+  flex-shrink: 0;
+}
+.links,
+.questionsCall00080004018Parent {
+  align-self: stretch;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--gap-xl);
+}
+.questionsCall00080004018Parent {
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: var(--gap-36xl);
+  max-width: 100%;
+}
+.inputBoxChild {
+  height: 54px;
+  width: 196.9px;
+  position: relative;
+  background: linear-gradient(180deg, #000, transparent);
+  border: 1px solid var(--color-white);
+  box-sizing: border-box;
+  display: none;
+}
+.biglobeIcon,
+.english {
+  position: relative;
+  flex-shrink: 0;
+  z-index: 1;
+}
+.biglobeIcon {
+  height: 25.1px;
+  width: 30.3px;
+  overflow: hidden;
+}
+.english {
+  height: 28.9px;
+  width: 103px;
+  display: inline-block;
+}
+.inputBox {
+  align-self: stretch;
+  background: linear-gradient(180deg, #000, transparent);
+  border: 1px solid var(--color-white);
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-xs) var(--padding-mini) var(--padding-3xs);
+  gap: var(--gap-base-2);
+}
+.netflixIndia {
+  width: 122px;
+  height: 29px;
+  position: relative;
+  font-size: var(--font-size-sm);
+  font-weight: 300;
+  display: inline-block;
+  flex-shrink: 0;
+}
+.frameParent,
+.inputBoxParent {
+  width: 196.9px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: var(--gap-lg-8);
+  font-size: var(--font-size-base);
+}
+.frameParent {
+  width: 1280px;
+  gap: var(--gap-71xl-2);
+  flex-shrink: 0;
+  max-width: 100%;
+  text-align: left;
+  font-size: var(--font-size-sm);
+  color: var(--color-white);
+  font-family: var(--font-roboto);
+}
+@media screen and (max-width: 750px) {
+  .questionsCall00080004018Parent {
+    gap: var(--gap-8xl);
+  }
+  .frameParent {
+    gap: var(--gap-26xl);
+  }
+}
+@media screen and (max-width: 450px) {
+  .links {
+    flex-wrap: wrap;
+  }
+  .frameParent {
+    gap: var(--gap-4xl);
+  }
+}
