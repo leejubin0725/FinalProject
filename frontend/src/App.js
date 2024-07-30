@@ -6,6 +6,7 @@ import MainPage from './pages/MainPage';
 import Movies from './pages/Movies';
 import VideoUpload from './pages/VideoUpload';
 import Navbar from './components/Navbar';
+import AuthCallback from './pages/AuthCallback';
 
 function App() {
   return (
@@ -17,7 +18,6 @@ function App() {
 
 function AppRoutes() {
   const location = useLocation();
-  // 네비바를 표시할 경로 결정
   const shouldShowNavbar = !['/', '/signin'].includes(location.pathname);
 
   return (
@@ -29,6 +29,8 @@ function AppRoutes() {
         <Route path="/main" element={<MainPage />} />
         <Route path="/movies" element={<Movies />} />
         <Route path="/upload" element={<VideoUpload />} />
+        <Route path="/login" element={<SignInForm />} /> {/* 로그인 페이지 라우트 추가 */}
+        <Route path="/oauth2/callback" element={<AuthCallback />} />
       </Routes>
     </>
   );
