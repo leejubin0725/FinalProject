@@ -1,205 +1,42 @@
-/* 전역 스타일 */
-body, html {
-  font-family: 'Helvetica Neue', Arial, sans-serif; /* 모던한 폰트 */
-  background-color: #1c1c1c; /* 짙은 회색 배경 */
-  color: #e0e0e0; /* 연한 회색 텍스트 */
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-.container {
-  max-width: 1200px;
+#root {
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 2rem;
   text-align: center;
 }
 
-.header {
-  background-color: #222; /* 어두운 회색 */
-  padding: 20px;
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
-.header img {
-  max-width: 120px; /* 로고 크기 약간 확대 */
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
-.main {
-  padding: 60px 0;
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
 }
 
-.main h1 {
-  font-size: 3rem; /* 큰 텍스트 */
-  font-weight: 300; /* 얇은 텍스트 */
-  margin-bottom: 20px;
-  color: #fff; /* 흰색 텍스트 */
+.card {
+  padding: 2em;
 }
 
-.main p {
-  font-size: 1.25rem; /* 약간 큰 텍스트 */
-  font-weight: 300;
-  margin-bottom: 40px;
-  color: #b0b0b0; /* 밝은 회색 텍스트 */
-}
-
-.input-group {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.input-group input[type="email"] {
-  padding: 12px;
-  border-radius: 5px;
-  border: 1px solid #444; /* 얇은 회색 테두리 */
-  margin-right: 10px;
-  width: 320px;
-  max-width: 100%;
-  background-color: #333; /* 어두운 배경 */
-  color: #e0e0e0; /* 밝은 텍스트 */
-}
-
-.input-group input[type="email"]::placeholder {
-  color: #999; /* 연한 회색 플레이스홀더 */
-}
-
-.input-group button {
-  background-color: #d9534f; /* 붉은 색조의 버튼 */
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1rem;
-}
-
-.input-group button:hover {
-  background-color: #c9302c; /* 어두운 붉은 색조 */
-}
-
-.section {
-  padding: 50px 0;
-}
-
-.section .content {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  text-align: left;
-}
-
-.section img {
-  max-width: 350px;
-  border-radius: 10px; /* 약간 둥근 모서리 */
-}
-
-.footer {
-  background-color: #222;
+.read-the-docs {
   color: #888;
-  padding: 20px 0;
-  text-align: center;
-  font-size: 0.9rem;
-}
-
-/* MainPage 스타일 */
-.main-page-container {
-  background-color: #141414; /* 다크 그레이 배경 */
-}
-
-.main-banner {
-  position: relative;
-  height: 400px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.main-banner-content {
-  text-align: center;
-}
-
-.main-banner h1 {
-  font-size: 48px;
-  color: #fff;
-  margin-bottom: 10px;
-}
-
-.main-banner p {
-  font-size: 20px;
-  color: #ddd;
-  margin-bottom: 20px;
-}
-
-.main-banner button {
-  background-color: #e50914;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.movie-section {
-  margin: 20px 0;
-  padding: 20px;
-}
-
-.movie-section h2 {
-  color: #fff;
-  margin-bottom: 10px;
-}
-
-.movie-list {
-  display: flex;
-  gap: 20px;
-  overflow-x: auto; /* 가로 스크롤 활성화 및 스크롤바 항상 표시 */
-  padding-bottom: 10px; /* 스크롤바 공간을 위해 여백 추가 */
-  -webkit-overflow-scrolling: touch; /* iOS 스크롤 관성 효과 */
-}
-
-/* 스크롤바 스타일 커스터마이징 (선택 사항) */
-.movie-list::-webkit-scrollbar {
-  height: 8px; /* 스크롤바 높이 */
-}
-
-.movie-list::-webkit-scrollbar-thumb {
-  background: #888; /* 스크롤바 색상 */
-  border-radius: 4px; /* 스크롤바 모서리 둥글게 */
-}
-
-.movie-list::-webkit-scrollbar-thumb:hover {
-  background: #555; /* 스크롤바 마우스 오버 시 색상 */
-}
-
-.movie-item {
-  flex: 0 0 auto;
-  width: 200px;
-  height: 300px; /* 이미지 컨테이너의 높이 고정 */
-  overflow: hidden; /* 컨테이너를 벗어나는 이미지 부분 숨기기 */
-  border-radius: 8px; /* 모서리 둥글게 */
-}
-
-.movie-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* 이미지 크기를 컨테이너에 맞춤 */
-}
-
-.movie-item p {
-  text-align: center;
-  margin-top: 10px;
-  color: #ddd;
-}
-
-/* 버튼 주위의 마진 제거 */
-.google-login-button {
-  margin: 0;
-  padding: 0;
-  border: none; /* 필요에 따라 보더 제거 */
-  box-shadow: none; /* 필요에 따라 그림자 제거 */
-}
-
-/* 버튼 이미지를 포함한 div 요소에 대해 디스플레이 속성 조정 */
-.google-login-button img {
-  display: block;
 }
