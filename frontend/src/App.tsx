@@ -7,6 +7,7 @@ import {
 import Signin from "./pages/SigninPage";
 import Landing from "./pages/MainPage";
 import HomePage from "./pages/HomePage";
+import UploadPage from "./pages/UploadPage"; // 추가된 부분
 
 function App() {
   const location = useLocation();
@@ -28,6 +29,10 @@ function App() {
       case "/signin":
         title = "Sign In";
         metaDescription = "This is the sign-in page description.";
+        break;
+      case "/upload": // 추가된 부분
+        title = "Upload Video";
+        metaDescription = "This is the upload video page description.";
         break;
       default:
         title = "Default Title";
@@ -54,6 +59,7 @@ function App() {
       <Route path="/signin" element={<Signin />} />
       <Route path="/" element={<Landing />} />
       <Route path="/home" element={<HomePage />} />
+      <Route path="/upload" element={<UploadPage />} /> {/* 추가된 부분 */}
     </Routes>
   );
 }
