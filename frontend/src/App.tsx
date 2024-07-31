@@ -7,7 +7,7 @@ import {
 import Signin from "./pages/SigninPage";
 import Landing from "./pages/MainPage";
 import HomePage from "./pages/HomePage";
-import UploadPage from "./pages/UploadPage"; // 추가된 부분
+
 
 function App() {
   const location = useLocation();
@@ -63,5 +63,7 @@ function App() {
     </Routes>
   );
 }
+
+import UploadPage from "./pages/UploadPage"; // 추가된 부분
 
 export default App;
