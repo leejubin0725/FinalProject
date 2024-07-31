@@ -55,11 +55,9 @@ function App() {
       <Route path="/signin" element={<Signin />} />
       <Route path="/" element={<Landing />} />
       <Route path="/home" element={<HomePage />} />
-      <Route path="/upload" element={<UploadPage />} /> {/* 추가된 부분 */}
     </Routes>
   );
 }
 
-import UploadPage from "./pages/UploadPage"; // 추가된 부분
 
 export default App;
