@@ -4,7 +4,7 @@ import {
   Route,
   useLocation,
 } from "react-router-dom";
-import Signin from "./pages/SigninPage";
+import Signin from "./pages/SignInPage";
 import Landing from "./pages/MainPage";
 import HomePage from "./pages/HomePage";
 import UploadMovie from "./pages/UploadMovie";

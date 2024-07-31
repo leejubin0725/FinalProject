@@ -3,7 +3,7 @@ import InputFields from "../components/SigninPage-input-fields";
 import FrameComponent from "../components/SigninPage-frame-component";
 import "./SignInPage.css";
 
-const Signin: FunctionComponent = () => {
+const SignInPage: FunctionComponent = () => {
 
 
 
@@ -38,4 +38,4 @@ const Signin: FunctionComponent = () => {
   );
 };
 
-export default Signin;
+export default SignInPage;
