@@ -30,10 +30,6 @@ function App() {
         title = "Sign In";
         metaDescription = "This is the sign-in page description.";
         break;
-      case "/upload": // 추가된 부분
-        title = "Upload Video";
-        metaDescription = "This is the upload video page description.";
-        break;
       default:
         title = "Default Title";
         metaDescription = "Default description.";
