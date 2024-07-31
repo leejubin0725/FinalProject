@@ -8,6 +8,10 @@
 - "start": "set PORT=3002 && react-scripts start"
 -  Mac & Linux 는 export PORT=변경할번호 && 코드
 
+## 포트중복시 죽이기
+- netstat -a -o 로 포트찾기
+- taskkill /f /pid PID번호로 죽이기
+
 ## 버전 정보
 
 - **JDK:** Amazon Corretto 17  
