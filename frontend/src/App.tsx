@@ -7,6 +7,7 @@ import {
 import Signin from "./pages/SigninPage";
 import Landing from "./pages/MainPage";
 import HomePage from "./pages/HomePage";
+import UploadMovie from "./pages/UploadMovie";
 
 
 function App() {
@@ -29,6 +30,10 @@ function App() {
       case "/signin":
         title = "Sign In";
         metaDescription = "This is the sign-in page description.";
+        break;
+      case "/upload":
+        title = "Upload Movie";
+        metaDescription = "Upload a new movie.";
         break;
       default:
         title = "Default Title";
@@ -55,6 +60,7 @@ function App() {
       <Route path="/signin" element={<Signin />} />
       <Route path="/" element={<Landing />} />
       <Route path="/home" element={<HomePage />} />
+      <Route path="/upload" element={<UploadMovie />} />
     </Routes>
   );
 }
