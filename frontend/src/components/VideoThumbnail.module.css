@@ -1,16 +1,11 @@
 .thumbnail {
-    width: 250px;
-    /* 부모 요소의 너비를 설정 */
-    height: 200px;
-    /* 부모 요소의 높이를 설정 */
+    width: 350px;
+    height: 300px;
     position: relative;
     overflow: hidden;
-    /* 부모 요소가 확장되더라도 스크롤이 나타나지 않도록 설정 */
     cursor: pointer;
     transition: transform 0.3s ease-in-out;
-    /* 호버 애니메이션 추가 */
     margin: 10px;
-    /* 썸네일 간의 간격 설정 */
     border-radius: 5%;
 }
 
@@ -19,21 +14,26 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.3s ease-in-out;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.thumbnail video {
+    z-index: 0;
+    opacity: 0;
 }
 
 .thumbnail:hover {
     transform: scale(1.2);
-    z-index: 1;
-    /* 호버 시 전체 박스가 커짐 */
+    z-index: 2;
 }
 
-.thumbnail video {
-    display: none;
-    /* 기본적으로 비디오 숨김 */
+.thumbnail:hover img {
+    opacity: 0;
 }
 
 .thumbnail:hover video {
-    display: block;
-    /* 호버 시 비디오 표시 */
+    opacity: 1;
 }

@@ -54,10 +54,10 @@ const HomePage: React.FC = () => {
           <div className={styles.sectionTitle1}>
             <h2 className={styles.seeAgain1}>시네마 클라우드 추천작</h2>
           </div>
-          <div className={styles.frameParent}>
-            <div className={styles.tileParent}>
-              {/* 여기에 추가적인 타일 내용 */}
-            </div>
+          <div className={styles.tileRows}>
+            {videos.slice(0, 5).map(video => (
+              <VideoThumbnail key={video.id} video={video} />
+            ))}
           </div>
         </div>
         <Frame />
@@ -65,10 +65,10 @@ const HomePage: React.FC = () => {
           <div className={styles.sectionTitle2}>
             <h2 className={styles.seeAgain2}>밤늦게 즐기는 스릴러</h2>
           </div>
-          <div className={styles.frameGroup}>
-            <div className={styles.TileGroup}>
-              {/* 여기에 추가적인 타일 내용 */}
-            </div>
+          <div className={styles.tileRows}>
+            {videos.slice(0, 5).map(video => (
+              <VideoThumbnail key={video.id} video={video} />
+            ))}
           </div>
         </div>
       </section>

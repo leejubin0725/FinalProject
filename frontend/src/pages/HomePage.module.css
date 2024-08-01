@@ -373,7 +373,7 @@ html {
   flex: 1;
   flex-direction: row;
   align-items: flex-start;
-  min-width: 887px;
+  min-width: 9000px;
   max-width: 100%;
   row-gap: 20px;
 }
