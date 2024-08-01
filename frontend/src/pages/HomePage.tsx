@@ -28,13 +28,12 @@ const HomePage: React.FC = () => {
       });
   }, []);
 
-  // 공통 섹션 렌더링 함수
-  const renderSection = (title: string, videos: Video[]) => (
-    <div className={styles.section}>
+  const renderSection = (title: string, videos: Video[], keyPrefix: string) => (
+    <div className={styles.section} key={keyPrefix}>
       <h2 className={styles.sectionTitle}>{title}</h2>
       <div className={styles.tileRows}>
-        {videos.slice(0, 5).map(video => (
-          <VideoThumbnail key={video.id} video={video} />
+        {videos.slice(0, 5).map((video, index) => (
+          <VideoThumbnail key={`${keyPrefix}-${index}`} video={video} />
         ))}
       </div>
     </div>
@@ -48,11 +47,11 @@ const HomePage: React.FC = () => {
         {/* 여기에 Hero Content 내용 추가 */}
       </div>
       <section className={styles.content}>
-        {renderSection('영화 이어보기', videos)}
+        {renderSection('영화 이어보기', videos, 'section-1')}
         <Frame />
-        {renderSection('시네마 클라우드 추천작', videos)}
+        {renderSection('시네마 클라우드 추천작', videos, 'section-2')}
         <Frame />
-        {renderSection('밤늦게 즐기는 스릴러', videos)}
+        {renderSection('밤늦게 즐기는 스릴러', videos, 'section-3')}
       </section>
     </div>
   );
