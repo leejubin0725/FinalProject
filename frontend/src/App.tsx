@@ -7,6 +7,7 @@ import {
 import Signin from "./pages/SigninPage";
 import Landing from "./pages/MainPage";
 import HomePage from "./pages/HomePage";
+import DashboardPage from "./pages/DashboardPage";
 
 function App() {
   const location = useLocation();
@@ -28,6 +29,10 @@ function App() {
       case "/signin":
         title = "Sign In";
         metaDescription = "This is the sign-in page description.";
+        break;
+      case "/dashboard":
+        title = "Dashboard";
+        metaDescription = "This is the dashboard page description.";
         break;
       default:
         title = "Default Title";
@@ -54,6 +59,7 @@ function App() {
       <Route path="/signin" element={<Signin />} />
       <Route path="/" element={<Landing />} />
       <Route path="/home" element={<HomePage />} />
+      <Route path="/dashboard" element={<DashboardPage />} /> {/* 새로운 경로 추가 */}
     </Routes>
   );
 }

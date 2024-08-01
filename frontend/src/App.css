@@ -1,3 +1,4 @@
+/* 기존 스타일 */
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -11,9 +12,11 @@
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
@@ -39,4 +42,67 @@
 
 .read-the-docs {
   color: #888;
+}
+
+/* 추가 스타일링 */
+.App {
+  display: flex;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+.Sidebar {
+  width: 250px;
+  background-color: #333;
+  color: white;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.Logo {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.Menu {
+  list-style: none;
+  padding: 0;
+}
+
+.Menu li {
+  margin: 10px 0;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.Menu li:hover {
+  background-color: #444;
+}
+
+.Content {
+  flex: 1;
+  padding: 20px;
+  background-color: #f1f1f1;
+  overflow-y: auto;
+}
+
+.Content h1 {
+  margin-bottom: 20px;
+}
+
+.ChartContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  gap: 20px;
+}
+
+.Chart {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  flex: 1;
 }
