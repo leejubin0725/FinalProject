@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useDropzone, DropzoneInputProps, DropzoneRootProps } from 'react-dropzone';
 import './UploadMovie.css';
 
-// 기본 장르 목록
 const defaultGenres = [
   '드라마', '로맨스', '코미디', '스릴러', '미스터리', '호러', '액션', 'SF', '판타지', '다큐멘터리',
   '어드벤처', '우화', '다문화', '가족', '음악', '해적', '심리적', '비극적', '극복', '서스펜스',
@@ -13,13 +12,13 @@ const defaultGenres = [
 ];
 
 const UploadMovie: React.FC = () => {
-  const [mediaFile, setMediaFile] = useState<string | null>(null);
-  const [thumbnailFile, setThumbnailFile] = useState<string | null>(null);
-  const [genreTags, setGenreTags] = useState<string[]>([]); // Currently added genre tags
-  const [newGenre, setNewGenre] = useState<string>(''); // Input value for new genre
-  const [selectedGenres, setSelectedGenres] = useState<Set<string>>(new Set()); // Selected genres
-  const [filteredGenres, setFilteredGenres] = useState<string[]>(defaultGenres); // Filtered genre list
-  
+  const [mediaFile, setMediaFile] = useState<File | null>(null);
+  const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
+  const [genreTags, setGenreTags] = useState<string[]>([]);
+  const [newGenre, setNewGenre] = useState<string>('');
+  const [selectedGenres, setSelectedGenres] = useState<Set<string>>(new Set());
+  const [filteredGenres, setFilteredGenres] = useState<string[]>(defaultGenres);
+
   const [title, setTitle] = useState<string>('');
   const [director, setDirector] = useState<string>('');
   const [actors, setActors] = useState<string>('');
@@ -39,17 +38,16 @@ const UploadMovie: React.FC = () => {
   const [isEditingRating, setIsEditingRating] = useState<boolean>(true);
 
   const onDropMedia = (acceptedFiles: File[]) => {
-    setMediaFile(URL.createObjectURL(acceptedFiles[0]));
+    setMediaFile(acceptedFiles[0]);
   };
 
   const onDropThumbnail = (acceptedFiles: File[]) => {
-    setThumbnailFile(URL.createObjectURL(acceptedFiles[0]));
+    setThumbnailFile(acceptedFiles[0]);
   };
 
   const { getRootProps: getRootPropsMedia, getInputProps: getInputPropsMedia } = useDropzone({ onDrop: onDropMedia });
   const { getRootProps: getRootPropsThumbnail, getInputProps: getInputPropsThumbnail } = useDropzone({ onDrop: onDropThumbnail });
 
-  // 장르 필터링
   const handleGenreInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value;
     setNewGenre(input);
@@ -60,18 +58,18 @@ const UploadMovie: React.FC = () => {
     setSelectedGenres(prev => {
       const newSelectedGenres = new Set(prev);
       if (newSelectedGenres.has(genre)) {
-        newSelectedGenres.delete(genre); // Deselect genre
-        setGenreTags(prevTags => prevTags.filter(tag => tag !== genre)); // Remove genre from list
+        newSelectedGenres.delete(genre);
+        setGenreTags(prevTags => prevTags.filter(tag => tag !== genre));
       } else {
-        newSelectedGenres.add(genre); // Select genre
+        newSelectedGenres.add(genre);
         if (!genreTags.includes(genre)) {
-          setGenreTags(prevTags => [...prevTags, genre]); // Add genre to list if not already present
+          setGenreTags(prevTags => [...prevTags, genre]);
         }
       }
       return newSelectedGenres;
     });
-    setNewGenre(''); // Clear input field after selection
-    setFilteredGenres(defaultGenres); // Reset filtered genres
+    setNewGenre('');
+    setFilteredGenres(defaultGenres);
   };
 
   const handleAddTitle = () => {
@@ -147,6 +145,32 @@ const UploadMovie: React.FC = () => {
   const handleRemoveRating = () => {
     setDisplayRating('');
     setIsEditingRating(true);
+  };
+
+  const handleSubmit = async () => {
+    const formData = new FormData();
+    if (mediaFile) formData.append('file', mediaFile);
+    if (thumbnailFile) formData.append('thumbnail', thumbnailFile);
+    formData.append('title', displayTitle);
+    formData.append('director', displayDirector);
+    formData.append('cast', displayActors);
+    formData.append('releaseYear', displayReleaseYear);
+    formData.append('synopsis', '');
+    formData.append('tags', Array.from(selectedGenres).join(','));
+
+    try {
+      const response = await fetch('http://localhost:8088/api/movies/upload', {
+        method: 'POST',
+        body: formData,
+      });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const result = await response.json();
+      console.log('Success:', result);
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   return (
@@ -228,40 +252,40 @@ const UploadMovie: React.FC = () => {
           )}
         </div>
         <div className="input-group">
-  <label>장르</label>
-  <div className="genre-input-container">
-    <input
-      type="text"
-      value={newGenre}
-      onChange={handleGenreInputChange}
-      placeholder="장르 입력"
-      className="genre-input"
-    />
-    <button
-      onClick={() => {
-        if (newGenre) {
-          handleSelectGenre(newGenre);
-        }
-      }}
-      className="genre-add-button"
-    >
-      추가
-    </button>
-    {newGenre && (
-      <div className="genre-dropdown">
-        {filteredGenres.map(genre => (
-          <div key={genre} className="genre-option" onClick={() => handleSelectGenre(genre)}>
-            {genre}
+          <label>장르</label>
+          <div className="genre-input-container">
+            <input
+              type="text"
+              value={newGenre}
+              onChange={handleGenreInputChange}
+              placeholder="장르 입력"
+              className="genre-input"
+            />
+            <button
+              onClick={() => {
+                if (newGenre) {
+                  handleSelectGenre(newGenre);
+                }
+              }}
+              className="genre-add-button"
+            >
+              추가
+            </button>
+            {newGenre && (
+              <div className="genre-dropdown">
+                {filteredGenres.map(genre => (
+                  <div key={genre} className="genre-option" onClick={() => handleSelectGenre(genre)}>
+                    {genre}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
-        ))}
-      </div>
-    )}
-  </div>
-</div>
+        </div>
       </div>
 
       <div className="media-preview">
-        {mediaFile && <video src={mediaFile} controls className="preview-video" />}
+        {mediaFile && <video src={URL.createObjectURL(mediaFile)} controls className="preview-video" />}
         {genreTags.length > 0 && (
           <div className="genre-tags-container">
             {genreTags.map(genre => (
@@ -284,7 +308,7 @@ const UploadMovie: React.FC = () => {
           <input {...(getInputPropsThumbnail() as DropzoneInputProps)} />
           <p>파일 업로드</p>
           <div className="preview-container">
-            {thumbnailFile && <img src={thumbnailFile} alt="Thumbnail preview" className="preview" />}
+            {thumbnailFile && <img src={URL.createObjectURL(thumbnailFile)} alt="Thumbnail preview" className="preview" />}
           </div>
         </div>
         <div className="preview-details">
@@ -295,11 +319,10 @@ const UploadMovie: React.FC = () => {
           <p>별점: {displayRating}</p>
           <p>장르: {Array.from(selectedGenres).join(', ')}</p>
         </div>
-        <button className="upload-button">내용 업로드</button>
+        <button className="upload-button" onClick={handleSubmit}>내용 업로드</button>
       </div>
     </div>
   );
 };
 
 export default UploadMovie;
-

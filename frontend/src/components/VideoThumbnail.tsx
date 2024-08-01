@@ -7,6 +7,7 @@ interface VideoThumbnailProps {
         title: string;
         description: string;
         url: string;
+        thumbnailUrl: string; // 썸네일 URL 추가
     };
 }
 
@@ -33,13 +34,15 @@ const VideoThumbnail: React.FC<VideoThumbnailProps> = ({ video }) => {
             onMouseLeave={handleMouseLeave}
         >
             <img
-                src={`/preview/${video.id}.jpg`}
+                src={video.thumbnailUrl}
                 alt={video.title}
+                className={styles.thumbnailImage}
             />
             <video
                 ref={videoRef}
                 muted
                 preload="auto"
+                className={styles.video}
             >
                 <source src={video.url} type="video/mp4" />
                 Your browser does not support the video tag.

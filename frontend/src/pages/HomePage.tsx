@@ -11,6 +11,7 @@ interface Video {
   title: string;
   description: string;
   url: string;
+  thumbnailUrl: string; // 썸네일 URL 추가
 }
 
 const HomePage: React.FC = () => {
@@ -18,7 +19,7 @@ const HomePage: React.FC = () => {
 
   // 컴포넌트가 마운트될 때 API 호출
   useEffect(() => {
-    axios.get('http://localhost:8088/api/videos')
+    axios.get('http://localhost:8088/api/movies')
       .then(response => {
         console.log('Fetched videos:', response.data); // 데이터 로그 출력
         setVideos(response.data);
