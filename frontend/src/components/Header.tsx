@@ -10,6 +10,7 @@ export type HeaderProps = {
 const Header: FunctionComponent<HeaderProps> = ({ className = "" }) => {
   return (
     <>
+    <section className={`${styles.Header} ${className}`}>
       <header className={styles.header}>
         <div className={styles.headerBackground} />
         <Link to="/home">
