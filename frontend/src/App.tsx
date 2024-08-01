@@ -7,8 +7,8 @@ import {
 import Signin from "./pages/SignInPage";
 import Landing from "./pages/MainPage";
 import HomePage from "./pages/HomePage";
+import DashboardPage from "./pages/DashboardPage";
 import UploadMovie from "./pages/UploadMovie";
-
 
 function App() {
   const location = useLocation();
@@ -31,6 +31,9 @@ function App() {
         title = "Sign In";
         metaDescription = "This is the sign-in page description.";
         break;
+      case "/dashboard":
+        title = "Dashboard";
+        metaDescription = "This is the dashboard page description.";
       case "/upload":
         title = "Upload Movie";
         metaDescription = "Upload a new movie.";
@@ -60,10 +63,10 @@ function App() {
       <Route path="/signin" element={<Signin />} />
       <Route path="/" element={<Landing />} />
       <Route path="/home" element={<HomePage />} />
+      <Route path="/dashboard" element={<DashboardPage />} /> {/* 새로운 경로 추가 */}
       <Route path="/upload" element={<UploadMovie />} />
     </Routes>
   );
 }
-
 
 export default App;
