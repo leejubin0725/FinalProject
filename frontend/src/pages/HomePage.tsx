@@ -17,7 +17,6 @@ interface Video {
 const HomePage: React.FC = () => {
   const [videos, setVideos] = useState<Video[]>([]);
 
-  // 컴포넌트가 마운트될 때 API 호출
   useEffect(() => {
     axios.get('http://localhost:8088/api/movies')
       .then(response => {
@@ -29,6 +28,18 @@ const HomePage: React.FC = () => {
       });
   }, []);
 
+  // 공통 섹션 렌더링 함수
+  const renderSection = (title: string, videos: Video[]) => (
+    <div className={styles.section}>
+      <h2 className={styles.sectionTitle}>{title}</h2>
+      <div className={styles.tileRows}>
+        {videos.slice(0, 5).map(video => (
+          <VideoThumbnail key={video.id} video={video} />
+        ))}
+      </div>
+    </div>
+  );
+
   return (
     <div className={styles.main}>
       <img className={styles.titleImageIcon} alt="Title" src="/titleimage@2x.png" />
@@ -37,41 +48,11 @@ const HomePage: React.FC = () => {
         {/* 여기에 Hero Content 내용 추가 */}
       </div>
       <section className={styles.content}>
-        <div className={styles.bgFade} />
-        <div className={styles.sectionTitleParent}>
-          <div className={styles.sectionTitle}>
-            <h2 className={styles.seeAgain}>영화 이어보기</h2>
-          </div>
-          <div className={styles.tileRowsParent}>
-            <div className={styles.tileRows}>
-              {videos.slice(0, 5).map(video => (
-                <VideoThumbnail key={video.id} video={video} />
-              ))}
-            </div>
-          </div>
-        </div>
+        {renderSection('영화 이어보기', videos)}
         <Frame />
-        <div className={styles.sectionTitleGroup}>
-          <div className={styles.sectionTitle1}>
-            <h2 className={styles.seeAgain1}>시네마 클라우드 추천작</h2>
-          </div>
-          <div className={styles.tileRows}>
-            {videos.slice(0, 5).map(video => (
-              <VideoThumbnail key={video.id} video={video} />
-            ))}
-          </div>
-        </div>
+        {renderSection('시네마 클라우드 추천작', videos)}
         <Frame />
-        <div className={styles.sectionTitleContainer}>
-          <div className={styles.sectionTitle2}>
-            <h2 className={styles.seeAgain2}>밤늦게 즐기는 스릴러</h2>
-          </div>
-          <div className={styles.tileRows}>
-            {videos.slice(0, 5).map(video => (
-              <VideoThumbnail key={video.id} video={video} />
-            ))}
-          </div>
-        </div>
+        {renderSection('밤늦게 즐기는 스릴러', videos)}
       </section>
     </div>
   );
