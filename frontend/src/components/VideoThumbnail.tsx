@@ -41,7 +41,7 @@ const VideoThumbnail: React.FC<VideoThumbnailProps> = ({ video }) => {
             const handleLoadedData = () => {
                 console.log('Video loaded data:', videoElement.readyState);
             };
-            const handleError = (event) => {
+            const handleError = (event: Event) => {
                 console.error('Error loading video:', event);
             };
 
