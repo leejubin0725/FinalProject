@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef } from 'react';
 import styles from './VideoThumbnail.module.css';
 
 interface VideoThumbnailProps {
@@ -11,22 +11,39 @@ interface VideoThumbnailProps {
 }
 
 const VideoThumbnail: React.FC<VideoThumbnailProps> = ({ video }) => {
-    const [isHovered, setIsHovered] = useState(false);
+    const videoRef = useRef<HTMLVideoElement>(null);
+
+    const handleMouseEnter = () => {
+        if (videoRef.current) {
+            videoRef.current.play();
+        }
+    };
+
+    const handleMouseLeave = () => {
+        if (videoRef.current) {
+            videoRef.current.pause();
+            videoRef.current.currentTime = 0;
+        }
+    };
 
     return (
         <div
             className={styles.thumbnail}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
         >
-            {!isHovered ? (
-                <img src={`/preview/${video.id}.jpg`} alt={video.title} />
-            ) : (
-                <video autoPlay loop muted preload="auto">
-                    <source src={video.url} type="video/mp4" />
-                    Your browser does not support the video tag.
-                </video>
-            )}
+            <img
+                src={`/preview/${video.id}.jpg`}
+                alt={video.title}
+            />
+            <video
+                ref={videoRef}
+                muted
+                preload="auto"
+            >
+                <source src={video.url} type="video/mp4" />
+                Your browser does not support the video tag.
+            </video>
         </div>
     );
 };
