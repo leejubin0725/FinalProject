@@ -32,6 +32,13 @@ function App() {
         metaDescription = "This is the sign-in page description.";
         break;
       case "/dashboard":
+      case "/dashboard/movieManage":
+      case "/dashboard/insertMovie":
+      case "/dashboard/memberManage":
+      case "/dashboard/insertNotice":
+      case "/dashboard/1on1chat":
+        title = "Dashboard";
+        metaDescription = "This is the dashboard page description.";
         title = "Dashboard";
         metaDescription = "This is the dashboard page description.";
       case "/upload":
@@ -63,6 +70,7 @@ function App() {
       <Route path="/signin" element={<Signin />} />
       <Route path="/" element={<Landing />} />
       <Route path="/home" element={<HomePage />} />
+      <Route path="/dashboard/*" element={<DashboardPage />} />
       <Route path="/dashboard" element={<DashboardPage />} /> {/* 새로운 경로 추가 */}
       <Route path="/upload" element={<UploadMovie />} />
     </Routes>

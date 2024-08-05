@@ -53,48 +53,47 @@ const Header: React.FC<HeaderProps> = ({ className = "", onSearchClick }) => {
                 </Link>
               </div>
 
-              <div className={`${styles.profileNav} ${styles.iconButton}`}>
-                <div className={styles.clickableDiv}>
-                  <img
-                    className={styles.profileBackgroundIcon}
-                    loading="lazy"
-                    alt=""
-                    src="/profile.png"
-                  />
-                  <img
-                    className={styles.antDesigncaretDownFilledIcon}
-                    loading="lazy"
-                    alt=""
-                    src="/antdesigncaretdownfilled.svg"
-                  />
-                  <div className={styles.dropdownMenu}>
-                    <Link to="/profile1" className={styles.dropdownItem}>
-                      <img src="/profile.png" alt="Profile 1" />
-                      멀티 프로필1
-                    </Link>
-                    <Link to="/profile2" className={styles.dropdownItem}>
-                      <img src="/profile.png" alt="Profile 2" />
-                      멀티 프로필2
-                    </Link>
-                    <Link to="/profile3" className={styles.dropdownItem}>
-                      <img src="/profile.png" alt="Profile 3" />
-                      멀티 프로필3
-                    </Link>
-                    <Link to="/profile4" className={styles.dropdownItem}>
-                      <img src="/profile.png" alt="Profile 4" />
-                      멀티 프로필4
-                    </Link>
-                    <Link to="/profile/manage" className={styles.dropdownItem}>프로필 관리</Link>
-                    <Link to="/account" className={styles.dropdownItem}>계정</Link>
-                    <Link to="/help" className={styles.dropdownItem}>고객센터</Link>
-                    <Link to="/logout" className={styles.dropdownItem}>로그아웃</Link>
-                  </div>
+            <div className={`${styles.profileNav} ${styles.iconButton}`}>
+              <div className={styles.clickableDiv}>
+                <img
+                  className={styles.profileBackgroundIcon}
+                  loading="lazy"
+                  alt=""
+                  src="/profile.png"
+                />
+                <img
+                  className={styles.antDesigncaretDownFilledIcon}
+                  loading="lazy"
+                  alt=""
+                  src="/antdesigncaretdownfilled.svg"
+                />
+                <div className={styles.dropdownMenu}>
+                  <Link to="/profile1" className={styles.dropdownItem}>
+                    <img src="/profile.png" alt="Profile 1" />
+                    멀티 프로필1
+                  </Link>
+                  <Link to="/profile2" className={styles.dropdownItem}>
+                    <img src="/profile.png" alt="Profile 2" />
+                    멀티 프로필2
+                  </Link>
+                  <Link to="/profile3" className={styles.dropdownItem}>
+                    <img src="/profile.png" alt="Profile 3" />
+                    멀티 프로필3
+                  </Link>
+                  <Link to="/profile4" className={styles.dropdownItem}>
+                    <img src="/profile.png" alt="Profile 4" />
+                    멀티 프로필4
+                  </Link>
+                  <Link to="/profile/manage" className={styles.dropdownItem}>프로필 관리</Link>
+                  <Link to="/account" className={styles.dropdownItem}>계정</Link>
+                  <Link to="/help" className={styles.dropdownItem}>고객센터</Link>
+                  <Link to="/logout" className={styles.dropdownItem}>로그아웃</Link>
                 </div>
               </div>
             </div>
           </div>
-        </header>
-      </section>
+        </div>
+      </header>
     </>
   );
 };
