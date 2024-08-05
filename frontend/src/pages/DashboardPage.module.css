@@ -13,17 +13,36 @@
   background-color: #333;
   color: white;
   padding: 10px;
+
+.dashboardPage {
+  display: flex;
+  height: 98vh; /* 전체 페이지의 높이를 살짝 줄입니다 */
+  font-family: Arial, sans-serif;
+  background-color: #f8f9fa;
+  padding-top: 70px;
+}
+
+.sideMenu {
+  width: 220px;
+  background-color: #333;
+  color: white;
+  padding: 15px;
   box-sizing: border-box;
 }
 
 .content {
   display: flex;
   flex-direction: row;
+
   align-content: center;
   padding: 10px;
   overflow-y: auto;
   width: calc(100% - 200px);
   height: calc(100vh - 70px);
+
+  padding: 15px;
+  overflow-y: auto;
+  width: calc(100% - 220px); /* 전체 너비에서 사이드 메뉴 너비를 제외 */
 }
 
 .leftColumn {
@@ -33,17 +52,22 @@
   margin-right: 30px;
   width: 500px;
   height: 95%;
+  gap: 18px; /* 카드들 사이의 간격을 살짝 줄입니다 */
+  margin-right: 18px; /* 오른쪽으로 마진을 조금 줄입니다 */
+  width: 240px;
 }
 
 .mainColumn {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  gap: 18px; /* 컬럼 내 카드들 사이의 간격을 살짝 줄입니다 */
   flex: 1;
 }
 
 .row {
   display: flex;
+
   gap: 20px;
 }
 
@@ -53,6 +77,13 @@
   justify-content: center;
   align-items: center;
   padding: 15px;
+
+  gap: 18px; /* 두 카드 사이의 간격을 조금 줄입니다 */
+}
+
+.card {
+  padding: 14px; /* 카드의 내부 패딩을 조금 줄입니다 */
+
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
@@ -73,6 +104,11 @@
 
 .card.halfWidthSmaller {
   flex: 1 1 50%;
+  flex: 1 1 50%; /* "방문자 수 변동량" 카드의 너비를 60%로 설정 */
+}
+
+.card.halfWidthSmaller {
+  flex: 1 1 50%; /* "최근 많이 본 영화" 카드의 너비를 40%로 설정 */
 }
 
 h2 {
@@ -87,7 +123,7 @@ h2 {
     width: 100%;
   }
 
-  .card.halfWidth,
+  .card.halfWidth, 
   .card.halfWidthSmaller {
     flex: 1 1 100%;
   }
@@ -228,4 +264,8 @@ h2 {
   padding: 8px;
   border: 1px solid #ddd;
   text-align: center;
+}
+  .card.fullWidth, .card.halfWidth, .card.halfWidthSmaller {
+    flex: 1 1 100%;
+  }
 }
