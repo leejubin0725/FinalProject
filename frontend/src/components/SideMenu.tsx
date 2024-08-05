@@ -50,12 +50,12 @@ const SideMenu: React.FC = () => {
         </li>
         <li>
           <NavLink
-            to="/dashboard/insertNotice"
+            to="/dashboard/FAQManage"
             className={({ isActive }) =>
               `${styles.menuItem} ${isActive ? styles.activeMenuItem : ''}`
             }
           >
-            회원문의
+            자주하는질문(FAQ)
           </NavLink>
         </li>
         <li>
