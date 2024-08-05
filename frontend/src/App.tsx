@@ -9,7 +9,7 @@ import Landing from "./pages/MainPage";
 import HomePage from "./pages/HomePage";
 import DashboardPage from "./pages/DashboardPage";
 import UploadMovie from "./pages/UploadMovie";
-import Frame from "./pages/Frame";
+import SubscribePage from "./pages/SubscribePage";
 
 function App() {
   const location = useLocation();
@@ -72,7 +72,7 @@ function App() {
       <Route path="/dashboard/*" element={<DashboardPage />} />
       <Route path="/dashboard" element={<DashboardPage />} /> {/* 새로운 경로 추가 */}
       <Route path="/upload" element={<UploadMovie />} />
-      <Route path="/subscribe" element={<Frame />} />
+      <Route path="/subscribe" element={<SubscribePage />} />
     </Routes>
   );
 }

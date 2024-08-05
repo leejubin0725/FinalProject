@@ -1,11 +1,11 @@
 import { FunctionComponent } from "react";
-import styles from "./Main.module.css";
+import styles from "./SubscribeMain.module.css";
 
 export type MainType = {
   className?: string;
 };
 
-const Main: FunctionComponent<MainType> = ({ className = "" }) => {
+const SubscribeMain: FunctionComponent<MainType> = ({ className = "" }) => {
   return (
     <section className={[styles.main, className].join(" ")}>
       <div className={styles.content}>
@@ -58,4 +58,4 @@ const Main: FunctionComponent<MainType> = ({ className = "" }) => {
   );
 };
 
-export default Main;
+export default SubscribeMain;

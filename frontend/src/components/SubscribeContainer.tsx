@@ -1,5 +1,5 @@
 import { FunctionComponent } from "react";
-import styles from "./Container.module.css";
+import styles from "./SubscribeContainer.module.css";
 
 export type ContainerType = {
   className?: string;
@@ -7,7 +7,7 @@ export type ContainerType = {
   text1?: string;
 };
 
-const Container: FunctionComponent<ContainerType> = ({
+const SubscribeContainer: FunctionComponent<ContainerType> = ({
   className = "",
   text,
   text1,
@@ -24,4 +24,4 @@ const Container: FunctionComponent<ContainerType> = ({
   );
 };
 
-export default Container;
+export default SubscribeContainer;

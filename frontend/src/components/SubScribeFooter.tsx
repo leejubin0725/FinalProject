@@ -1,11 +1,11 @@
 import { FunctionComponent } from "react";
-import styles from "./Footer.module.css";
+import styles from "./SubScribeFooter.module.css";
 
 export type FooterType = {
   className?: string;
 };
 
-const Footer: FunctionComponent<FooterType> = ({ className = "" }) => {
+const SubScribeFooter: FunctionComponent<FooterType> = ({ className = "" }) => {
   return (
     <footer className={[styles.footer, className].join(" ")}>
       <div className={styles.container}>
@@ -90,4 +90,4 @@ const Footer: FunctionComponent<FooterType> = ({ className = "" }) => {
   );
 };
 
-export default Footer;
+export default SubScribeFooter;

@@ -1,12 +1,12 @@
 import { FunctionComponent } from "react";
-import Container from "./Container";
-import styles from "./Aside.module.css";
+import Container from "./SubscribeContainer";
+import styles from "./SubScribeAside.module.css";
 
 export type AsideType = {
   className?: string;
 };
 
-const Aside: FunctionComponent<AsideType> = ({ className = "" }) => {
+const SubScribeAside: FunctionComponent<AsideType> = ({ className = "" }) => {
   return (
     <section className={[styles.aside, className].join(" ")}>
       <div className={styles.container}>
@@ -59,4 +59,4 @@ const Aside: FunctionComponent<AsideType> = ({ className = "" }) => {
   );
 };
 
-export default Aside;
+export default SubScribeAside;
