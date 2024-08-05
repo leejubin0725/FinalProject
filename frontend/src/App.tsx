@@ -9,6 +9,7 @@ import Landing from "./pages/MainPage";
 import HomePage from "./pages/HomePage";
 import DashboardPage from "./pages/DashboardPage";
 import UploadMovie from "./pages/UploadMovie";
+import LoginPage from "./pages/LoginPage";
 
 function App() {
   const location = useLocation();
@@ -65,6 +66,8 @@ function App() {
       <Route path="/home" element={<HomePage />} />
       <Route path="/dashboard" element={<DashboardPage />} /> {/* 새로운 경로 추가 */}
       <Route path="/upload" element={<UploadMovie />} />
+      <Route path="/login" element={<LoginPage />} />
+
     </Routes>
   );
 }
