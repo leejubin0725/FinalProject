@@ -24,4 +24,5 @@ public class Movie {
     private String tags; // 콤마로 구분된 태그 문자열
     private String url;
     private String thumbnailUrl;
+    private String genre;
 }

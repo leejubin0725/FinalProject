@@ -1,15 +1,14 @@
-import { FunctionComponent } from "react";
-import { Link } from "react-router-dom";
-import styles from "./Header.module.css";
+// components/Header.tsx
+import React from 'react';
+import { Link } from 'react-router-dom';
+import styles from './Header.module.css';
 
 export type HeaderProps = {
   className?: string;
+  onSearchClick?: () => void; // 추가된 prop
 };
 
-
-const Header: FunctionComponent<HeaderProps> = ({ className = "" }) => {
-
-
+const Header: React.FC<HeaderProps> = ({ className = "", onSearchClick }) => {
   return (
     <>
       <section className={`${styles.Header} ${className}`}>
@@ -28,22 +27,20 @@ const Header: FunctionComponent<HeaderProps> = ({ className = "" }) => {
               <div className={`${styles.homeButton} ${styles.iconButton}`}>
                 <Link to="/home" className={styles.a}>
                   <img
-                    className={styles.fesearchIcon}
+                    className={styles.homeButtonIcon}
                     loading="lazy"
                     alt=""
                     src="/homeButton.png"
                   />
                 </Link>
               </div>
-              <div className={`${styles.searchNav} ${styles.iconButton}`}>
-                <Link to="/search">
-                  <img
-                    className={styles.fesearchIcon}
-                    loading="lazy"
-                    alt=""
-                    src="/fesearch.svg"
-                  />
-                </Link>
+              <div className={`${styles.searchNav} ${styles.iconButton}`} onClick={onSearchClick}>
+                <img
+                  className={styles.fesearchIcon}
+                  loading="lazy"
+                  alt=""
+                  src="/fesearch.svg"
+                />
               </div>
               <div className={`${styles.notificationsNav} ${styles.iconButton}`}>
                 <Link to="/notifications">
