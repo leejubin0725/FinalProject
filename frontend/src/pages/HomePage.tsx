@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Slider from 'react-slick';
 import Header from '../components/Header';
 import Frame from '../components/HomeFrame';
 import VideoThumbnail from '../components/VideoThumbnail';
 import styles from './HomePage.module.css';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 // 비디오 타입 정의
 interface Video {
@@ -28,14 +31,62 @@ const HomePage: React.FC = () => {
       });
   }, []);
 
+  const CustomPrevArrow = (props: any) => {
+    const { className, onClick } = props;
+    return (
+      <button className={`${className} ${styles.arrowButton} ${styles.left}`} onClick={onClick}>
+        &lt;
+      </button>
+    );
+  };
+
+  const CustomNextArrow = (props: any) => {
+    const { className, onClick } = props;
+    return (
+      <button className={`${className} ${styles.arrowButton} ${styles.right}`} onClick={onClick}>
+        &gt;
+      </button>
+    );
+  };
+
+  const settings = {
+    dots: false,
+    infinite: true,
+    speed: 600,
+    slidesToShow: 4,
+    slidesToScroll: 2,
+    prevArrow: <CustomPrevArrow />,
+    nextArrow: <CustomNextArrow />,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          infinite: true
+        }
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          initialSlide: 1
+        }
+      }
+    ]
+  };
+
   const renderSection = (title: string, videos: Video[], keyPrefix: string) => (
     <div className={styles.section} key={keyPrefix}>
       <h2 className={styles.sectionTitle}>{title}</h2>
-      <div className={styles.tileRows}>
-        {videos.slice(0, 5).map((video, index) => (
-          <VideoThumbnail key={`${keyPrefix}-${index}`} video={video} />
+      <Slider {...settings} className={styles.tileRows}>
+        {videos.map((video, index) => (
+          <div className={styles.tile} key={`${keyPrefix}-${index}`}>
+            <VideoThumbnail video={video} />
+          </div>
         ))}
-      </div>
+      </Slider>
     </div>
   );
 
