@@ -1,0 +1,105 @@
+.myPage {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.content {
+    padding-left: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.profileSection,
+.quickLinks {
+    background-color: #ffffff;
+    border-radius: 30px;
+    padding: 20px;
+    border: solid rgb(221, 221, 221) 1px;
+}
+
+.profileSection {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.profileImage {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+.profile {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.profile h2 {
+    margin: 0;
+    text-align: left;
+
+}
+
+.link {
+    display: block;
+    color: #007bff;
+    text-decoration: none;
+    margin-top: 5px;
+}
+
+.link:hover {
+    text-decoration: underline;
+}
+
+.quickLinks {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.quickLinks ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.quickLinks ul:empty {
+    border: none;
+}
+
+.quickLinks li {
+    margin-top: 20px;
+    padding-bottom: 20px;
+}
+
+.quickLinks li:not(:last-child) {
+    border-bottom: solid rgb(228, 228, 228) 1px;
+    margin-bottom: 20px;
+}
+
+.quickLinks li :empty {
+    border-bottom: solid none;
+}
+
+.quickLinks a {
+    text-decoration: none;
+    color: #707070;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.quickLinks a:hover {
+    color: #000;
+    font-weight: bold;
+}
+
+.arrow {
+    font-size: 16px;
+    color: #000;
+
+}

@@ -8,6 +8,7 @@ import SearchOverlay from '../components/SearchOverlay';
 import styles from './HomePage.module.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import Footer from '../components/Footer';
 
 interface Video {
   id: number;
@@ -154,6 +155,7 @@ const HomePage: React.FC = () => {
         {renderSection('밤늦게 즐기는 스릴러', filteredVideos, 'section-3')}
       </section>
       {isSearchVisible && <SearchOverlay onClose={handleCloseSearch} onSearch={handleSearch} />}
+      <Footer />
     </div>
   );
 };
