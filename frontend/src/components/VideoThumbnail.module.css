@@ -18,6 +18,7 @@
     top: 0;
     left: 0;
     transition: opacity 0.3s ease-in-out;
+    border-radius: 10%;
 }
 
 .thumbnail video {
@@ -26,7 +27,7 @@
 }
 
 .thumbnail:hover {
-    transform: scale(1.05);
+    transform: scale(1.1);
     /* 확대 비율 조정 */
     z-index: 2;
 }
