@@ -1,57 +1,57 @@
-import { FunctionComponent } from "react";
-import { Link } from "react-router-dom";
-import styles from "./Header.module.css";
+// components/Header.tsx
+import React from 'react';
+import { Link } from 'react-router-dom';
+import styles from './Header.module.css';
 
 export type HeaderProps = {
   className?: string;
+  onSearchClick?: () => void; // 추가된 prop
 };
 
-
-const Header: FunctionComponent<HeaderProps> = ({ className = "" }) => {
+const Header: React.FC<HeaderProps> = ({ className = "", onSearchClick }) => {
   return (
     <>
-      <header className={styles.header}>
-        <div className={styles.headerBackground} />
-        <Link to="/home">
-          <img
-            className={styles.logoText2}
-            loading="lazy"
-            alt=""
-            src="/logo-text-2@2x.png"
-          />
-        </Link>
-        <div className={styles.navigation}>
-          <div className={styles.homeNav}>
-            <div className={`${styles.homeButton} ${styles.iconButton}`}>
-              <Link to="/home" className={styles.a}>
-                <img
-                  className={styles.fesearchIcon}
-                  loading="lazy"
-                  alt=""
-                  src="/homeButton.png"
-                />
-              </Link>
-            </div>
-            <div className={`${styles.searchNav} ${styles.iconButton}`}>
-              <Link to="/search">
+      <section className={`${styles.Header} ${className}`}>
+        <header className={styles.header}>
+          <div className={styles.headerBackground} />
+          <Link to="/home">
+            <img
+              className={styles.logoText2}
+              loading="lazy"
+              alt=""
+              src="/logo-text-2@2x.png"
+            />
+          </Link>
+          <div className={styles.navigation}>
+            <div className={styles.homeNav}>
+              <div className={`${styles.homeButton} ${styles.iconButton}`}>
+                <Link to="/home" className={styles.a}>
+                  <img
+                    className={styles.homeButtonIcon}
+                    loading="lazy"
+                    alt=""
+                    src="/homeButton.png"
+                  />
+                </Link>
+              </div>
+              <div className={`${styles.searchNav} ${styles.iconButton}`} onClick={onSearchClick}>
                 <img
                   className={styles.fesearchIcon}
                   loading="lazy"
                   alt=""
                   src="/fesearch.svg"
                 />
-              </Link>
-            </div>
-            <div className={`${styles.notificationsNav} ${styles.iconButton}`}>
-              <Link to="/notifications">
-                <img
-                  className={styles.faSolidbellIcon}
-                  loading="lazy"
-                  alt=""
-                  src="/fasolidbell.svg"
-                />
-              </Link>
-            </div>
+              </div>
+              <div className={`${styles.notificationsNav} ${styles.iconButton}`}>
+                <Link to="/notifications">
+                  <img
+                    className={styles.faSolidbellIcon}
+                    loading="lazy"
+                    alt=""
+                    src="/fasolidbell.svg"
+                  />
+                </Link>
+              </div>
 
             <div className={`${styles.profileNav} ${styles.iconButton}`}>
               <div className={styles.clickableDiv}>
