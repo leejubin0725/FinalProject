@@ -35,10 +35,8 @@ function App() {
       case "/dashboard/movieManage":
       case "/dashboard/insertMovie":
       case "/dashboard/memberManage":
-      case "/dashboard/insertNotice":
+      case "/dashboard/FAQManage":
       case "/dashboard/1on1chat":
-        title = "Dashboard";
-        metaDescription = "This is the dashboard page description.";
         title = "Dashboard";
         metaDescription = "This is the dashboard page description.";
       case "/upload":

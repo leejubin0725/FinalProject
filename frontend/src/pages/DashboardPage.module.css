@@ -1,7 +1,6 @@
-/* 기존 스타일링 */
 .dashboardPage {
   display: flex;
-  height: 100vh;
+  height: 92vh;
   font-family: Arial, sans-serif;
   background-color: #f8f9fa;
   padding-top: 70px;
@@ -22,7 +21,7 @@
   align-content: center;
   padding: 10px;
   overflow-y: auto;
-  width: calc(100% - 200px);
+  width: 100%;
   height: calc(100vh - 70px);
 }
 
@@ -30,8 +29,8 @@
   display: flex;
   flex-direction: column;
   gap: 15px;
-  margin-right: 30px;
-  width: 500px;
+  margin-right: 2%;
+  width: 12%;
   height: 95%;
 }
 
@@ -116,40 +115,55 @@ h2 {
 }
 
 /* 테이블 스타일링 */
-.tg, .tableContainer {
+.tg,
+.tableContainer {
   border-collapse: collapse;
   width: 100%;
   margin: 20px auto;
   font-family: Arial, sans-serif;
 }
 
-.tg th, .tg td, .tableContainer th, .tableContainer td {
+.tg th,
+.tg td,
+.tableContainer th,
+.tableContainer td {
   padding: 12px 15px;
-  text-align: center; /* 중앙 정렬 */
+  text-align: center;
   border-bottom: 1px solid #dddddd;
+
+  /* 텍스트 오버플로우 처리 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 0;
 }
 
-.tg th, .tableContainer th {
+.tg th,
+.tableContainer th {
   background-color: #2c3e50;
   color: white;
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }
 
-.tg tbody tr, .tableContainer tbody tr {
+.tg tbody tr,
+.tableContainer tbody tr {
   background-color: #f8f9fa;
   transition: background-color 0.2s ease;
 }
 
-.tg tbody tr:nth-child(even), .tableContainer tbody tr:nth-child(even) {
+.tg tbody tr:nth-child(even),
+.tableContainer tbody tr:nth-child(even) {
   background-color: #ecf0f1;
 }
 
-.tg tbody tr:hover, .tableContainer tbody tr:hover {
+.tg tbody tr:hover,
+.tableContainer tbody tr:hover {
   background-color: #d1e7dd;
 }
 
-.tg td button, .tableContainer td button {
+.tg td button,
+.tableContainer td button {
   background-color: #e74c3c;
   color: white;
   border: none;
@@ -160,11 +174,13 @@ h2 {
   transition: background-color 0.2s ease;
 }
 
-.tg td button:hover, .tableContainer td button:hover {
+.tg td button:hover,
+.tableContainer td button:hover {
   background-color: #c0392b;
 }
 
-#firstrow th, .tableContainer #firstrow th {
+#firstrow th,
+.tableContainer #firstrow th {
   background-color: #2c3e50;
   color: white;
 }
@@ -175,40 +191,41 @@ h2 {
   text-align: center;
   font-size: 24px;
   color: #2c3e50;
+  margin-right: 700px;
 }
 
-/* 여기서부터 추가된 부분 */
 .headerContainer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px; /* 제목과 테이블 사이의 간격 */
+  margin-bottom: 20px;
   margin-left: 200px;
   margin-right: 200px;
 }
 
 .searchContainer {
   display: flex;
-  align-items: center; /* 검색 바와 버튼을 수직으로 가운데 정렬 */
+  align-items: center;
 }
 
 .searchInput {
   padding: 8px 12px;
   border: 1px solid #ddd;
-  border-radius: 4px 0 0 4px; /* 검색 바 왼쪽 모서리만 둥글게 */
+  border-radius: 4px 0 0 4px;
   font-size: 14px;
-  width: 200px; /* 필요에 따라 조정 가능 */
+  width: 200px;
 }
 
 .searchButton {
   padding: 8px 12px;
   border: 1px solid #ddd;
   border-left: none;
-  border-radius: 0 4px 4px 0; /* 검색 버튼 오른쪽 모서리만 둥글게 */
+  border-radius: 0 4px 4px 0;
   background-color: #2c3e50;
   color: white;
   cursor: pointer;
   font-size: 14px;
+  margin-right: 50px;
 }
 
 .searchButton:hover {
@@ -216,7 +233,7 @@ h2 {
 }
 
 .expandedRow {
-  background-color: #e9f5e9; /* 행이 확장되었을 때의 배경색 */
+  background-color: #f9f9f9;
 }
 
 .innerTable {
@@ -224,8 +241,141 @@ h2 {
   border-collapse: collapse;
 }
 
-.innerTable th, .innerTable td {
-  padding: 8px;
+.innerTable th,
+.innerTable td {
   border: 1px solid #ddd;
+  padding: 8px;
   text-align: center;
+}
+
+.insertFAQButton {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-left: none;
+  border-radius: 4px;
+  background-color: #2c3e50;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  list-style: none;
+  padding: 0;
+}
+
+.pagination li {
+  margin: 0 5px;
+}
+
+.pagination .pageLink {
+  color: #2c3e50;
+  padding: 8px 16px;
+  text-decoration: none;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.pagination .pageLink:hover {
+  background-color: #ddd;
+}
+
+.pagination .active .pageLink {
+  background-color: #2c3e50;
+  color: white;
+  border: 1px solid #2c3e50;
+}
+
+/* 기존 스타일들에 영향을 주지 않음 */
+
+.ChattingContainer {
+  padding: 20px;
+  width: 100%;
+  height: 100%;
+}
+
+.ChattingTitle {
+  font-size: 24px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.ChattingGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 가로로 5개의 박스를 배치 */
+  grid-template-rows: repeat(2, auto); /* 세로로 2개의 행 */
+  gap: 50px; /* 카드 간격 */
+}
+
+.ChattingCard {
+  background-color: #f0f0f0;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  justify-content: center;
+  height: 200px;
+}
+
+.ChattingCardTitle {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.ChattingCardDate {
+  font-size: 14px;
+  color: #888;
+  margin-bottom: 10px;
+}
+
+.ChattingCardButton {
+  background-color: #2c3e50;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 35%;
+}
+
+.ChattingCardButton:hover {
+  background-color: #1a252f;
+}
+
+.paginationContainer {
+  margin-top: 20px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+}
+
+.pagination li {
+  margin: 0 5px;
+}
+
+.pageLink {
+  color: #2c3e50;
+  padding: 8px 16px;
+  text-decoration: none;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.pageLink:hover {
+  background-color: #ddd;
+}
+
+.active .pageLink {
+  background-color: #2c3e50;
+  color: white;
+  border: 1px solid #2c3e50;
 }
