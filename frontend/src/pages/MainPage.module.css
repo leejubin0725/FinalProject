@@ -12,8 +12,22 @@
 
 .backgroundOverlay {
   position: absolute;
+
+  margin: 0;
   top: 0;
   left: 0;
+
+  overflow: hidden;
+  object-fit: cover;
+}
+
+.cinemaCloud,
+.unlimitedMoviesTv {
+  margin: 0 auto; /* 가운데 정렬 */
+  max-width: 90%; /* 최대 너비 설정 */
+  font-weight: 700;
+  display: inline-block;
+
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
@@ -28,7 +42,182 @@
   width: 250px;
   /* 로고 크기 조정 */
   z-index: 1;
+  font-size: 2rem; /* 글자 크기 */
+  text-align: center;
 }
+
+
+.unlimitedMoviesTv {
+  max-width: 80%;
+}
+
+.unlimitedMovies {
+  display: flex;
+  justify-content: center;
+  padding: 0 20px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.watchAnywhereCancel {
+  margin: 0 auto; /* 가운데 정렬 */
+  max-width: 80%;
+  font-weight: 700;
+  display: inline-block;
+  z-index: 1;
+  font-size: 1.5rem; /* 글자 크기 */
+  text-align: center;
+}
+
+.watchAnywhereCancelAnytimeWrapper {
+  display: flex;
+  justify-content: center;
+  padding: 0 20px 37px;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 80%;
+  font-size: 1.25rem; /* 글자 크기 */
+  text-align: center;
+}
+
+.readyToWatch {
+  max-width: 100%;
+  z-index: 1;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.readyToWatchEnterYourEmaWrapper {
+  display: flex;
+  align-items: center;
+  padding: 0 22px;
+  box-sizing: border-box;
+  width: 100%;
+  justify-content: center;
+}
+
+.buttonWrapper,
+.topBarLinksChild {
+  height: 50px; /* 높이를 줄임 */
+  border-radius: var(--br-3xs);
+}
+
+.buttonWrapper {
+  width: 70%;
+  border: 0;
+  background-color: var(--color-white);
+  display: flex;
+  align-items: center;
+  padding: var(--padding-lg);
+  box-sizing: border-box;
+  font-family: var(--font-roboto);
+  font-weight: 500;
+  font-size: 1rem; /* 글자 크기 */
+  color: #5b5b5b;
+  z-index: 1;
+  margin-right: 10px; /* 버튼과의 간격 */
+}
+
+.topBarLinksChild {
+  width: 216px;
+  display: none;
+}
+
+.getStarted {
+  font-size: 1rem; /* 글자 크기 */
+  font-weight: 500;
+  font-family: var(--font-roboto);
+  color: var(--color-white);
+  text-align: center;
+  z-index: 2;
+}
+
+.inputFields {
+  display: flex;
+  width: 100%;
+  max-width: 80%;
+  gap: 10px; /* 버튼과 입력 필드 사이 간격 */
+  justify-content: center;
+}
+
+.topBarLinks {
+  cursor: pointer;
+  border: 0;
+  padding: 10px 20px; /* 패딩 크기 */
+  background-color: var(--color-sandybrown);
+  width: 200px; /* 너비 */
+  border-radius: var(--br-3xs);
+  box-sizing: border-box;
+  white-space: nowrap;
+  z-index: 1;
+  text-align: center;
+}
+
+.topBarLinks:hover {
+  background-color: #a36e2e;
+}
+
+.frameGroup {
+  align-self: stretch;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 20px;
+  font-size: 18px;
+  width: 100%;
+  max-width: 752px; /* 최대 너비 설정 */
+}
+
+.frameGroup,
+.frameWrapper,
+.unlimitedMoviesParent {
+  display: flex;
+  align-items: flex-start;
+  max-width: 100%;
+}
+
+.unlimitedMoviesParent {
+  width: 100%;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 34px;
+}
+
+.frameWrapper {
+  align-self: stretch;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.vectorIcon {
+  width: 24.2px;
+  height: 3.9px;
+  position: relative;
+  z-index: 1;
+}
+
+.frameParent,
+.landingInner {
+  display: flex;
+  align-items: flex-start;
+  max-width: 100%;
+  flex-shrink: 0;
+}
+
+.frameParent {
+  width: 100%;
+  max-width: 1022px; /* 최대 너비 설정 */
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 50px;
+}
+
+.landingInner {
+  width: 100%;
+  flex-direction: row;
+  justify-content: center;
+  box-sizing: border-box;
+  text-align: center;
+  font-size: 2rem;
 
 .title {
   font-size: 3rem;
@@ -94,14 +283,49 @@
   font-family: var(--font-roboto);
 }
 
+
+.netflixPng111 {
+  width: 153px;
+  height: 49px;
+  display: none;
+  z-index: 3;
+}
+
+.landing {
+  width: 100%;
+  height: auto;
+
 .getStartedButton:hover {
   background-color: #a36e2e;
 }
 
 .landing {
+
   position: relative;
   background-color: #000;
   display: flex;
+
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 32px 20px;
+  box-sizing: border-box;
+  gap: 30px;
+  text-align: center;
+  font-size: 2rem;
+  color: var(--color-sandybrown);
+  font-family: var(--font-roboto);
+}
+
+@media screen and (max-width: 1200px) {
+  .landingInner {
+    padding-bottom: 50px;
+  }
+  .landing {
+    gap: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+
   align-items: center;
   justify-content: center;
   height: 100vh;
@@ -119,10 +343,19 @@
 
   .description {
     font-size: 1.1rem;
+
   }
 }
 
 @media screen and (max-width: 1050px) {
+
+  .cinemaCloud,
+  .unlimitedMoviesTv {
+    font-size: 1.75rem;
+  }
+  .frameParent {
+    gap: 30px;
+
   .title {
     font-size: 2rem;
   }
@@ -133,10 +366,22 @@
 
   .description {
     font-size: 1rem;
+
   }
 }
 
 @media screen and (max-width: 750px) {
+
+  .frameParent {
+    gap: 20px;
+  }
+  .landingInner {
+    padding-bottom: 50px;
+  }
+  .landing {
+    height: auto;
+    gap: 20px;
+
   .title {
     font-size: 1.75rem;
   }
@@ -147,10 +392,30 @@
 
   .description {
     font-size: 0.9rem;
+
   }
 }
 
 @media screen and (max-width: 450px) {
+
+  .cinemaCloud,
+  .unlimitedMoviesTv {
+    font-size: 1.5rem;
+  }
+  .watchAnywhereCancel {
+    font-size: 1rem;
+  }
+  .unlimitedMoviesParent {
+    gap: 10px;
+  }
+  .frameParent {
+    gap: 15px;
+  }
+  .landing {
+    gap: 15px;
+  }
+}
+
   .title {
     font-size: 1.5rem;
   }

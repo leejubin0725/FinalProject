@@ -25,6 +25,14 @@ const EmployeeComposition = () => {
   return (
     <div>
       <h2>방문자 수 변동량</h2>
+      <LineChart
+        width={580}  /* 너비를 약간 줄임 */
+        height={300}
+        data={data}
+        margin={{ top: 20, right: 50, left: 0, bottom: 20 }}  /* 오른쪽 마진을 추가하고, 왼쪽 마진을 줄임 */
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="name" interval={0} />
       <LineChart width={600} height={300} data={data}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="name" />

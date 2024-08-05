@@ -1,3 +1,19 @@
+/* 기존 스타일링 */
+.dashboardPage {
+  display: flex;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+  background-color: #f8f9fa;
+  padding-top: 70px;
+  overflow: hidden;
+}
+
+.sideMenu {
+  width: 200px;
+  background-color: #333;
+  color: white;
+  padding: 10px;
+
 .dashboardPage {
   display: flex;
   height: 98vh; /* 전체 페이지의 높이를 살짝 줄입니다 */
@@ -17,6 +33,13 @@
 .content {
   display: flex;
   flex-direction: row;
+
+  align-content: center;
+  padding: 10px;
+  overflow-y: auto;
+  width: calc(100% - 200px);
+  height: calc(100vh - 70px);
+
   padding: 15px;
   overflow-y: auto;
   width: calc(100% - 220px); /* 전체 너비에서 사이드 메뉴 너비를 제외 */
@@ -25,6 +48,10 @@
 .leftColumn {
   display: flex;
   flex-direction: column;
+  gap: 15px;
+  margin-right: 30px;
+  width: 500px;
+  height: 95%;
   gap: 18px; /* 카드들 사이의 간격을 살짝 줄입니다 */
   margin-right: 18px; /* 오른쪽으로 마진을 조금 줄입니다 */
   width: 240px;
@@ -33,23 +60,38 @@
 .mainColumn {
   display: flex;
   flex-direction: column;
+  gap: 20px;
   gap: 18px; /* 컬럼 내 카드들 사이의 간격을 살짝 줄입니다 */
   flex: 1;
 }
 
 .row {
   display: flex;
+
+  gap: 20px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+
   gap: 18px; /* 두 카드 사이의 간격을 조금 줄입니다 */
 }
 
 .card {
   padding: 14px; /* 카드의 내부 패딩을 조금 줄입니다 */
+
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
   text-align: center;
   flex: 1;
+  overflow: hidden;
+  height: 90%;
 }
 
 .card.fullWidth {
@@ -57,6 +99,11 @@
 }
 
 .card.halfWidth {
+  flex: 1 1 50%;
+}
+
+.card.halfWidthSmaller {
+  flex: 1 1 50%;
   flex: 1 1 50%; /* "방문자 수 변동량" 카드의 너비를 60%로 설정 */
 }
 
@@ -76,7 +123,8 @@ h2 {
     width: 100%;
   }
 
-  .card.halfWidth, .card.halfWidthSmaller {
+  .card.halfWidth, 
+  .card.halfWidthSmaller {
     flex: 1 1 100%;
   }
 }
@@ -84,6 +132,7 @@ h2 {
 @media (max-width: 768px) {
   .content {
     flex-direction: column;
+    height: 60%;
   }
 
   .leftColumn {
@@ -95,6 +144,127 @@ h2 {
     width: 100%;
   }
 
+  .card.fullWidth,
+  .card.halfWidth,
+  .card.halfWidthSmaller {
+    flex: 1 1 100%;
+  }
+}
+
+/* 테이블 스타일링 */
+.tg, .tableContainer {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 20px auto;
+  font-family: Arial, sans-serif;
+}
+
+.tg th, .tg td, .tableContainer th, .tableContainer td {
+  padding: 12px 15px;
+  text-align: center; /* 중앙 정렬 */
+  border-bottom: 1px solid #dddddd;
+}
+
+.tg th, .tableContainer th {
+  background-color: #2c3e50;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.tg tbody tr, .tableContainer tbody tr {
+  background-color: #f8f9fa;
+  transition: background-color 0.2s ease;
+}
+
+.tg tbody tr:nth-child(even), .tableContainer tbody tr:nth-child(even) {
+  background-color: #ecf0f1;
+}
+
+.tg tbody tr:hover, .tableContainer tbody tr:hover {
+  background-color: #d1e7dd;
+}
+
+.tg td button, .tableContainer td button {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+}
+
+.tg td button:hover, .tableContainer td button:hover {
+  background-color: #c0392b;
+}
+
+#firstrow th, .tableContainer #firstrow th {
+  background-color: #2c3e50;
+  color: white;
+}
+
+.movimanage {
+  margin-top: 30px;
+  margin-bottom: 50px;
+  text-align: center;
+  font-size: 24px;
+  color: #2c3e50;
+}
+
+/* 여기서부터 추가된 부분 */
+.headerContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px; /* 제목과 테이블 사이의 간격 */
+  margin-left: 200px;
+  margin-right: 200px;
+}
+
+.searchContainer {
+  display: flex;
+  align-items: center; /* 검색 바와 버튼을 수직으로 가운데 정렬 */
+}
+
+.searchInput {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px 0 0 4px; /* 검색 바 왼쪽 모서리만 둥글게 */
+  font-size: 14px;
+  width: 200px; /* 필요에 따라 조정 가능 */
+}
+
+.searchButton {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-left: none;
+  border-radius: 0 4px 4px 0; /* 검색 버튼 오른쪽 모서리만 둥글게 */
+  background-color: #2c3e50;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.searchButton:hover {
+  background-color: #1a252f;
+}
+
+.expandedRow {
+  background-color: #e9f5e9; /* 행이 확장되었을 때의 배경색 */
+}
+
+.innerTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.innerTable th, .innerTable td {
+  padding: 8px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
   .card.fullWidth, .card.halfWidth, .card.halfWidthSmaller {
     flex: 1 1 100%;
   }

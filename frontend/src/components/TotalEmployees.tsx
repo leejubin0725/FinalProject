@@ -4,6 +4,7 @@ const TotalEmployees = () => {
   return (
     <div>
       <h2>전체 회원 수</h2>
+      <p>856명</p>
       <p>856</p>
     </div>
   );
