@@ -1,11 +1,11 @@
 .thumbnail {
-    width: 350px;
+    width: 90%;
     height: 300px;
+    /* 고정된 높이 */
     position: relative;
     overflow: hidden;
     cursor: pointer;
     transition: transform 0.3s ease-in-out;
-    margin: 10px;
     border-radius: 5%;
 }
 
@@ -26,7 +26,8 @@
 }
 
 .thumbnail:hover {
-    transform: scale(1.2);
+    transform: scale(1.05);
+    /* 확대 비율 조정 */
     z-index: 2;
 }
 
