@@ -39,4 +39,5 @@ public class MovieController {
     public List<Movie> getAllMovies() {
         return movieService.findAllMovies();
     }
+    
 }

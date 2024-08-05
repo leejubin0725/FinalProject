@@ -1,55 +1,65 @@
 .dashboardPage {
   display: flex;
-  height: 98vh; /* 전체 페이지의 높이를 살짝 줄입니다 */
+  height: 92vh;
   font-family: Arial, sans-serif;
   background-color: #f8f9fa;
   padding-top: 70px;
+  overflow: hidden;
 }
 
 .sideMenu {
-  width: 220px;
+  width: 200px;
   background-color: #333;
   color: white;
-  padding: 15px;
+  padding: 10px;
   box-sizing: border-box;
 }
 
 .content {
   display: flex;
   flex-direction: row;
-  padding: 15px;
+  align-content: center;
+  padding: 10px;
   overflow-y: auto;
-  width: calc(100% - 220px); /* 전체 너비에서 사이드 메뉴 너비를 제외 */
+  width: 100%;
+  height: calc(100vh - 70px);
 }
 
 .leftColumn {
   display: flex;
   flex-direction: column;
-  gap: 18px; /* 카드들 사이의 간격을 살짝 줄입니다 */
-  margin-right: 18px; /* 오른쪽으로 마진을 조금 줄입니다 */
-  width: 240px;
+  gap: 15px;
+  margin-right: 2%;
+  width: 12%;
+  height: 95%;
 }
 
 .mainColumn {
   display: flex;
   flex-direction: column;
-  gap: 18px; /* 컬럼 내 카드들 사이의 간격을 살짝 줄입니다 */
+  gap: 20px;
   flex: 1;
 }
 
 .row {
   display: flex;
-  gap: 18px; /* 두 카드 사이의 간격을 조금 줄입니다 */
+  gap: 20px;
 }
 
 .card {
-  padding: 14px; /* 카드의 내부 패딩을 조금 줄입니다 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
   text-align: center;
   flex: 1;
+  overflow: hidden;
+  height: 90%;
 }
 
 .card.fullWidth {
@@ -57,11 +67,11 @@
 }
 
 .card.halfWidth {
-  flex: 1 1 50%; /* "방문자 수 변동량" 카드의 너비를 60%로 설정 */
+  flex: 1 1 50%;
 }
 
 .card.halfWidthSmaller {
-  flex: 1 1 50%; /* "최근 많이 본 영화" 카드의 너비를 40%로 설정 */
+  flex: 1 1 50%;
 }
 
 h2 {
@@ -76,7 +86,8 @@ h2 {
     width: 100%;
   }
 
-  .card.halfWidth, .card.halfWidthSmaller {
+  .card.halfWidth,
+  .card.halfWidthSmaller {
     flex: 1 1 100%;
   }
 }
@@ -84,6 +95,7 @@ h2 {
 @media (max-width: 768px) {
   .content {
     flex-direction: column;
+    height: 60%;
   }
 
   .leftColumn {
@@ -95,7 +107,275 @@ h2 {
     width: 100%;
   }
 
-  .card.fullWidth, .card.halfWidth, .card.halfWidthSmaller {
+  .card.fullWidth,
+  .card.halfWidth,
+  .card.halfWidthSmaller {
     flex: 1 1 100%;
   }
+}
+
+/* 테이블 스타일링 */
+.tg,
+.tableContainer {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 20px auto;
+  font-family: Arial, sans-serif;
+}
+
+.tg th,
+.tg td,
+.tableContainer th,
+.tableContainer td {
+  padding: 12px 15px;
+  text-align: center;
+  border-bottom: 1px solid #dddddd;
+
+  /* 텍스트 오버플로우 처리 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 0;
+}
+
+.tg th,
+.tableContainer th {
+  background-color: #2c3e50;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.tg tbody tr,
+.tableContainer tbody tr {
+  background-color: #f8f9fa;
+  transition: background-color 0.2s ease;
+}
+
+.tg tbody tr:nth-child(even),
+.tableContainer tbody tr:nth-child(even) {
+  background-color: #ecf0f1;
+}
+
+.tg tbody tr:hover,
+.tableContainer tbody tr:hover {
+  background-color: #d1e7dd;
+}
+
+.tg td button,
+.tableContainer td button {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+}
+
+.tg td button:hover,
+.tableContainer td button:hover {
+  background-color: #c0392b;
+}
+
+#firstrow th,
+.tableContainer #firstrow th {
+  background-color: #2c3e50;
+  color: white;
+}
+
+.movimanage {
+  margin-top: 30px;
+  margin-bottom: 50px;
+  text-align: center;
+  font-size: 24px;
+  color: #2c3e50;
+  margin-right: 700px;
+}
+
+.headerContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  margin-left: 200px;
+  margin-right: 200px;
+}
+
+.searchContainer {
+  display: flex;
+  align-items: center;
+}
+
+.searchInput {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px 0 0 4px;
+  font-size: 14px;
+  width: 200px;
+}
+
+.searchButton {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-left: none;
+  border-radius: 0 4px 4px 0;
+  background-color: #2c3e50;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  margin-right: 50px;
+}
+
+.searchButton:hover {
+  background-color: #1a252f;
+}
+
+.expandedRow {
+  background-color: #f9f9f9;
+}
+
+.innerTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.innerTable th,
+.innerTable td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.insertFAQButton {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-left: none;
+  border-radius: 4px;
+  background-color: #2c3e50;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  list-style: none;
+  padding: 0;
+}
+
+.pagination li {
+  margin: 0 5px;
+}
+
+.pagination .pageLink {
+  color: #2c3e50;
+  padding: 8px 16px;
+  text-decoration: none;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.pagination .pageLink:hover {
+  background-color: #ddd;
+}
+
+.pagination .active .pageLink {
+  background-color: #2c3e50;
+  color: white;
+  border: 1px solid #2c3e50;
+}
+
+/* 기존 스타일들에 영향을 주지 않음 */
+
+.ChattingContainer {
+  padding: 20px;
+  width: 100%;
+  height: 100%;
+}
+
+.ChattingTitle {
+  font-size: 24px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.ChattingGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 가로로 5개의 박스를 배치 */
+  grid-template-rows: repeat(2, auto); /* 세로로 2개의 행 */
+  gap: 50px; /* 카드 간격 */
+}
+
+.ChattingCard {
+  background-color: #f0f0f0;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  justify-content: center;
+  height: 200px;
+}
+
+.ChattingCardTitle {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.ChattingCardDate {
+  font-size: 14px;
+  color: #888;
+  margin-bottom: 10px;
+}
+
+.ChattingCardButton {
+  background-color: #2c3e50;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 35%;
+}
+
+.ChattingCardButton:hover {
+  background-color: #1a252f;
+}
+
+.paginationContainer {
+  margin-top: 20px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+}
+
+.pagination li {
+  margin: 0 5px;
+}
+
+.pageLink {
+  color: #2c3e50;
+  padding: 8px 16px;
+  text-decoration: none;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.pageLink:hover {
+  background-color: #ddd;
+}
+
+.active .pageLink {
+  background-color: #2c3e50;
+  color: white;
+  border: 1px solid #2c3e50;
 }

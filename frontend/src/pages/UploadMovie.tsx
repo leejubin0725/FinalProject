@@ -157,21 +157,25 @@ const UploadMovie: React.FC = () => {
     formData.append('releaseYear', displayReleaseYear);
     formData.append('synopsis', '');
     formData.append('tags', Array.from(selectedGenres).join(','));
-
+  
     try {
       const response = await fetch('http://localhost:8088/api/movies/upload', {
         method: 'POST',
         body: formData,
       });
+  
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        const errorText = await response.text();
+        throw new Error(`Network response was not ok: ${errorText}`);
       }
+  
       const result = await response.json();
       console.log('Success:', result);
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error:', error); // error 객체 전체를 로그로 남김
     }
   };
+  
 
   return (
     <div className="container">
