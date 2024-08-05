@@ -49,26 +49,19 @@ const HomePage: React.FC = () => {
   const filterVideos = () => {
     let filtered = videos;
 
-    // Debugging
-    console.log('Search Term:', searchTerm);
-    console.log('Selected Genre:', selectedGenre);
-
     if (searchTerm) {
       filtered = filtered.filter(video =>
         video.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         video.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
       );
-      console.log('Filtered by title or tags:', filtered);
     }
 
     if (selectedGenre) {
       filtered = filtered.filter(video =>
         video.tags.some(tag => tag.toLowerCase().includes(selectedGenre.toLowerCase()))
       );
-      console.log('Filtered by genre:', filtered);
     }
 
-    console.log('Final Filtered Videos:', filtered);
     setFilteredVideos(filtered);
   };
 
@@ -84,6 +77,8 @@ const HomePage: React.FC = () => {
     setSearchTerm(query);
     setSelectedGenre(genre);
     handleCloseSearch();
+  };
+
   const CustomPrevArrow = (props: any) => {
     const { className, onClick } = props;
     return (
