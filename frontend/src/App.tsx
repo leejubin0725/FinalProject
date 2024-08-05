@@ -11,6 +11,8 @@ import DashboardPage from "./pages/DashboardPage";
 import UploadMovie from "./pages/UploadMovie";
 import Account from "./pages/Account";
 import AccountDelete from "./components/AccountDelete";
+import LoginPage from "./pages/LoginPage";
+import SubscribePage from "./pages/SubscribePage";
 
 function App() {
   const location = useLocation();
@@ -37,10 +39,8 @@ function App() {
       case "/dashboard/movieManage":
       case "/dashboard/insertMovie":
       case "/dashboard/memberManage":
-      case "/dashboard/insertNotice":
+      case "/dashboard/FAQManage":
       case "/dashboard/1on1chat":
-        title = "Dashboard";
-        metaDescription = "This is the dashboard page description.";
         title = "Dashboard";
         metaDescription = "This is the dashboard page description.";
       case "/upload":
@@ -76,6 +76,8 @@ function App() {
       <Route path="/dashboard" element={<DashboardPage />} /> {/* 새로운 경로 추가 */}
       <Route path="/upload" element={<UploadMovie />} />
       <Route path="/account" element={<Account />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/subscribe" element={<SubscribePage />} />
     </Routes>
   );
 }

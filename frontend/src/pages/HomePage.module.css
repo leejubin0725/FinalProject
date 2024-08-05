@@ -25,7 +25,7 @@ html {
 }
 
 .section:first-child .sectionTitle {
-  margin-top: 600px;
+  margin-top: 500px;
 }
 
 .tileRows {
@@ -40,11 +40,9 @@ html {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 0;
-  /* 간격 조정 */
-  width: calc(100% / 4);
   /* 3개의 타일이 한 줄에 나타나도록 설정 */
   height: auto;
+  margin-top: 16.4px;
 }
 
 .arrowButton {

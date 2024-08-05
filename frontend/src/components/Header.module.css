@@ -1,59 +1,13 @@
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: var(--padding-3xs) var(--padding-38xl) var(--padding-4xs) var(--padding-8xl);
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 99;
-  transition: height 0.3s ease; /* 헤더 높이 변화 애니메이션 */
-}
-
-.expandedHeader {
-  height: 100px; /* 헤더가 확장될 때 높이 설정 */
-}
-
 .headerBackground {
   height: 100%;
   width: 100%;
   position: absolute;
+  margin: 0 !important;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
   background-color: var(--color-gray-100);
-}
-
-.searchContainer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 10px;
-  transition: opacity 0.3s ease;
-}
-
-.searchInput {
-  padding: 8px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  font-size: 16px;
-  margin-right: 8px;
-}
-
-.searchButton {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 4px;
-  background-color: #007bff;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.searchButton:hover {
-  background-color: #0056b3;
 }
 
 .a,
@@ -82,6 +36,7 @@
 
 .iconButton {
   flex: 0 0 auto;
+
   margin: 0 16px;
 }
 
@@ -138,6 +93,7 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--gap-sm);
+
 }
 
 .header,
@@ -147,6 +103,7 @@
   align-items: center;
   box-sizing: border-box;
 }
+
 
 .navigation {
   display: flex;
@@ -164,6 +121,19 @@
   flex-direction: row;
   max-width: 100%;
 }
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--padding-3xs) var(--padding-38xl) var(--padding-4xs) var(--padding-8xl);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 99;
+}
+
 
 .Header {
   align-self: stretch;
@@ -184,6 +154,8 @@
   justify-content: center;
   position: relative;
   padding: 20px;
+
+
 }
 
 .clickableDiv:hover .dropdownMenu,
@@ -225,4 +197,13 @@
 
 .dropdownItem:hover {
   background-color: #949494;
+}
+
+.clickableDiv {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 30px;
+
 }

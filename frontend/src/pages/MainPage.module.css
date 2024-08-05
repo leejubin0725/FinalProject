@@ -80,6 +80,7 @@
   width: 400px;
   height: 40px;
   flex: 1;
+  background-color: white;
 }
 
 .getStartedButton {
@@ -163,6 +164,7 @@
     font-size: 0.8rem;
   }
 }
+
 .searchBarContainer {
   display: flex;
   justify-content: center;

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
+import { useNavigate } from 'react-router-dom';
 import './SigninPage-input-fields.css';
 
 export const InputFields: React.FC<{ className?: string }> = ({ className = '' }) => {
@@ -11,37 +12,53 @@ export const InputFields: React.FC<{ className?: string }> = ({ className = '' }
     PHONE: '',
   });
 
+  const navigate = useNavigate();
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
+    setFormData((prevFormData) => ({
+      ...prevFormData,
       [name]: value,
-    });
+    }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    // 비밀번호 확인 체크
     if (formData.PASSWORD !== formData.confirmPassword) {
       alert('Passwords do not match!');
       return;
     }
-    axios
-      .post('http://localhost:8088/api/users/register', {
+
+    try {
+      // 회원가입 요청 보내기
+      const response = await axios.post('http://localhost:8088/api/users/register', {
         userId: formData.ID,
-        email: `${formData.ID}@example.com`,
+        email: formData.ID, // 이메일 필드가 ID로 사용되고 있음
         password: formData.PASSWORD,
-        status: 'A',  // Assuming a default status
-        birthday: '1990-01-01',  // Placeholder, should be updated to actual input
+        status: 'A', // 상태 코드 (예: 활성화된 사용자)
+        birthday: '1990-01-01',  // Placeholder, 실제 사용자 입력 필요
         username: formData.NAME,
-        vNumber: 1  // Placeholder, should be updated to actual input
-      })
-      .then((response) => {
-        console.log('User registered:', response.data);
-        // 성공적으로 등록되면 추가 작업 수행
-      })
-      .catch((error) => {
-        console.error('There was an error!', error);
+        vNumber: 1 // Placeholder, 실제 사용자 입력 필요
       });
+
+      console.log('User registered:', response.data);
+      // 회원가입 성공 시 로그인 페이지로 리디렉션
+      alert('Registration successful! Redirecting to login page...');
+      navigate('/login'); // 로그인 페이지로 리디렉션
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        // 서버 응답에서 에러 메시지 추출
+        const message = error.response?.data?.message || error.message || 'Unknown error';
+        console.error('Server responded with error:', message);
+        alert(`Failed to register. Server responded with: ${message}`);
+      } else {
+        // 네트워크 에러 또는 기타 문제
+        console.error('Unexpected error:', error);
+        alert('Failed to register. Please try again.');
+      }
+    }
   };
 
   return (
@@ -90,6 +107,7 @@ export const InputFields: React.FC<{ className?: string }> = ({ className = '' }
               name="PHONE"
               value={formData.PHONE}
               onChange={handleChange}
+            
             />
           </div>
         </div>

@@ -98,9 +98,9 @@ const HomePage: React.FC = () => {
     );
   };
 
-  const settings = {
+  const getSliderSettings = (videoCount: number) => ({
     dots: false,
-    infinite: true,
+    infinite: videoCount > 4,
     speed: 600,
     slidesToShow: 4,
     slidesToScroll: 2,
@@ -112,7 +112,7 @@ const HomePage: React.FC = () => {
         settings: {
           slidesToShow: 2,
           slidesToScroll: 2,
-          infinite: true
+          infinite: videoCount > 2
         }
       },
       {
@@ -120,16 +120,17 @@ const HomePage: React.FC = () => {
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
-          initialSlide: 1
+          initialSlide: 1,
+          infinite: videoCount > 1
         }
       }
     ]
-  };
+  });
 
   const renderSection = (title: string, videos: Video[], keyPrefix: string) => (
     <div className={styles.section} key={keyPrefix}>
       <h2 className={styles.sectionTitle}>{title}</h2>
-      <Slider {...settings} className={styles.tileRows}>
+      <Slider {...getSliderSettings(videos.length)} className={styles.tileRows}>
         {videos.map((video, index) => (
           <div className={styles.tile} key={`${keyPrefix}-${index}`}>
             <VideoThumbnail video={video} />
