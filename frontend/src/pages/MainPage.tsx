@@ -7,7 +7,6 @@ const Landing: FunctionComponent = () => {
   const navigate = useNavigate();
 
   const handleGetStarted = () => {
-    // "Get Started" 버튼 클릭 시 로그인 페이지로 이동
     navigate('/Signin');
   };
 
@@ -15,7 +14,7 @@ const Landing: FunctionComponent = () => {
     <div className={styles.landing}>
       <img
         className={styles.netflixSignUpBackgroundPag}
-        alt=""
+        alt="Background"
         src="/netflix-sign-up-background-page-1@2x.png"
       />
       <h1 className={styles.cinemaCloud}>CINEMA CLOUD</h1>
@@ -46,11 +45,6 @@ const Landing: FunctionComponent = () => {
                     type="text"
                   />
                   <button className={styles.topBarLinks} onClick={handleGetStarted}>
-                    <img
-                      className={styles.topBarLinksChild}
-                      alt=""
-                      src="/rectangle-106.svg"
-                    />
                     <div className={styles.getStarted}>Get Started</div>
                   </button>
                 </div>
@@ -60,12 +54,11 @@ const Landing: FunctionComponent = () => {
           <img
             className={styles.vectorIcon}
             loading="lazy"
-            alt=""
+            alt="Vector Icon"
             src="/vector.svg"
           />
         </div>
       </section>
-      <div className={styles.netflixPng111} />
       <FrameComponent />
     </div>
   );

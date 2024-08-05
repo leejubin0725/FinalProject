@@ -2,27 +2,37 @@ import { FunctionComponent } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Header.module.css";
 
-export type Header = {
+export type HeaderProps = {
   className?: string;
 };
 
-const Header: FunctionComponent<Header> = ({ className = "" }) => {
+
+const Header: FunctionComponent<HeaderProps> = ({ className = "" }) => {
   return (
-    <section className={[styles.Header, className].join(" ")}>
+    <>
       <header className={styles.header}>
         <div className={styles.headerBackground} />
-        <img
-          className={styles.logoText2}
-          loading="lazy"
-          alt=""
-          src="/logo-text-2@2x.png"
-        />
+        <Link to="/home">
+          <img
+            className={styles.logoText2}
+            loading="lazy"
+            alt=""
+            src="/logo-text-2@2x.png"
+          />
+        </Link>
         <div className={styles.navigation}>
           <div className={styles.homeNav}>
-            <div className={styles.homeButton}>
-              <Link to="/" className={styles.a}>홈</Link>
+            <div className={`${styles.homeButton} ${styles.iconButton}`}>
+              <Link to="/home" className={styles.a}>
+                <img
+                  className={styles.fesearchIcon}
+                  loading="lazy"
+                  alt=""
+                  src="/homeButton.png"
+                />
+              </Link>
             </div>
-            <div className={styles.searchNav}>
+            <div className={`${styles.searchNav} ${styles.iconButton}`}>
               <Link to="/search">
                 <img
                   className={styles.fesearchIcon}
@@ -32,7 +42,7 @@ const Header: FunctionComponent<Header> = ({ className = "" }) => {
                 />
               </Link>
             </div>
-            <div className={styles.notificationsNav}>
+            <div className={`${styles.notificationsNav} ${styles.iconButton}`}>
               <Link to="/notifications">
                 <img
                   className={styles.faSolidbellIcon}
@@ -42,13 +52,14 @@ const Header: FunctionComponent<Header> = ({ className = "" }) => {
                 />
               </Link>
             </div>
-            <div className={styles.profileNav}>
-              <Link to="/profile">
+
+            <div className={`${styles.profileNav} ${styles.iconButton}`}>
+              <div className={styles.clickableDiv}>
                 <img
                   className={styles.profileBackgroundIcon}
                   loading="lazy"
                   alt=""
-                  src="/rectangle-31@2x.png"
+                  src="/profile.png"
                 />
                 <img
                   className={styles.antDesigncaretDownFilledIcon}
@@ -56,12 +67,34 @@ const Header: FunctionComponent<Header> = ({ className = "" }) => {
                   alt=""
                   src="/antdesigncaretdownfilled.svg"
                 />
-              </Link>
+                <div className={styles.dropdownMenu}>
+                  <Link to="/profile1" className={styles.dropdownItem}>
+                    <img src="/profile.png" alt="Profile 1" />
+                    멀티 프로필1
+                  </Link>
+                  <Link to="/profile2" className={styles.dropdownItem}>
+                    <img src="/profile.png" alt="Profile 2" />
+                    멀티 프로필2
+                  </Link>
+                  <Link to="/profile3" className={styles.dropdownItem}>
+                    <img src="/profile.png" alt="Profile 3" />
+                    멀티 프로필3
+                  </Link>
+                  <Link to="/profile4" className={styles.dropdownItem}>
+                    <img src="/profile.png" alt="Profile 4" />
+                    멀티 프로필4
+                  </Link>
+                  <Link to="/profile/manage" className={styles.dropdownItem}>프로필 관리</Link>
+                  <Link to="/account" className={styles.dropdownItem}>계정</Link>
+                  <Link to="/help" className={styles.dropdownItem}>고객센터</Link>
+                  <Link to="/logout" className={styles.dropdownItem}>로그아웃</Link>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </header>
-    </section>
+    </>
   );
 };
 
