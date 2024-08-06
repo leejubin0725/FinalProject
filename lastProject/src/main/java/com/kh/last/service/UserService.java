@@ -1,6 +1,7 @@
 package com.kh.last.service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import javax.crypto.SecretKey;
@@ -16,9 +17,6 @@ import com.kh.last.repository.UserRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-
-// 사용자 정의 예외 클래스
-
 
 @Service
 public class UserService {
@@ -65,7 +63,18 @@ public class UserService {
                 .signWith(key) // 서명에 사용할 키
                 .compact();
     }
+
     public boolean emailExists(String email) {
         return userRepository.findByEmail(email).isPresent();
+    }
+
+    public boolean checkPassword(String password) {
+        List<Users> users = userRepository.findAll();
+        for (Users user : users) {
+            if (passwordEncoder.matches(password, user.getPassword())) {
+                return true;
+            }
+        }
+        return false;
     }
 }
