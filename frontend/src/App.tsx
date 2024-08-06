@@ -14,6 +14,9 @@ import Account from "./pages/Account";
 import AccountDelete from "./components/AccountDelete";
 import LoginPage from "./pages/LoginPage";
 import SubscribePage from "./pages/SubscribePage";
+import Pwlogin from "./components/PasswordLogin-form";
+import PwloginPage from "./pages/PwLogin";
+import PwLogin from "./pages/PwLogin";
 
 function App() {
   const location = useLocation();
@@ -80,6 +83,8 @@ function App() {
       <Route path="/account" element={<Account />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/subscribe" element={<SubscribePage />} />
+      <Route path="/passwordlogin" element={<PwLogin/>} />
+      
     </Routes>
   );
 }

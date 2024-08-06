@@ -1,12 +1,30 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, useState } from "react";
+import axios from "axios";
 import styles from "./MainPage.module.css";
 import { useNavigate } from 'react-router-dom';
 
 const Landing: FunctionComponent = () => {
   const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [error, setError] = useState('');
 
-  const handleGetStarted = () => {
-    navigate('/Signin');
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+  };
+
+  const handleGetStarted = async () => {
+    try {
+      const response = await axios.post('http://localhost:8088/api/users/check-email', { email });
+      if (response.data.exists) {
+        navigate('/passwordlogin'); // 페이지 이동
+      } else {
+        alert('이메일이 존재하지 않습니다. 회원가입 페이지로 이동합니다.');
+        navigate('/signin');
+      }
+    } catch (error) {
+      console.error('Error checking email:', error);
+      setError('이메일 확인 중 오류가 발생했습니다.');
+    }
   };
 
   return (
@@ -32,10 +50,13 @@ const Landing: FunctionComponent = () => {
             className={styles.emailInput}
             placeholder="이메일 주소"
             type="text"
+            value={email}
+            onChange={handleEmailChange}
           />
           <button className={styles.getStartedButton} onClick={handleGetStarted}>
             시작하기
           </button>
+          {error && <p className={styles.error}>{error}</p>}
         </div>
       </section>
     </div>
