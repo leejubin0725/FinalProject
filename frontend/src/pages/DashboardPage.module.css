@@ -191,7 +191,7 @@ h2 {
   text-align: center;
   font-size: 24px;
   color: #2c3e50;
-  margin-right: 700px;
+  margin-right: 650px;
 }
 
 .headerContainer {
@@ -210,6 +210,7 @@ h2 {
 
 .searchInput {
   padding: 8px 12px;
+  background-color: white;
   border: 1px solid #ddd;
   border-radius: 4px 0 0 4px;
   font-size: 14px;
@@ -259,6 +260,74 @@ h2 {
   font-size: 14px;
 }
 
+/* FAQ 페이지에만 적용되는 스타일링 */
+.FAQContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  padding: 40px; /* 패딩을 늘려서 여유 공간 추가 */
+  width: 60%; /* 화면에 더 많은 공간을 차지하게 조정 */
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  height: 87%;
+}
+
+/* FAQ 타이틀 스타일 */
+.FAQTitle {
+  font-size: 28px; /* 타이틀 크기 확대 */
+  margin-bottom: 30px; /* 타이틀과 폼 사이 간격 확대 */
+}
+
+/* FAQ 폼 스타일 */
+.FAQForm {
+  width: 100%;
+}
+
+/* FAQ 폼 그룹 */
+.FAQFormGroup {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 30px; /* 폼 그룹 사이 간격 확대 */
+}
+
+/* FAQ 라벨 스타일 */
+.FAQFormLabel {
+  font-size: 18px; /* 라벨 크기 확대 */
+  margin-bottom: 10px;
+}
+
+/* FAQ 텍스트 에어리어 스타일 */
+.FAQFormTextarea {
+  width: 97%;
+  height: 230px; /* 텍스트 입력창 크기 확대 */
+  padding: 15px;
+  font-size: 16px; /* 텍스트 크기 확대 */
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  resize: none; /* 사용자가 크기를 조절하지 못하도록 설정 */
+}
+
+/* FAQ 제출 버튼 스타일 */
+.FAQSubmitButton {
+  margin-left: 25%;
+  width: 50%;
+  padding: 15px; /* 버튼 크기 확대 */
+  font-size: 18px; /* 버튼 텍스트 크기 확대 */
+  color: white;
+  background-color: #2c3e50;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.FAQSubmitButton:hover {
+  background-color: #1a252f;
+}
+
 .pagination {
   display: flex;
   justify-content: center;
@@ -295,30 +364,40 @@ h2 {
 .ChattingContainer {
   padding: 20px;
   width: 100%;
-  height: 100%;
+  height: 90%;
 }
 
 .ChattingTitle {
   font-size: 24px;
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 50px;
 }
 
 .ChattingGrid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr); /* 가로로 5개의 박스를 배치 */
-  grid-template-rows: repeat(2, auto); /* 세로로 2개의 행 */
-  gap: 50px; /* 카드 간격 */
+  grid-template-columns: repeat(5, 1fr);
+  /* 가로로 5개의 박스를 배치 */
+  grid-template-rows: repeat(2, auto);
+  /* 세로로 2개의 행 */
+  gap: 80px;
+  /* 카드 간격 */
+  height: 60%;
+  margin-bottom: 200px;
 }
 
 .ChattingCard {
   background-color: #f0f0f0;
-  padding: 20px;
+  padding: 30px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  text-align: left;
-  justify-content: center;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: left;
+  /* 가로로 중앙 정렬 */
   height: 200px;
+  /* 카드가 그리드 셀 전체를 채우도록 설정 */
 }
 
 .ChattingCardTitle {
@@ -333,13 +412,16 @@ h2 {
 }
 
 .ChattingCardButton {
+  margin-left: 30%;
+  width: 40%;
   background-color: #2c3e50;
   color: white;
   border: none;
   padding: 10px;
   border-radius: 4px;
   cursor: pointer;
-  margin-left: 35%;
+  margin-top: 10px;
+  /* 버튼을 다른 요소들과 분리 */
 }
 
 .ChattingCardButton:hover {
@@ -378,4 +460,112 @@ h2 {
   background-color: #2c3e50;
   color: white;
   border: 1px solid #2c3e50;
+}
+
+.lastChat {
+  margin: 3%;
+  width: 80%;
+  background-color: white;
+  max-height: 5%;
+  color: black;
+  border-radius: 4px;
+  font-size: 14px;
+  display: block; /* 높이 설정이 잘 적용되도록 */
+}
+
+/* Modal Overlay 스타일링 */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Modal Content 스타일링 */
+.modalContent {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 25%; /* 너비를 40%로 조정 */
+  max-width: 1000px; /* 최대 너비를 1000px로 조정 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 85%; /* 높이를 70%로 조정 */
+}
+
+
+/* Close Button 스타일링 */
+.closeButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Chat Window 스타일링 */
+.chatWindow {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+}
+
+/* Chat Messages 스타일링 */
+.chatMessages {
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}
+
+/* Chat Input 스타일링 */
+.chatInput {
+  padding: 10px;
+  border: 1px solid #ddd;
+  background-color: #f9f9f9;
+  color: black;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 14px; /* 폰트 크기를 줄여서 입력창의 크기 조절 */
+  max-height: 5%;
+}
+
+/* Send Button 스타일링 */
+.sendButton {
+  padding: 10px 20px;
+  background-color: #2c3e50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 14px; /* 버튼의 폰트 크기를 줄여 크기를 조절 */
+}
+
+.sendButton:hover {
+  background-color: #1a252f;
+}
+
+/* 채팅 타이틀 스타일링 */
+.chatTitle {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
 }

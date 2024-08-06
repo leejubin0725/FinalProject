@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import styles from '../pages/DashboardPage.module.css';
+import Pagination from './Pagination';  // 외부 컴포넌트로 분리된 Pagination을 import
+import { Chatting } from './Chatting';
 
 interface ChatItem {
     id: number;
@@ -26,6 +28,8 @@ const data: ChatItem[] = [
 
 export default function ChattingList() {
     const [currentPage, setCurrentPage] = useState<number>(1);
+    const [isModalOpen, setModalOpen] = useState<boolean>(false);
+    const [currentChat, setCurrentChat] = useState<string>('');
     const itemsPerPage = 10;
 
     const indexOfLastItem = currentPage * itemsPerPage;
@@ -33,6 +37,16 @@ export default function ChattingList() {
     const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
 
     const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+
+    const openModal = (chatContent: string) => {
+        setCurrentChat(chatContent);
+        setModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setModalOpen(false);
+        setCurrentChat('');
+    };
 
     return (
         <div className={styles.ChattingContainer}>
@@ -42,7 +56,13 @@ export default function ChattingList() {
                     <div key={item.id} className={styles.ChattingCard}>
                         <div className={styles.ChattingCardTitle}>{item.content}</div>
                         <div className={styles.ChattingCardDate}>{item.date}</div>
-                        <button className={styles.ChattingCardButton}>답변하기</button>
+                        <input type="text" className={styles.lastChat} value={'최근 한 채팅'} disabled />
+                        <button
+                            className={styles.ChattingCardButton}
+                            onClick={() => openModal(item.content)}
+                        >
+                            답변하기
+                        </button>
                     </div>
                 ))}
             </div>
@@ -52,35 +72,7 @@ export default function ChattingList() {
                 paginate={paginate}
                 currentPage={currentPage}
             />
+            <Chatting isOpen={isModalOpen} onClose={closeModal} chatContent={currentChat} />
         </div>
-    );
-}
-
-interface PaginationProps {
-    itemsPerPage: number;
-    totalItems: number;
-    paginate: (pageNumber: number) => void;
-    currentPage: number;
-}
-
-function Pagination({ itemsPerPage, totalItems, paginate, currentPage }: PaginationProps) {
-    const pageNumbers: number[] = [];
-
-    for (let i = 1; i <= Math.ceil(totalItems / itemsPerPage); i++) {
-        pageNumbers.push(i);
-    }
-
-    return (
-        <nav className={styles.paginationContainer}>
-            <ul className={styles.pagination}>
-                {pageNumbers.map((number) => (
-                    <li key={number} className={number === currentPage ? styles.active : ''}>
-                        <button onClick={() => paginate(number)} className={styles.pageLink}>
-                            {number}
-                        </button>
-                    </li>
-                ))}
-            </ul>
-        </nav>
     );
 }

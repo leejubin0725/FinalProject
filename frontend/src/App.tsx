@@ -9,6 +9,10 @@ import Landing from "./pages/MainPage";
 import HomePage from "./pages/HomePage";
 import DashboardPage from "./pages/DashboardPage";
 import UploadMovie from "./pages/UploadMovie";
+import MovieDetailPage from "./pages/MovieDetailPage";
+import Account from "./pages/Account";
+import AccountDelete from "./components/AccountDelete";
+import LoginPage from "./pages/LoginPage";
 import SubscribePage from "./pages/SubscribePage";
 
 function App() {
@@ -40,6 +44,7 @@ function App() {
       case "/dashboard/1on1chat":
         title = "Dashboard";
         metaDescription = "This is the dashboard page description.";
+        break; // 'break' 추가
       case "/upload":
         title = "Upload Movie";
         metaDescription = "Upload a new movie.";
@@ -70,8 +75,10 @@ function App() {
       <Route path="/" element={<Landing />} />
       <Route path="/home" element={<HomePage />} />
       <Route path="/dashboard/*" element={<DashboardPage />} />
-      <Route path="/dashboard" element={<DashboardPage />} /> {/* 새로운 경로 추가 */}
       <Route path="/upload" element={<UploadMovie />} />
+      <Route path="/movie/:movieId" element={<MovieDetailPage />} />
+      <Route path="/account" element={<Account />} />
+      <Route path="/login" element={<LoginPage />} />
       <Route path="/subscribe" element={<SubscribePage />} />
     </Routes>
   );

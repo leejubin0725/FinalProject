@@ -1,33 +1,58 @@
 package com.kh.last.controller;
 
+import org.apache.http.auth.InvalidCredentialsException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.kh.last.model.vo.Users;
 import com.kh.last.service.UserService;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @RestController
 @RequestMapping("/api/users")
+@CrossOrigin(origins = "http://localhost:3000")  // 클라이언트의 출처 설정
 public class UserController {
+
     @Autowired
     private UserService userService;
 
     @PostMapping("/register")
-    public Users createUser(@RequestBody UserCreateRequest request) {
-        return userService.createUser(
-              request.getUserId(),
-              request.getEmail(),
-              request.getPassword(),
-              request.getStatus(),
-              request.getBirthday(),
-              request.getUsername(),
-              request.getVNumber()
-        );
+    public ResponseEntity<?> createUser(@RequestBody UserCreateRequest request) {
+        try {
+            Users createdUser = userService.createUser(
+                request.getUserId(),
+                request.getEmail(),
+                request.getPassword(),
+                request.getStatus(),
+                request.getBirthday(),
+                request.getUsername(),
+                request.getVNumber()
+            );
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);  // 생성된 리소스를 반환
+        } catch (Exception e) {
+            // 예외 처리 및 에러 메시지 반환
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while creating the user.");
+        }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> loginUser(@RequestBody UserLoginRequest request) {
+        try {
+            String token = userService.loginUser(request.getEmail(), request.getPassword());
+            return ResponseEntity.ok(new LoginResponse(token));
+        } catch (InvalidCredentialsException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password.");
+        }
     }
 }
-@Data
+
+@Getter
+@Setter
 class UserCreateRequest {
     private String userId;
     private String email;
@@ -36,4 +61,21 @@ class UserCreateRequest {
     private String birthday;
     private String username;
     private Long vNumber;
+}
+
+@Getter
+@Setter
+class UserLoginRequest {
+    private String email;
+    private String password;
+}
+
+@Getter
+@Setter
+class LoginResponse {
+    private String token;
+
+    public LoginResponse(String token) {
+        this.token = token;
+    }
 }
