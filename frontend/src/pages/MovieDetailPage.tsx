@@ -14,18 +14,18 @@ interface Movie {
 }
 
 const MovieDetailPage: React.FC = () => {
-  const { movieId } = useParams<{ movieId: string }>(); // movieId는 문자열로 받아옴
+  const { movieId } = useParams<{ movieId: string }>();
   const [movie, setMovie] = useState<Movie | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (movieId) {
-      const movieIdNumber = parseInt(movieId, 10); // movieId를 숫자로 변환
+      const movieIdNumber = parseInt(movieId, 10);
       if (!isNaN(movieIdNumber)) {
         axios.get(`http://localhost:8088/api/movies/${movieIdNumber}`)
           .then(response => {
-            console.log('Fetched movie:', response.data); // 디버깅용 콘솔 출력
+            console.log('Fetched movie:', response.data);
             setMovie(response.data);
             setLoading(false);
           })
@@ -35,12 +35,12 @@ const MovieDetailPage: React.FC = () => {
             setLoading(false);
           });
       } else {
-        console.error('Invalid movieIdNumber:', movieIdNumber); // 디버깅용 콘솔 출력
+        console.error('Invalid movieIdNumber:', movieIdNumber);
         setError('Movie ID is not a valid number');
         setLoading(false);
       }
     } else {
-      console.error('Movie ID is missing'); // 디버깅용 콘솔 출력
+      console.error('Movie ID is missing');
       setError('Movie ID is missing');
       setLoading(false);
     }
@@ -61,7 +61,10 @@ const MovieDetailPage: React.FC = () => {
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>{movie.title}</h1>
-      <img src={movie.thumbnailUrl} alt={movie.title} className={styles.thumbnail} />
+      <video controls className={styles.video}>
+        <source src={movie.url} type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
       <p className={styles.description}>{movie.description}</p>
       {/* Add more details as needed */}
     </div>

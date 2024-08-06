@@ -1,10 +1,8 @@
-// src/pages/HomePage.tsx
 import React from 'react';
-import { Link } from 'react-router-dom';
 import Slider from 'react-slick';
 import Header from '../components/Header';
 import Frame from '../components/HomeFrame';
-import MovieThumbnail from '../components/VideoThumbnail'; // MovieThumbnail 컴포넌트의 이름을 그대로 유지합니다.
+import VideoThumbnail from '../components/VideoThumbnail';
 import SearchOverlay from '../components/SearchOverlay';
 import styles from './HomePage.module.css';
 import 'slick-carousel/slick/slick.css';
@@ -13,7 +11,7 @@ import axios from 'axios';
 import Footer from '../components/Footer';
 
 interface Movie {
-  id: number; // movie_no를 id로 변경
+  id: number;
   title: string;
   description: string;
   url: string;
@@ -35,7 +33,7 @@ const HomePage: React.FC = () => {
         console.log('Fetched movies:', response.data);
         const formattedMovies = response.data.map((movie: any) => ({
           ...movie,
-          id: movie.ID, // API 응답에서 'ID'를 'id'로 변환
+          id: movie.id,
           tags: movie.tags ? movie.tags.split(',') : []
         }));
         setMovies(formattedMovies);
@@ -49,7 +47,7 @@ const HomePage: React.FC = () => {
   React.useEffect(() => {
     filterMovies();
   }, [searchTerm, selectedGenre, movies]);
-  
+
   const filterMovies = () => {
     let filtered = movies;
 
@@ -136,9 +134,7 @@ const HomePage: React.FC = () => {
       <Slider {...getSliderSettings(movies.length)} className={styles.tileRows}>
         {movies.map((movie, index) => (
           <div className={styles.tile} key={`${keyPrefix}-${index}`}>
-            <Link to={`/movie/${movie.id}`}>
-              <MovieThumbnail video={movie} />
-            </Link>
+            <VideoThumbnail video={movie} />
           </div>
         ))}
       </Slider>

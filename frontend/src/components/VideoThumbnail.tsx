@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './VideoThumbnail.module.css';
 
 interface VideoThumbnailProps {
@@ -17,6 +18,7 @@ const VideoThumbnail: React.FC<VideoThumbnailProps> = ({ video }) => {
     const [isVideoError, setIsVideoError] = useState(false);
     const [isVideoLoaded, setIsVideoLoaded] = useState(false);
     const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+    const navigate = useNavigate();
 
     const handleMouseEnter = () => {
         setIsHovered(true);
@@ -35,6 +37,7 @@ const VideoThumbnail: React.FC<VideoThumbnailProps> = ({ video }) => {
             setIsVideoPlaying(false);
         }
     };
+
     const handleLoadedData = () => {
         setIsVideoLoaded(true);
         setIsVideoError(false);
@@ -42,6 +45,10 @@ const VideoThumbnail: React.FC<VideoThumbnailProps> = ({ video }) => {
 
     const handleError = () => {
         setIsVideoError(true);
+    };
+
+    const handleClick = () => {
+        navigate(`/movie/${video.id}`);
     };
 
     useEffect(() => {
@@ -63,6 +70,7 @@ const VideoThumbnail: React.FC<VideoThumbnailProps> = ({ video }) => {
             className={styles.thumbnail}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
+            onClick={handleClick}
         >
             <img
                 src={video.thumbnailUrl}
