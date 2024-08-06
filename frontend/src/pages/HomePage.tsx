@@ -1,17 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+// src/pages/HomePage.tsx
+import React from 'react';
+import { Link } from 'react-router-dom';
 import Slider from 'react-slick';
 import Header from '../components/Header';
 import Frame from '../components/HomeFrame';
-import VideoThumbnail from '../components/VideoThumbnail';
+import MovieThumbnail from '../components/VideoThumbnail'; // MovieThumbnail 컴포넌트의 이름을 그대로 유지합니다.
 import SearchOverlay from '../components/SearchOverlay';
 import styles from './HomePage.module.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import axios from 'axios';
 import Footer from '../components/Footer';
 
-interface Video {
-  id: number;
+interface Movie {
+  id: number; // movie_no를 id로 변경
   title: string;
   description: string;
   url: string;
@@ -21,49 +23,50 @@ interface Video {
 }
 
 const HomePage: React.FC = () => {
-  const [videos, setVideos] = useState<Video[]>([]);
-  const [filteredVideos, setFilteredVideos] = useState<Video[]>([]);
-  const [isSearchVisible, setIsSearchVisible] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedGenre, setSelectedGenre] = useState<string | undefined>(undefined);
+  const [movies, setMovies] = React.useState<Movie[]>([]);
+  const [filteredMovies, setFilteredMovies] = React.useState<Movie[]>([]);
+  const [isSearchVisible, setIsSearchVisible] = React.useState(false);
+  const [searchTerm, setSearchTerm] = React.useState('');
+  const [selectedGenre, setSelectedGenre] = React.useState<string | undefined>(undefined);
 
-  useEffect(() => {
+  React.useEffect(() => {
     axios.get('http://localhost:8088/api/movies')
       .then(response => {
-        console.log('Fetched videos:', response.data);
-        const formattedVideos = response.data.map((video: any) => ({
-          ...video,
-          tags: video.tags ? video.tags.split(',') : []
+        console.log('Fetched movies:', response.data);
+        const formattedMovies = response.data.map((movie: any) => ({
+          ...movie,
+          id: movie.ID, // API 응답에서 'ID'를 'id'로 변환
+          tags: movie.tags ? movie.tags.split(',') : []
         }));
-        setVideos(formattedVideos);
-        setFilteredVideos(formattedVideos);
+        setMovies(formattedMovies);
+        setFilteredMovies(formattedMovies);
       })
       .catch(error => {
-        console.error('There was an error fetching the videos!', error);
+        console.error('There was an error fetching the movies!', error);
       });
   }, []);
 
-  useEffect(() => {
-    filterVideos();
-  }, [searchTerm, selectedGenre]);
-
-  const filterVideos = () => {
-    let filtered = videos;
+  React.useEffect(() => {
+    filterMovies();
+  }, [searchTerm, selectedGenre, movies]);
+  
+  const filterMovies = () => {
+    let filtered = movies;
 
     if (searchTerm) {
-      filtered = filtered.filter(video =>
-        video.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        video.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
+      filtered = filtered.filter(movie =>
+        movie.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        movie.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
       );
     }
 
     if (selectedGenre) {
-      filtered = filtered.filter(video =>
-        video.tags.some(tag => tag.toLowerCase().includes(selectedGenre.toLowerCase()))
+      filtered = filtered.filter(movie =>
+        movie.tags.some(tag => tag.toLowerCase().includes(selectedGenre.toLowerCase()))
       );
     }
 
-    setFilteredVideos(filtered);
+    setFilteredMovies(filtered);
   };
 
   const handleSearchClick = () => {
@@ -98,9 +101,9 @@ const HomePage: React.FC = () => {
     );
   };
 
-  const getSliderSettings = (videoCount: number) => ({
+  const getSliderSettings = (movieCount: number) => ({
     dots: false,
-    infinite: videoCount > 4,
+    infinite: movieCount > 4,
     speed: 600,
     slidesToShow: 4,
     slidesToScroll: 2,
@@ -112,7 +115,7 @@ const HomePage: React.FC = () => {
         settings: {
           slidesToShow: 2,
           slidesToScroll: 2,
-          infinite: videoCount > 2
+          infinite: movieCount > 2
         }
       },
       {
@@ -121,19 +124,21 @@ const HomePage: React.FC = () => {
           slidesToShow: 1,
           slidesToScroll: 1,
           initialSlide: 1,
-          infinite: videoCount > 1
+          infinite: movieCount > 1
         }
       }
     ]
   });
 
-  const renderSection = (title: string, videos: Video[], keyPrefix: string) => (
+  const renderSection = (title: string, movies: Movie[], keyPrefix: string) => (
     <div className={styles.section} key={keyPrefix}>
       <h2 className={styles.sectionTitle}>{title}</h2>
-      <Slider {...getSliderSettings(videos.length)} className={styles.tileRows}>
-        {videos.map((video, index) => (
+      <Slider {...getSliderSettings(movies.length)} className={styles.tileRows}>
+        {movies.map((movie, index) => (
           <div className={styles.tile} key={`${keyPrefix}-${index}`}>
-            <VideoThumbnail video={video} />
+            <Link to={`/movie/${movie.id}`}>
+              <MovieThumbnail video={movie} />
+            </Link>
           </div>
         ))}
       </Slider>
@@ -148,11 +153,11 @@ const HomePage: React.FC = () => {
         {/* 여기에 Hero Content 내용 추가 */}
       </div>
       <section className={styles.content}>
-        {renderSection('영화 이어보기', filteredVideos, 'section-1')}
+        {renderSection('영화 이어보기', filteredMovies, 'section-1')}
         <Frame />
-        {renderSection('시네마 클라우드 추천작', filteredVideos, 'section-2')}
+        {renderSection('시네마 클라우드 추천작', filteredMovies, 'section-2')}
         <Frame />
-        {renderSection('밤늦게 즐기는 스릴러', filteredVideos, 'section-3')}
+        {renderSection('밤늦게 즐기는 스릴러', filteredMovies, 'section-3')}
       </section>
       {isSearchVisible && <SearchOverlay onClose={handleCloseSearch} onSearch={handleSearch} />}
       <Footer />

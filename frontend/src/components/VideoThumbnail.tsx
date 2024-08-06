@@ -35,7 +35,6 @@ const VideoThumbnail: React.FC<VideoThumbnailProps> = ({ video }) => {
             setIsVideoPlaying(false);
         }
     };
-
     const handleLoadedData = () => {
         setIsVideoLoaded(true);
         setIsVideoError(false);
