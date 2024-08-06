@@ -45,7 +45,7 @@ const HomePage: React.FC = () => {
 
   useEffect(() => {
     filterVideos();
-  }, [searchTerm, selectedGenre, videos]);
+  }, [searchTerm, selectedGenre]);
 
   const filterVideos = () => {
     let filtered = videos;
