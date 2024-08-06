@@ -210,6 +210,7 @@ h2 {
 
 .searchInput {
   padding: 8px 12px;
+  background-color: white;
   border: 1px solid #ddd;
   border-radius: 4px 0 0 4px;
   font-size: 14px;
@@ -306,24 +307,29 @@ h2 {
 
 .ChattingGrid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr); /* 가로로 5개의 박스를 배치 */
-  grid-template-rows: repeat(2, auto); /* 세로로 2개의 행 */
-  gap: 80px; /* 카드 간격 */
+  grid-template-columns: repeat(5, 1fr);
+  /* 가로로 5개의 박스를 배치 */
+  grid-template-rows: repeat(2, auto);
+  /* 세로로 2개의 행 */
+  gap: 80px;
+  /* 카드 간격 */
   height: 60%;
   margin-bottom: 150px;
 }
 
 .ChattingCard {
   background-color: #f0f0f0;
-  padding: 20px;
+  padding: 30px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  align-items: left; /* 가로로 중앙 정렬 */
-  height: 230px; /* 카드가 그리드 셀 전체를 채우도록 설정 */
+  align-items: left;
+  /* 가로로 중앙 정렬 */
+  height: 170px;
+  /* 카드가 그리드 셀 전체를 채우도록 설정 */
 }
 
 .ChattingCardTitle {
@@ -346,7 +352,8 @@ h2 {
   padding: 10px;
   border-radius: 4px;
   cursor: pointer;
-  margin-top: 10px; /* 버튼을 다른 요소들과 분리 */
+  margin-top: 10px;
+  /* 버튼을 다른 요소들과 분리 */
 }
 
 .ChattingCardButton:hover {
@@ -388,11 +395,15 @@ h2 {
 }
 
 .lastChat {
-  margin-left: 20px;
-  margin-bottom: 20px; /* 상단 요소들과 간격 추가 */
-  width: 80%; /* 원하는 만큼의 너비 설정 */
+  margin-bottom: 20px;
+  margin-left: 5px;
+  /* 상단 요소들과 간격 추가 */
+  width: 80%;
+  /* 원하는 만큼의 너비 설정 */
   background-color: white;
-  height: 10%;
+  color: black;
+  border-radius: 8%;
+
 }
 
 
@@ -416,7 +427,8 @@ h2 {
   background-color: white;
   padding: 20px;
   border-radius: 8px;
-  width: 20%; /* 모달 창의 너비 조정 */
+  width: 20%;
+  /* 모달 창의 너비 조정 */
   max-width: 700px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   position: relative;
@@ -438,7 +450,8 @@ h2 {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 95%; /* 모달 창 내부 높이 조정 */
+  height: 95%;
+  /* 모달 창 내부 높이 조정 */
 }
 
 .chatMessages {
@@ -474,7 +487,7 @@ h2 {
   background-color: #1a252f;
 }
 
-.chatTitle{
+.chatTitle {
   position: absolute;
   top: 3px;
   right: 250px;

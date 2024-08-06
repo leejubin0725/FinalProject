@@ -55,9 +55,9 @@ export default function ChattingList() {
                     <div key={item.id} className={styles.ChattingCard}>
                         <div className={styles.ChattingCardTitle}>{item.content}</div>
                         <div className={styles.ChattingCardDate}>{item.date}</div>
-                        <input type="text" className={styles.lastChat} value={'최근 한 채팅'} disabled/>
-                        <button 
-                            className={styles.ChattingCardButton} 
+                        <input type="text" className={styles.lastChat} value={'최근 한 채팅'} disabled />
+                        <button
+                            className={styles.ChattingCardButton}
                             onClick={() => openModal(item.content)}
                         >
                             답변하기
