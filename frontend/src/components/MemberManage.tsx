@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styles from '../pages/DashboardPage.module.css';
+import Pagination from '../components/Pagination'; // Pagination 컴포넌트를 불러옵니다.
 
 interface Member {
   id: number;
@@ -58,6 +59,7 @@ const profilesData: { [key: number]: Profile[] } = {
   ],
   // 다른 회원의 프로필...
 };
+
 
 export default function MemberManage() {
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
@@ -177,34 +179,5 @@ export default function MemberManage() {
         />
       </div>
     </div>
-  );
-}
-
-interface PaginationProps {
-  itemsPerPage: number;
-  totalItems: number;
-  paginate: (pageNumber: number) => void;
-  currentPage: number;
-}
-
-function Pagination({ itemsPerPage, totalItems, paginate, currentPage }: PaginationProps) {
-  const pageNumbers: number[] = [];
-
-  for (let i = 1; i <= Math.ceil(totalItems / itemsPerPage); i++) {
-    pageNumbers.push(i);
-  }
-
-  return (
-    <nav>
-      <ul className={styles.pagination}>
-        {pageNumbers.map((number) => (
-          <li key={number} className={number === currentPage ? styles.active : ''}>
-            <button onClick={() => paginate(number)} className={styles.pageLink}>
-              {number}
-            </button>
-          </li>
-        ))}
-      </ul>
-    </nav>
   );
 }

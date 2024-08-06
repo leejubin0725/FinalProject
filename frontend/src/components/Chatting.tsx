@@ -16,8 +16,7 @@ export const Chatting: React.FC<ChattingProps> = ({ isOpen, onClose, chatContent
                 <span className={styles.chatTitle}>{chatContent}</span>
                 <span className={styles.closeButton} onClick={onClose}>&times;</span>
                 <div className={styles.chatWindow}>
-                    <div className={styles.chatMessages}>
-                    </div>
+                    <div className={styles.chatMessages}></div>
                     <input type="text" placeholder="메시지를 입력하세요" className={styles.chatInput} />
                     <button className={styles.sendButton}>전송하기</button>
                 </div>
