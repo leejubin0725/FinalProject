@@ -4,10 +4,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.http.auth.Credentials;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -42,17 +40,21 @@ public class SmsService {
         Map<String, Object> body = new HashMap<>();
         body.put("messages", new Object[]{message});
 
-        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), objectMapper.writeValueAsString(body));
-        Request request = new Request.Builder()
-            .url(SMS_URL)
-            .post(requestBody)
-            .addHeader("Content-Type", "application/json")
-            .addHeader("Authorization", "Basic " + Credentials.basic(apiKey, apiSecret))
-            .build();
+        MediaType JSON = MediaType.get("application/json; charset=utf-8");
+        RequestBody requestBody = RequestBody.create(JSON, objectMapper.writeValueAsString(body));
+        String credential = Credentials.basic(apiKey, apiSecret);
 
-        Response response = client.newCall(request).execute();
-        if (!response.isSuccessful()) {
-            throw new IOException("Unexpected code " + response);
+        Request request = new Request.Builder()
+                .url(SMS_URL)
+                .post(requestBody)
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Authorization", credential)
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                throw new IOException("Unexpected code " + response);
+            }
         }
     }
 }
