@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styles from '../pages/DashboardPage.module.css';
+import Pagination from '../components/Pagination'; // Pagination 컴포넌트를 import 합니다.
 
 interface Movie {
   id: number;
@@ -111,34 +112,5 @@ export default function MovieManage() {
         />
       </div>
     </div>
-  );
-}
-
-interface PaginationProps {
-  itemsPerPage: number;
-  totalItems: number;
-  paginate: (pageNumber: number) => void;
-  currentPage: number;
-}
-
-function Pagination({ itemsPerPage, totalItems, paginate, currentPage }: PaginationProps) {
-  const pageNumbers: number[] = [];
-
-  for (let i = 1; i <= Math.ceil(totalItems / itemsPerPage); i++) {
-    pageNumbers.push(i);
-  }
-
-  return (
-    <nav>
-      <ul className={styles.pagination}>
-        {pageNumbers.map((number) => (
-          <li key={number} className={number === currentPage ? styles.active : ''}>
-            <button onClick={() => paginate(number)} className={styles.pageLink}>
-              {number}
-            </button>
-          </li>
-        ))}
-      </ul>
-    </nav>
   );
 }

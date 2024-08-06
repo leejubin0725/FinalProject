@@ -1,6 +1,8 @@
+// pages/ManageFAQ.tsx
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import styles from '../pages/DashboardPage.module.css';
+import Pagination from '../components/Pagination'; // 공통 컴포넌트 호출
 
 interface FAQItem {
     id: number;
@@ -151,7 +153,7 @@ const data: FAQItem[] = [
 
 export default function ManageFAQ() {
     const { page } = useParams<{ page: string }>();
-    const navi = useNavigate();
+    const navigate = useNavigate();
 
     const [searchTerm, setSearchTerm] = useState<string>('');
     const itemsPerPage = 10;
@@ -177,12 +179,11 @@ export default function ManageFAQ() {
 
     const paginate = (pageNumber: number) => {
         setCurrentPage(pageNumber);
-        navi(`/dashboard/FAQManage/${pageNumber}`);
+        navigate(`/dashboard/FAQManage/${pageNumber}`);
     };
 
-    // "작성하기" 버튼 클릭 시 호출될 함수
     const handleInsertFAQClick = () => {
-        navi('/dashboard/FAQManage/InsertFAQ'); // 해당 경로로 이동
+        navigate('/dashboard/FAQManage/InsertFAQ');
     };
 
     return (
@@ -239,34 +240,5 @@ export default function ManageFAQ() {
                 />
             </div>
         </div>
-    );
-}
-
-interface PaginationProps {
-    itemsPerPage: number;
-    totalItems: number;
-    paginate: (pageNumber: number) => void;
-    currentPage: number;
-}
-
-function Pagination({ itemsPerPage, totalItems, paginate, currentPage }: PaginationProps) {
-    const pageNumbers: number[] = [];
-
-    for (let i = 1; i <= Math.ceil(totalItems / itemsPerPage); i++) {
-        pageNumbers.push(i);
-    }
-
-    return (
-        <nav>
-            <ul className={styles.pagination}>
-                {pageNumbers.map((number) => (
-                    <li key={number} className={number === currentPage ? styles.active : ''}>
-                        <button onClick={() => paginate(number)} className={styles.pageLink}>
-                            {number}
-                        </button>
-                    </li>
-                ))}
-            </ul>
-        </nav>
     );
 }

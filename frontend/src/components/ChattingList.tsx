@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styles from '../pages/DashboardPage.module.css';
+import Pagination from './Pagination';  // 외부 컴포넌트로 분리된 Pagination을 import
 import { Chatting } from './Chatting';
 
 interface ChatItem {
@@ -73,34 +74,5 @@ export default function ChattingList() {
             />
             <Chatting isOpen={isModalOpen} onClose={closeModal} chatContent={currentChat} />
         </div>
-    );
-}
-
-interface PaginationProps {
-    itemsPerPage: number;
-    totalItems: number;
-    paginate: (pageNumber: number) => void;
-    currentPage: number;
-}
-
-function Pagination({ itemsPerPage, totalItems, paginate, currentPage }: PaginationProps) {
-    const pageNumbers: number[] = [];
-
-    for (let i = 1; i <= Math.ceil(totalItems / itemsPerPage); i++) {
-        pageNumbers.push(i);
-    }
-
-    return (
-        <nav className={styles.paginationContainer}>
-            <ul className={styles.pagination}>
-                {pageNumbers.map((number) => (
-                    <li key={number} className={number === currentPage ? styles.active : ''}>
-                        <button onClick={() => paginate(number)} className={styles.pageLink}>
-                            {number}
-                        </button>
-                    </li>
-                ))}
-            </ul>
-        </nav>
     );
 }
