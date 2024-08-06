@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import styles from './Header.module.css';
 
 export type HeaderProps = {
@@ -8,6 +9,34 @@ export type HeaderProps = {
 };
 
 const Header: React.FC<HeaderProps> = ({ className = "", onSearchClick }) => {
+  const [selectedProfile, setSelectedProfile] = useState<string>('/profile.png');
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    // Fetch the current user when the component mounts
+    axios.get('/api/users/current')
+      .then(response => {
+        setUser(response.data);
+        setSelectedProfile(response.data?.profileImage || '/profile.png');
+      })
+      .catch(error => console.error("Error fetching user data", error));
+  }, []);
+
+  const profiles = [
+    { id: 'profile', src: '/profile.png', name: '멀티 프로필1' },
+    { id: 'profile2', src: '/profile2.png', name: '멀티 프로필2' },
+    { id: 'profile3', src: '/profile3.png', name: '멀티 프로필3' },
+    { id: 'profile4', src: '/profile4.png', name: '멀티 프로필4' },
+  ];
+
+  const handleProfileClick = (profileSrc: string) => {
+    setSelectedProfile(profileSrc);
+  };
+
+  const handleTemporaryLogin = () => {
+    // Implement temporary login logic here
+  };
+
   return (
     <>
       <section className={`${styles.Header} ${className}`}>
@@ -59,8 +88,8 @@ const Header: React.FC<HeaderProps> = ({ className = "", onSearchClick }) => {
                   <img
                     className={styles.profileBackgroundIcon}
                     loading="lazy"
-                    alt=""
-                    src="/profile.png"
+                    alt="Profile"
+                    src={selectedProfile}
                   />
                   <img
                     className={styles.antDesigncaretDownFilledIcon}
@@ -69,25 +98,22 @@ const Header: React.FC<HeaderProps> = ({ className = "", onSearchClick }) => {
                     src="/antdesigncaretdownfilled.svg"
                   />
                   <div className={styles.dropdownMenu}>
-                    <Link to="/profile1" className={styles.dropdownItem}>
-                      <img src="/profile.png" alt="Profile 1" />
-                      멀티 프로필1
-                    </Link>
-                    <Link to="/profile2" className={styles.dropdownItem}>
-                      <img src="/profile.png" alt="Profile 2" />
-                      멀티 프로필2
-                    </Link>
-                    <Link to="/profile3" className={styles.dropdownItem}>
-                      <img src="/profile.png" alt="Profile 3" />
-                      멀티 프로필3
-                    </Link>
-                    <Link to="/profile4" className={styles.dropdownItem}>
-                      <img src="/profile.png" alt="Profile 4" />
-                      멀티 프로필4
-                    </Link>
-                    <Link to="/profile/manage" className={styles.dropdownItem}>
-                      프로필 관리
-                    </Link>
+                    {user ? (
+                      profiles.map((profile) => (
+                        <div
+                          key={profile.id}
+                          className={styles.dropdownItem}
+                          onClick={() => handleProfileClick(profile.src)}
+                        >
+                          <img src={profile.src} alt={profile.name} />
+                          {profile.name}
+                        </div>
+                      ))
+                    ) : (
+                      <button className={styles.temporaryLoginButton} onClick={handleTemporaryLogin}>
+                        임시 로그인
+                      </button>
+                    )}
                     <Link to="/account" className={styles.dropdownItem}>
                       계정
                     </Link>

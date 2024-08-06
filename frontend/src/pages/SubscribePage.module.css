@@ -1,0 +1,25 @@
+.div {
+  width: 100%;
+  position: relative;
+  background-color: var(--black-08);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 34px 0 0;
+  box-sizing: border-box;
+  gap: 166px;
+  line-height: normal;
+  letter-spacing: normal;
+}
+@media screen and (max-width: 1275px) {
+  .div {
+    gap: 83px;
+  }
+}
+@media screen and (max-width: 825px) {
+  .div {
+    gap: 41px;
+  }
+}

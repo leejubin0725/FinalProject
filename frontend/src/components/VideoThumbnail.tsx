@@ -1,5 +1,4 @@
-// src/components/VideoThumbnail.tsx
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import styles from './VideoThumbnail.module.css';
 
 interface VideoThumbnailProps {
@@ -14,12 +13,14 @@ interface VideoThumbnailProps {
 
 const VideoThumbnail: React.FC<VideoThumbnailProps> = ({ video }) => {
     const videoRef = useRef<HTMLVideoElement>(null);
-    const thumbnailRef = useRef<HTMLImageElement>(null);
+    const [isHovered, setIsHovered] = useState(false);
+    const [isVideoError, setIsVideoError] = useState(false);
+    const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+    const [isVideoPlaying, setIsVideoPlaying] = useState(false);
 
     const handleMouseEnter = () => {
-        if (videoRef.current && thumbnailRef.current) {
-            thumbnailRef.current.style.display = 'none';
-            videoRef.current.style.display = 'block';
+        setIsHovered(true);
+        if (videoRef.current && isVideoLoaded) {
             videoRef.current.play().catch(error => {
                 console.error('Video play was interrupted:', error);
             });
@@ -27,33 +28,35 @@ const VideoThumbnail: React.FC<VideoThumbnailProps> = ({ video }) => {
     };
 
     const handleMouseLeave = () => {
-        if (videoRef.current && thumbnailRef.current) {
+        setIsHovered(false);
+        if (videoRef.current) {
             videoRef.current.pause();
             videoRef.current.currentTime = 0;
-            videoRef.current.style.display = 'none';
-            thumbnailRef.current.style.display = 'block';
+            setIsVideoPlaying(false);
         }
+    };
+    const handleLoadedData = () => {
+        setIsVideoLoaded(true);
+        setIsVideoError(false);
+    };
+
+    const handleError = () => {
+        setIsVideoError(true);
     };
 
     useEffect(() => {
         const videoElement = videoRef.current;
         if (videoElement) {
-            const handleLoadedData = () => {
-                console.log('Video loaded data:', videoElement.readyState);
-            };
-            const handleError = (event: Event) => {
-                console.error('Error loading video:', event);
-            };
-
             videoElement.addEventListener('loadeddata', handleLoadedData);
             videoElement.addEventListener('error', handleError);
+            videoElement.load(); // 비디오를 미리 로드
 
             return () => {
                 videoElement.removeEventListener('loadeddata', handleLoadedData);
                 videoElement.removeEventListener('error', handleError);
             };
         }
-    }, []);
+    }, [video.url]);
 
     return (
         <div
@@ -62,21 +65,24 @@ const VideoThumbnail: React.FC<VideoThumbnailProps> = ({ video }) => {
             onMouseLeave={handleMouseLeave}
         >
             <img
-                ref={thumbnailRef}
                 src={video.thumbnailUrl}
                 alt={video.title}
                 className={styles.thumbnailImage}
+                style={{ display: isHovered && isVideoLoaded ? 'none' : 'block' }}
             />
             <video
                 ref={videoRef}
                 muted
                 preload="auto"
                 className={styles.video}
-                style={{ display: 'none' }} // 처음에는 비디오를 숨김
+                style={{ display: isHovered && isVideoLoaded ? 'block' : 'none' }}
             >
                 <source src={video.url} type="video/mp4" />
                 Your browser does not support the video tag.
             </video>
+            {isVideoError && (
+                <div className={styles.error}>비디오를 로드하는 데 실패했습니다.</div>
+            )}
         </div>
     );
 };
