@@ -11,7 +11,8 @@ import java.sql.Date;
 public class Subscription {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "subscription_seq")
+    @SequenceGenerator(name = "subscription_seq", sequenceName = "subscription_seq", allocationSize = 1)
     @Column(name = "subscription_no")
     private Long id;
 
@@ -26,5 +27,4 @@ public class Subscription {
 
     @Column(name = "status", nullable = false)
     private String status;
-
 }

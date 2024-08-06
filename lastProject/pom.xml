@@ -92,6 +92,12 @@
             <artifactId>aws-java-sdk-s3</artifactId>
             <version>1.12.31</version>
         </dependency>
+        <!--결제 관련 paypal 의존성-->
+        <dependency>
+            <groupId>com.paypal.sdk</groupId>
+            <artifactId>rest-api-sdk</artifactId>
+            <version>1.14.0</version>
+        </dependency>
         <!-- Dotenv 의존성 -->
         <dependency>
             <groupId>io.github.cdimascio</groupId>
@@ -107,7 +113,7 @@
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
-            <version>4.9.1</version>
+            <version>4.9.3</version>
         </dependency>
         <!-- Jackson Databind 의존성 추가 -->
         <dependency>
