@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styles from '../pages/DashboardPage.module.css';
+import { Chatting } from './Chatting';
 
 interface ChatItem {
     id: number;
@@ -26,6 +27,8 @@ const data: ChatItem[] = [
 
 export default function ChattingList() {
     const [currentPage, setCurrentPage] = useState<number>(1);
+    const [isModalOpen, setModalOpen] = useState<boolean>(false);
+    const [currentChat, setCurrentChat] = useState<string>('');
     const itemsPerPage = 10;
 
     const indexOfLastItem = currentPage * itemsPerPage;
@@ -33,6 +36,16 @@ export default function ChattingList() {
     const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
 
     const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+
+    const openModal = (chatContent: string) => {
+        setCurrentChat(chatContent);
+        setModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setModalOpen(false);
+        setCurrentChat('');
+    };
 
     return (
         <div className={styles.ChattingContainer}>
@@ -42,7 +55,13 @@ export default function ChattingList() {
                     <div key={item.id} className={styles.ChattingCard}>
                         <div className={styles.ChattingCardTitle}>{item.content}</div>
                         <div className={styles.ChattingCardDate}>{item.date}</div>
-                        <button className={styles.ChattingCardButton}>답변하기</button>
+                        <input type="text" className={styles.lastChat} value={'최근 한 채팅'} disabled/>
+                        <button 
+                            className={styles.ChattingCardButton} 
+                            onClick={() => openModal(item.content)}
+                        >
+                            답변하기
+                        </button>
                     </div>
                 ))}
             </div>
@@ -52,6 +71,7 @@ export default function ChattingList() {
                 paginate={paginate}
                 currentPage={currentPage}
             />
+            <Chatting isOpen={isModalOpen} onClose={closeModal} chatContent={currentChat} />
         </div>
     );
 }
