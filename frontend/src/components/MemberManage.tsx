@@ -91,6 +91,7 @@ export default function MemberManage() {
     <div className={styles.tableContainer}>
       <div className={styles.headerContainer}>
         <h1 className={styles.movimanage}>회원 관리</h1>
+        <a>전체회원</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a>정지회원</a>
         <div className={styles.searchContainer}>
           <input
             type="text"

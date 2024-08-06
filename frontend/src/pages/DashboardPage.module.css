@@ -191,7 +191,7 @@ h2 {
   text-align: center;
   font-size: 24px;
   color: #2c3e50;
-  margin-right: 700px;
+  margin-right: 650px;
 }
 
 .headerContainer {
@@ -301,14 +301,16 @@ h2 {
 .ChattingTitle {
   font-size: 24px;
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 50px;
 }
 
 .ChattingGrid {
   display: grid;
   grid-template-columns: repeat(5, 1fr); /* 가로로 5개의 박스를 배치 */
   grid-template-rows: repeat(2, auto); /* 세로로 2개의 행 */
-  gap: 50px; /* 카드 간격 */
+  gap: 80px; /* 카드 간격 */
+  height: 60%;
+  margin-bottom: 150px;
 }
 
 .ChattingCard {
@@ -316,9 +318,12 @@ h2 {
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  text-align: left;
-  justify-content: center;
-  height: 200px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: left; /* 가로로 중앙 정렬 */
+  height: 230px; /* 카드가 그리드 셀 전체를 채우도록 설정 */
 }
 
 .ChattingCardTitle {
@@ -333,13 +338,15 @@ h2 {
 }
 
 .ChattingCardButton {
+  margin-left: 65px;
+  width: 40%;
   background-color: #2c3e50;
   color: white;
   border: none;
   padding: 10px;
   border-radius: 4px;
   cursor: pointer;
-  margin-left: 35%;
+  margin-top: 10px; /* 버튼을 다른 요소들과 분리 */
 }
 
 .ChattingCardButton:hover {
@@ -378,4 +385,99 @@ h2 {
   background-color: #2c3e50;
   color: white;
   border: 1px solid #2c3e50;
+}
+
+.lastChat {
+  margin-left: 20px;
+  margin-bottom: 20px; /* 상단 요소들과 간격 추가 */
+  width: 80%; /* 원하는 만큼의 너비 설정 */
+  background-color: white;
+  height: 10%;
+}
+
+
+
+
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 20%; /* 모달 창의 너비 조정 */
+  max-width: 700px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 80%;
+}
+
+.closeButton {
+  position: absolute;
+  top: 3px;
+  right: 20px;
+  font-size: 30px;
+  cursor: pointer;
+}
+
+.chatWindow {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 95%; /* 모달 창 내부 높이 조정 */
+}
+
+.chatMessages {
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}
+
+.chatInput {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  width: 94%;
+}
+
+.sendButton {
+  padding: 10px 20px;
+  background-color: #2c3e50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.sendButton:hover {
+  background-color: #1a252f;
+}
+
+.chatTitle{
+  position: absolute;
+  top: 3px;
+  right: 250px;
+  font-size: 20px;
+  cursor: pointer;
 }
