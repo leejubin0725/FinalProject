@@ -9,6 +9,8 @@ import java.time.LocalDateTime;
 @Entity
 public class USERS {
     @Id
+    //@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
+    //@SequenceGenerator(name = "user_seq", sequenceName = "user_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_no")
     private Long userNo;
