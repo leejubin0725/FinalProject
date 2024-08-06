@@ -65,4 +65,7 @@ public class UserService {
                 .signWith(key) // 서명에 사용할 키
                 .compact();
     }
+    public boolean emailExists(String email) {
+        return userRepository.findByEmail(email).isPresent();
+    }
 }

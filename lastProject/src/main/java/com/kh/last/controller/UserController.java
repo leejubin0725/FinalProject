@@ -49,6 +49,12 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password.");
         }
     }
+
+    @PostMapping("/check-email")
+    public ResponseEntity<?> checkEmail(@RequestBody EmailCheckRequest request) {
+        boolean exists = userService.emailExists(request.getEmail());
+        return ResponseEntity.ok(new EmailCheckResponse(exists));
+    }
 }
 
 @Getter
@@ -77,5 +83,21 @@ class LoginResponse {
 
     public LoginResponse(String token) {
         this.token = token;
+    }
+}
+
+@Getter
+@Setter
+class EmailCheckRequest {
+    private String email;
+}
+
+@Getter
+@Setter
+class EmailCheckResponse {
+    private boolean exists;
+
+    public EmailCheckResponse(boolean exists) {
+        this.exists = exists;
     }
 }

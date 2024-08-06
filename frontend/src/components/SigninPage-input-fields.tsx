@@ -27,7 +27,7 @@ export const InputFields: React.FC<{ className?: string }> = ({ className = '' }
 
     // 비밀번호 확인 체크
     if (formData.PASSWORD !== formData.confirmPassword) {
-      alert('Passwords do not match!');
+      alert('비밀번호가 일치하지 않습니다.');
       return;
     }
 
@@ -45,18 +45,18 @@ export const InputFields: React.FC<{ className?: string }> = ({ className = '' }
 
       console.log('User registered:', response.data);
       // 회원가입 성공 시 로그인 페이지로 리디렉션
-      alert('Registration successful! Redirecting to login page...');
+      alert('회원가입이 완료 되었습니다.');
       navigate('/login'); // 로그인 페이지로 리디렉션
     } catch (error) {
       if (axios.isAxiosError(error)) {
         // 서버 응답에서 에러 메시지 추출
         const message = error.response?.data?.message || error.message || 'Unknown error';
         console.error('Server responded with error:', message);
-        alert(`Failed to register. Server responded with: ${message}`);
+        alert(`모든 입력창을 입력해주세요`);
       } else {
         // 네트워크 에러 또는 기타 문제
         console.error('Unexpected error:', error);
-        alert('Failed to register. Please try again.');
+        alert('회원가입에 실패하였습니다.');
       }
     }
   };
