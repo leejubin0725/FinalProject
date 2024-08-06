@@ -14,7 +14,7 @@ public class Movie {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "movie_seq")
-    private Long movie_no;
+    private Long id;
 
     private String title;
     private String director;

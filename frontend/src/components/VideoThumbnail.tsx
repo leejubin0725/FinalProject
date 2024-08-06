@@ -1,3 +1,4 @@
+// src/components/VideoThumbnail.tsx
 import React, { useRef, useEffect } from 'react';
 import styles from './VideoThumbnail.module.css';
 
@@ -7,7 +8,7 @@ interface VideoThumbnailProps {
         title: string;
         description: string;
         url: string;
-        thumbnailUrl: string; // 썸네일 URL 추가
+        thumbnailUrl: string;
     };
 }
 
@@ -34,7 +35,6 @@ const VideoThumbnail: React.FC<VideoThumbnailProps> = ({ video }) => {
         }
     };
 
-    // 비디오가 로드될 때 비디오의 상태를 로깅하여 문제를 파악
     useEffect(() => {
         const videoElement = videoRef.current;
         if (videoElement) {
