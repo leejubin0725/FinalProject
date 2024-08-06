@@ -39,7 +39,6 @@ const MovieDetailPage: React.FC = () => {
   const [duration, setDuration] = useState(0);
   const [showVolumeSlider, setShowVolumeSlider] = useState(false);
   const volumeSliderTimeoutRef = useRef<number | null>(null);
-  const controlsTimeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
     if (movieId) {
@@ -47,22 +46,18 @@ const MovieDetailPage: React.FC = () => {
       if (!isNaN(movieIdNumber)) {
         axios.get(`http://localhost:8088/api/movies/${movieIdNumber}`)
           .then(response => {
-            console.log('Fetched movie:', response.data);
             setMovie(response.data);
             setLoading(false);
           })
           .catch(error => {
-            console.error('There was an error fetching the movie!', error);
             setError(error.response?.data?.message || 'Error loading movie details');
             setLoading(false);
           });
       } else {
-        console.error('Invalid movieIdNumber:', movieIdNumber);
         setError('Movie ID is not a valid number');
         setLoading(false);
       }
     } else {
-      console.error('Movie ID is missing');
       setError('Movie ID is missing');
       setLoading(false);
     }
@@ -146,13 +141,13 @@ const MovieDetailPage: React.FC = () => {
       .join(':');
   };
 
-  const handleMouseLeave = () => {
+  const handleMouseLeaveVolumeControl = () => {
     volumeSliderTimeoutRef.current = window.setTimeout(() => {
       setShowVolumeSlider(false);
     }, 2000);
   };
 
-  const handleMouseEnter = () => {
+  const handleMouseEnterVolumeControl = () => {
     if (volumeSliderTimeoutRef.current) {
       clearTimeout(volumeSliderTimeoutRef.current);
       volumeSliderTimeoutRef.current = null;
@@ -177,22 +172,12 @@ const MovieDetailPage: React.FC = () => {
     if (controlsRef.current) {
       controlsRef.current.classList.add(styles.visible);
     }
-    if (controlsTimeoutRef.current) {
-      clearTimeout(controlsTimeoutRef.current);
-      controlsTimeoutRef.current = null;
-    }
   };
 
   const hideControls = () => {
-    if (controlsTimeoutRef.current) {
-      clearTimeout(controlsTimeoutRef.current);
-      controlsTimeoutRef.current = null;
+    if (controlsRef.current) {
+      controlsRef.current.classList.remove(styles.visible);
     }
-    controlsTimeoutRef.current = window.setTimeout(() => {
-      if (controlsRef.current) {
-        controlsRef.current.classList.remove(styles.visible);
-      }
-    }, 5000);
   };
 
   if (loading) {
@@ -210,7 +195,7 @@ const MovieDetailPage: React.FC = () => {
   return (
     <Box
       className={styles.container}
-      onMouseMove={showControls}
+      onMouseEnter={showControls}
       onMouseLeave={hideControls}
     >
       <Typography variant="h3" className={styles.title}>
@@ -229,10 +214,9 @@ const MovieDetailPage: React.FC = () => {
           height="100%"
           onProgress={handleProgress}
           onDuration={handleDuration}
-          progressFrequency={100}
         />
         <Box
-          className={`${styles.controls}`}
+          className={styles.controls}
           ref={controlsRef}
         >
           <IconButton onClick={handlePlayPause} className={styles.controlButton} sx={{ color: 'white' }}>
@@ -256,8 +240,8 @@ const MovieDetailPage: React.FC = () => {
           />
           <Box
             className={`${styles.volumeControl} ${showVolumeSlider ? styles.showSlider : ''}`}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
+            onMouseEnter={handleMouseEnterVolumeControl}
+            onMouseLeave={handleMouseLeaveVolumeControl}
           >
             <IconButton onClick={handleVolumeClick} className={styles.controlButton} sx={{ color: 'white' }}>
               {muted ? <VolumeOffIcon /> : <VolumeUpIcon />}
