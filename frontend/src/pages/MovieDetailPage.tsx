@@ -29,14 +29,17 @@ const MovieDetailPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const playerRef = useRef<ReactPlayer>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const controlsRef = useRef<HTMLDivElement>(null);
   const [playing, setPlaying] = useState(false);
   const [volume, setVolume] = useState(0.8);
+  const [previousVolume, setPreviousVolume] = useState(0.8);
   const [muted, setMuted] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
   const [played, setPlayed] = useState(0);
   const [duration, setDuration] = useState(0);
   const [showVolumeSlider, setShowVolumeSlider] = useState(false);
   const volumeSliderTimeoutRef = useRef<number | null>(null);
+  const controlsTimeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
     if (movieId) {
@@ -75,11 +78,23 @@ const MovieDetailPage: React.FC = () => {
   };
 
   const handleMute = () => {
-    setMuted(prev => !prev);
+    if (muted) {
+      setVolume(previousVolume);
+      setMuted(false);
+    } else {
+      setPreviousVolume(volume);
+      setVolume(0);
+      setMuted(true);
+    }
   };
 
   const toggleVolumeSlider = () => {
     setShowVolumeSlider(prev => !prev);
+  };
+
+  const handleVolumeClick = () => {
+    handleMute();
+    toggleVolumeSlider();
   };
 
   const handleFullscreen = () => {
@@ -109,6 +124,19 @@ const MovieDetailPage: React.FC = () => {
     }
   };
 
+  const handleForward10 = () => {
+    if (playerRef.current) {
+      const currentTime = playerRef.current.getCurrentTime();
+      const remainingTime = duration - currentTime;
+      if (remainingTime > 10) {
+        playerRef.current.seekTo(currentTime + 10, 'seconds');
+      } else {
+        playerRef.current.seekTo(duration, 'seconds');
+        setPlaying(false);
+      }
+    }
+  };
+
   const formatTime = (seconds: number) => {
     const h = Math.floor(seconds / 3600);
     const m = Math.floor((seconds % 3600) / 60);
@@ -132,6 +160,41 @@ const MovieDetailPage: React.FC = () => {
     setShowVolumeSlider(true);
   };
 
+  useEffect(() => {
+    if (showVolumeSlider) {
+      volumeSliderTimeoutRef.current = window.setTimeout(() => {
+        setShowVolumeSlider(false);
+      }, 2000);
+    } else {
+      if (volumeSliderTimeoutRef.current) {
+        clearTimeout(volumeSliderTimeoutRef.current);
+        volumeSliderTimeoutRef.current = null;
+      }
+    }
+  }, [showVolumeSlider]);
+
+  const showControls = () => {
+    if (controlsRef.current) {
+      controlsRef.current.classList.add(styles.visible);
+    }
+    if (controlsTimeoutRef.current) {
+      clearTimeout(controlsTimeoutRef.current);
+      controlsTimeoutRef.current = null;
+    }
+  };
+
+  const hideControls = () => {
+    if (controlsTimeoutRef.current) {
+      clearTimeout(controlsTimeoutRef.current);
+      controlsTimeoutRef.current = null;
+    }
+    controlsTimeoutRef.current = window.setTimeout(() => {
+      if (controlsRef.current) {
+        controlsRef.current.classList.remove(styles.visible);
+      }
+    }, 5000);
+  };
+
   if (loading) {
     return <div className={styles.loading}>Loading...</div>;
   }
@@ -145,7 +208,11 @@ const MovieDetailPage: React.FC = () => {
   }
 
   return (
-    <Box className={styles.container}>
+    <Box
+      className={styles.container}
+      onMouseMove={showControls}
+      onMouseLeave={hideControls}
+    >
       <Typography variant="h3" className={styles.title}>
         {movie.title}
       </Typography>
@@ -164,44 +231,19 @@ const MovieDetailPage: React.FC = () => {
           onDuration={handleDuration}
           progressFrequency={100}
         />
-        <Box className={styles.controls}>
-          <IconButton onClick={handlePlayPause} className={styles.controlButton}>
+        <Box
+          className={`${styles.controls}`}
+          ref={controlsRef}
+        >
+          <IconButton onClick={handlePlayPause} className={styles.controlButton} sx={{ color: 'white' }}>
             {playing ? <PauseIcon /> : <PlayArrowIcon />}
           </IconButton>
-          <IconButton onClick={() => playerRef.current?.seekTo(played - 10, 'fraction')} className={styles.controlButton}>
+          <IconButton onClick={() => playerRef.current?.seekTo(played - 10, 'seconds')} className={styles.controlButton} sx={{ color: 'white' }}>
             <Replay10Icon />
           </IconButton>
-          <IconButton onClick={() => playerRef.current?.seekTo(played + 10, 'fraction')} className={styles.controlButton}>
+          <IconButton onClick={handleForward10} className={styles.controlButton} sx={{ color: 'white' }}>
             <Forward10Icon />
           </IconButton>
-          <Box
-            className={styles.volumeControl}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-          >
-            <IconButton onClick={toggleVolumeSlider} className={styles.controlButton}>
-              {muted ? <VolumeOffIcon /> : <VolumeUpIcon />}
-            </IconButton>
-            {showVolumeSlider && (
-              <Slider
-                orientation="vertical"
-                value={volume}
-                onChange={handleVolumeChange}
-                aria-labelledby="continuous-slider"
-                className={styles.volumeSlider}
-                min={0}
-                max={1}
-                step={0.01}
-                style={{ color: '#d6a060' }}
-              />
-            )}
-          </Box>
-          <IconButton onClick={handleFullscreen} className={styles.controlButton}>
-            <FullscreenIcon />
-          </IconButton>
-          <Typography className={styles.time}>
-            {formatTime(played * duration)} / {formatTime(duration)}
-          </Typography>
           <Slider
             value={played}
             onChange={handleSeekChange}
@@ -212,6 +254,32 @@ const MovieDetailPage: React.FC = () => {
             step={0.01}
             style={{ color: '#d6a060' }}
           />
+          <Box
+            className={`${styles.volumeControl} ${showVolumeSlider ? styles.showSlider : ''}`}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          >
+            <IconButton onClick={handleVolumeClick} className={styles.controlButton} sx={{ color: 'white' }}>
+              {muted ? <VolumeOffIcon /> : <VolumeUpIcon />}
+            </IconButton>
+            <Slider
+              orientation="vertical"
+              value={muted ? 0 : volume}
+              onChange={handleVolumeChange}
+              aria-labelledby="continuous-slider"
+              className={styles.volumeSlider}
+              min={0}
+              max={1}
+              step={0.01}
+              style={{ color: '#d6a060' }}
+            />
+          </Box>
+          <Typography className={styles.time}>
+            {formatTime(played * duration)} / {formatTime(duration)}
+          </Typography>
+          <IconButton onClick={handleFullscreen} className={styles.controlButton} sx={{ color: 'white' }}>
+            <FullscreenIcon />
+          </IconButton>
         </Box>
       </Box>
       <Typography variant="body1" className={styles.description}>
