@@ -30,3 +30,4 @@ public class Post {
     private int profileNo;         // 프로필 번호
     
 }
+
