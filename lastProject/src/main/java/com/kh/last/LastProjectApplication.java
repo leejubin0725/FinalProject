@@ -8,9 +8,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class LastProjectApplication {
 
     public static void main(String[] args) {
-    	Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
-    	
-    	System.setProperty("DB_URL", dotenv.get("DB_URL"));
+        Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
+
+        System.setProperty("DB_URL", dotenv.get("DB_URL"));
         System.setProperty("DB_USERNAME", dotenv.get("DB_USERNAME"));
         System.setProperty("DB_PASSWORD", dotenv.get("DB_PASSWORD"));
         System.setProperty("AWS_ACCESS_KEY_ID", dotenv.get("AWS_ACCESS_KEY_ID"));
@@ -24,6 +24,11 @@ public class LastProjectApplication {
         System.setProperty("PAYPAL_CLIENT_ID", dotenv.get("PAYPAL_CLIENT_ID"));
         System.setProperty("PAYPAL_CLIENT_SECRET", dotenv.get("PAYPAL_CLIENT_SECRET"));
         System.setProperty("PAYPAL_MODE", dotenv.get("PAYPAL_MODE"));
+
+        System.setProperty("SMTP_HOST", dotenv.get("SMTP_HOST"));
+        System.setProperty("SMTP_PORT", dotenv.get("SMTP_PORT"));
+        System.setProperty("SMTP_USERNAME", dotenv.get("SMTP_USERNAME"));
+        System.setProperty("SMTP_PASSWORD", dotenv.get("SMTP_PASSWORD"));
 
         SpringApplication.run(LastProjectApplication.class, args);
     }

@@ -17,6 +17,8 @@ import SubscribePage from "./pages/BeforePage/SubscribePage";
 import Pwlogin from "./components/BeforePage/PasswordLogin-form";
 import PwloginPage from "./pages/BeforePage/PwLogin";
 import PwLogin from "./pages/BeforePage/PwLogin";
+import SuccessPage from "./pages/BeforePage/SuccessPage";
+import FailurePage from "./pages/BeforePage/FailurePage";
 
 function App() {
   const location = useLocation();
