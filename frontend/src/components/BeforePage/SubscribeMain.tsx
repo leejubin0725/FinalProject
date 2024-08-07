@@ -6,7 +6,7 @@ export type MainType = {
   className?: string;
 };
 
-const SubscribeMain: React.FC<MainType> = ({ className = "" }) => {
+
   const initiatePayment = async (amount: number) => {
     try {
       const response = await axios.post('http://localhost:8088/paypal/pay', null, {
