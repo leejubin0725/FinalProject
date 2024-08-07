@@ -16,8 +16,8 @@ const generateRandomColor = (): string => {
 
 // 데이터 생성 시 랜덤 색상 추가
 const data: DataType[] = [
-  { name: '장르1', 조회수: 40, fill: generateRandomColor() },
-  { name: '장르2', 조회수: 30, fill: generateRandomColor() },
+  { name: '장르1', 조회수: 400, fill: generateRandomColor() },
+  { name: '장르2', 조회수: 300, fill: generateRandomColor() },
   { name: '장르3', 조회수: 30, fill: generateRandomColor() },
   { name: '장르4', 조회수: 20, fill: generateRandomColor() },
   { name: '장르5', 조회수: 70, fill: generateRandomColor() },
@@ -29,20 +29,14 @@ const data: DataType[] = [
   { name: '장르11', 조회수: 36, fill: generateRandomColor() },
   { name: '장르12', 조회수: 26, fill: generateRandomColor() },
   { name: '장르13', 조회수: 30, fill: generateRandomColor() },
-  { name: '장르14', 조회수: 37, fill: generateRandomColor() },
-  { name: '장르15', 조회수: 58, fill: generateRandomColor() },
-  { name: '장르16', 조회수: 95, fill: generateRandomColor() },
-  { name: '장르17', 조회수: 13, fill: generateRandomColor() },
-  { name: '장르18', 조회수: 37, fill: generateRandomColor() },
-  { name: '장르19', 조회수: 48, fill: generateRandomColor() },
-  { name: '장르20', 조회수: 30, fill: generateRandomColor() }
+  { name: '장르14', 조회수: 37, fill: generateRandomColor() }
 ];
 
 const ChartComponent: React.FC = () => (
   <div>
     <h2>장르별 조회수</h2>
     <BarChart
-      width={1200}
+      width={1000}
       height={400}
       data={data}
       margin={{ top: 20, right: 30, left: 20, bottom: 40 }}

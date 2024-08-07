@@ -30,7 +30,7 @@ const SideMenu: React.FC = () => {
         </li>
         <li>
           <NavLink
-            to="/dashboard/insertMovie"
+            to="/upload"
             className={({ isActive }) =>
               `${styles.menuItem} ${isActive ? styles.activeMenuItem : ''}`
             }
