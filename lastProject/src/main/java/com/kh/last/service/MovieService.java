@@ -25,7 +25,7 @@ public class MovieService {
     private String awsS3BucketName;
 
     public Movie uploadMovie(MultipartFile file, MultipartFile thumbnail, String title, String director, String cast,
-            int releaseYear, String synopsis, String tags) throws IOException {
+            int releaseYear, String synopsis, float rating, String tags) throws IOException {
         String videoKey = file.getOriginalFilename();
         String thumbnailKey = thumbnail.getOriginalFilename();
 
@@ -34,6 +34,7 @@ public class MovieService {
 
         String videoUrl = amazonS3.getUrl(awsS3BucketName, videoKey).toString();
         String thumbnailUrl = amazonS3.getUrl(awsS3BucketName, thumbnailKey).toString();
+        
 
         Movie movie = new Movie();
         movie.setTitle(title);
@@ -41,7 +42,7 @@ public class MovieService {
         movie.setReleaseYear(releaseYear);
         movie.setUrl(videoUrl);
         movie.setThumbnailUrl(thumbnailUrl);
-        movie.setRating(0.0f); // 기본값으로 0.0 설정
+        movie.setRating(rating); // 기본값으로 0.0 설정
         movie.setGenre(""); // 기본값으로 빈 문자열 설정
 
         // JSON 문자열로 변환하여 설정

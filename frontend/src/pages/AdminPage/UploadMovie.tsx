@@ -23,7 +23,7 @@ const UploadMovie: React.FC = () => {
   const [director, setDirector] = useState<string>('');
   const [actors, setActors] = useState<string>('');
   const [releaseYear, setReleaseYear] = useState<string>('');
-  const [rating, setRating] = useState<string>('');
+  const [rating, setRating] = useState<number | null>(null); // 변경된 부분
 
   const [displayTitle, setDisplayTitle] = useState<string>('');
   const [displayDirector, setDisplayDirector] = useState<string>('');
@@ -113,14 +113,15 @@ const UploadMovie: React.FC = () => {
   };
 
   const handleAddRating = () => {
-    if (rating.trim()) {
-      setDisplayRating(rating.trim());
+    if (rating !== null && !isNaN(rating)) { // 숫자 확인
+      setDisplayRating(rating.toString());
       setIsEditingRating(false);
-      setRating('');
+      // rating 상태를 업데이트하지 않고, 이미 입력된 값을 유지하는 방식으로 변경
     } else {
       setIsEditingRating(true);
     }
   };
+  
 
   const handleRemoveTitle = () => {
     setDisplayTitle('');
@@ -156,26 +157,28 @@ const UploadMovie: React.FC = () => {
     formData.append('cast', displayActors);
     formData.append('releaseYear', displayReleaseYear);
     formData.append('synopsis', '');
-    formData.append('tags', Array.from(selectedGenres).join(',')); // 콤마로 구분된 문자열로 변환
 
+      formData.append('rating', displayRating);
+
+    formData.append('tags', Array.from(selectedGenres).join(',')); // Comma-separated string
     try {
       const response = await fetch('http://localhost:8088/api/movies/upload', {
         method: 'POST',
         body: formData,
       });
-
+  
       if (!response.ok) {
         const errorText = await response.text();
         throw new Error(`Network response was not ok: ${errorText}`);
       }
-
+  
       const result = await response.json();
       console.log('Success:', result);
     } catch (error) {
       console.error('Error:', error);
     }
   };
-
+  
 
 
   return (
@@ -245,9 +248,9 @@ const UploadMovie: React.FC = () => {
         <div className="input-group">
           <label>별점</label>
           <input
-            type="text"
-            value={rating}
-            onChange={(e) => setRating(e.target.value)}
+            type="number"
+            value={displayRating !== null ? displayRating : ''}
+            onChange={(e) => setDisplayRating(e.target.value)}
             placeholder="별점 입력"
           />
           {isEditingRating ? (
