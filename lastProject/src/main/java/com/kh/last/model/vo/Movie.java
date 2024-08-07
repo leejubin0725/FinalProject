@@ -28,7 +28,7 @@ public class Movie {
 
     @Lob
     private String tags;  // JSON 문자열 형태로 저장
-
+    
     @Transient
     private List<String> tagList;
 
