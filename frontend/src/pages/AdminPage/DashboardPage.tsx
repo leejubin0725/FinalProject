@@ -9,6 +9,7 @@ import MemverManage from '../../../src/components/AdminPage/MemberManage';
 import ManageFAQ from '../../../src/components/AdminPage/ManageFAQ';
 import InsertFAQ from '../../../src/components/AdminPage/InsertFAQ';
 import ChattingList from '../../../src/components/AdminPage/ChattingList';
+import UploadMovie from './UploadMovie';
 
 const DashboardPage: React.FC = () => {
   return (
@@ -23,11 +24,12 @@ const DashboardPage: React.FC = () => {
 
             {/* 하위 경로들: /dashboard/... */}
             <Route path="/movieManage" element={<MovieManage />} />
-            <Route path="/insertMovie" element={<ManageMain />} />
+            <Route path="/insertMovie" element={<UploadMovie />} />
             <Route path="/memberManage" element={<MemverManage />} />
             <Route path="/FAQManage" element={<ManageFAQ />} />
             <Route path="/FAQManage/:page" element={<ManageFAQ />} />
             <Route path="/FAQManage/InsertFAQ" element={<InsertFAQ />} />
+            <Route path="/FAQManage/InsertFAQ/:id" element={<InsertFAQ />} />
             <Route path="/1on1chat" element={<ChattingList />} />
           </Routes>
         </div>

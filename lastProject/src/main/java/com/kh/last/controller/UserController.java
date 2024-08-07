@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.last.model.vo.USERS;
 import com.kh.last.service.UserService;
+import com.kh.last.service.VisitService;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -23,6 +24,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    
+    @Autowired
+    private VisitService visitService;
 
     @PostMapping("/register")
     public ResponseEntity<?> createUser(@RequestBody UserCreateRequest request) {
@@ -59,10 +63,12 @@ public class UserController {
         boolean exists = userService.emailExists(request.getEmail());
         return ResponseEntity.ok(new EmailCheckResponse(exists));
     }
+    
     @PostMapping("/check-password")
     public ResponseEntity<?> checkPassword(@RequestBody PasswordRequest request) {
         try {
             boolean isValid = userService.checkPassword(request.getPassword());
+            visitService.updateVisitCount();
             return ResponseEntity.ok(new PasswordResponse(isValid));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while checking the password.");

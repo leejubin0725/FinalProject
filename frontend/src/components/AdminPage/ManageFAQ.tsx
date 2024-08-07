@@ -3,155 +3,17 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import styles from '../../pages/AdminPage/css/DashboardPage.module.css';
 import Pagination from './Pagination'; // 공통 컴포넌트 호출
+import axios from 'axios';
 
-interface FAQItem {
+interface Faq {
     id: number;
     question: string;
     answer: string;
-    date: string;
+    insertDate: string; // LocalDate를 문자열로 처리
 }
 
-const data: FAQItem[] = [
-    {
-        id: 1,
-        question: "하나의 계정으로 여러 기기에서 사용할 수 있나요?",
-        answer: "네, 하나의 계정으로 최대 4대의 기기에서 동시에 시청이 가능합니다. 단, 요금제에 따라 시청 가능한 기기 수는 다를 수 있습니다.",
-        date: "2024.08.05",
-    },
-    {
-        id: 2,
-        question: "하나의 계정으로 여러 기기에서 사용할 수 있나요?",
-        answer: "네, 하나의 계정으로 최대 4대의 기기에서 동시에 시청이 가능합니다. 단, 요금제에 따라 시청 가능한 기기 수는 다를 수 있습니다.",
-        date: "2024.08.05",
-    },
-    {
-        id: 3,
-        question: "하나의 계정으로 여러 기기에서 사용할 수 있나요?",
-        answer: "네, 하나의 계정으로 최대 4대의 기기에서 동시에 시청이 가능합니다. 단, 요금제에 따라 시청 가능한 기기 수는 다를 수 있습니다.",
-        date: "2024.08.05",
-    },
-    {
-        id: 4,
-        question: "하나의 계정으로 여러 기기에서 사용할 수 있나요?",
-        answer: "네, 하나의 계정으로 최대 4대의 기기에서 동시에 시청이 가능합니다. 단, 요금제에 따라 시청 가능한 기기 수는 다를 수 있습니다.",
-        date: "2024.08.05",
-    },
-    {
-        id: 5,
-        question: "하나의 계정으로 여러 기기에서 사용할 수 있나요?",
-        answer: "네, 하나의 계정으로 최대 4대의 기기에서 동시에 시청이 가능합니다. 단, 요금제에 따라 시청 가능한 기기 수는 다를 수 있습니다.",
-        date: "2024.08.05",
-    },
-    {
-        id: 6,
-        question: "하나의 계정으로 여러 기기에서 사용할 수 있나요?",
-        answer: "네, 하나의 계정으로 최대 4대의 기기에서 동시에 시청이 가능합니다. 단, 요금제에 따라 시청 가능한 기기 수는 다를 수 있습니다.",
-        date: "2024.08.05",
-    },
-    {
-        id: 7,
-        question: "하나의 계정으로 여러 기기에서 사용할 수 있나요?",
-        answer: "네, 하나의 계정으로 최대 4대의 기기에서 동시에 시청이 가능합니다. 단, 요금제에 따라 시청 가능한 기기 수는 다를 수 있습니다.",
-        date: "2024.08.05",
-    }, {
-        id: 8,
-        question: "하나의 계정으로 여러 기기에서 사용할 수 있나요?",
-        answer: "네, 하나의 계정으로 최대 4대의 기기에서 동시에 시청이 가능합니다. 단, 요금제에 따라 시청 가능한 기기 수는 다를 수 있습니다.",
-        date: "2024.08.05",
-    }, {
-        id: 9,
-        question: "하나의 계정으로 여러 기기에서 사용할 수 있나요?",
-        answer: "네, 하나의 계정으로 최대 4대의 기기에서 동시에 시청이 가능합니다. 단, 요금제에 따라 시청 가능한 기기 수는 다를 수 있습니다.",
-        date: "2024.08.05",
-    },
-    {
-        id: 10,
-        question: "하나의 계정으로 여러 기기에서 사용할 수 있나요?",
-        answer: "네, 하나의 계정으로 최대 4대의 기기에서 동시에 시청이 가능합니다. 단, 요금제에 따라 시청 가능한 기기 수는 다를 수 있습니다.",
-        date: "2024.08.05",
-    },
-    {
-        id: 11,
-        question: "하나의 계정으로 여러 기기에서 사용할 수 있나요?",
-        answer: "네, 하나의 계정으로 최대 4대의 기기에서 동시에 시청이 가능합니다. 단, 요금제에 따라 시청 가능한 기기 수는 다를 수 있습니다.",
-        date: "2024.08.05",
-    },
-    {
-        id: 12,
-        question: "하나의 계정으로 여러 기기에서 사용할 수 있나요?",
-        answer: "네, 하나의 계정으로 최대 4대의 기기에서 동시에 시청이 가능합니다. 단, 요금제에 따라 시청 가능한 기기 수는 다를 수 있습니다.",
-        date: "2024.08.05",
-    },
-    {
-        id: 13,
-        question: "하나의 계정으로 여러 기기에서 사용할 수 있나요?",
-        answer: "네, 하나의 계정으로 최대 4대의 기기에서 동시에 시청이 가능합니다. 단, 요금제에 따라 시청 가능한 기기 수는 다를 수 있습니다.",
-        date: "2024.08.05",
-    },
-    {
-        id: 14,
-        question: "하나의 계정으로 여러 기기에서 사용할 수 있나요?",
-        answer: "네, 하나의 계정으로 최대 4대의 기기에서 동시에 시청이 가능합니다. 단, 요금제에 따라 시청 가능한 기기 수는 다를 수 있습니다.",
-        date: "2024.08.05",
-    },
-    {
-        id: 15,
-        question: "하나의 계정으로 여러 기기에서 사용할 수 있나요?",
-        answer: "네, 하나의 계정으로 최대 4대의 기기에서 동시에 시청이 가능합니다. 단, 요금제에 따라 시청 가능한 기기 수는 다를 수 있습니다.",
-        date: "2024.08.05",
-    },
-    {
-        id: 16,
-        question: "하나의 계정으로 여러 기기에서 사용할 수 있나요?",
-        answer: "네, 하나의 계정으로 최대 4대의 기기에서 동시에 시청이 가능합니다. 단, 요금제에 따라 시청 가능한 기기 수는 다를 수 있습니다.",
-        date: "2024.08.05",
-    },
-    {
-        id: 17,
-        question: "하나의 계정으로 여러 기기에서 사용할 수 있나요?",
-        answer: "네, 하나의 계정으로 최대 4대의 기기에서 동시에 시청이 가능합니다. 단, 요금제에 따라 시청 가능한 기기 수는 다를 수 있습니다.",
-        date: "2024.08.05",
-    },
-    {
-        id: 18,
-        question: "하나의 계정으로 여러 기기에서 사용할 수 있나요?",
-        answer: "네, 하나의 계정으로 최대 4대의 기기에서 동시에 시청이 가능합니다. 단, 요금제에 따라 시청 가능한 기기 수는 다를 수 있습니다.",
-        date: "2024.08.05",
-    },
-    {
-        id: 19,
-        question: "하나의 계정으로 여러 기기에서 사용할 수 있나요?",
-        answer: "네, 하나의 계정으로 최대 4대의 기기에서 동시에 시청이 가능합니다. 단, 요금제에 따라 시청 가능한 기기 수는 다를 수 있습니다.",
-        date: "2024.08.05",
-    },
-    {
-        id: 20,
-        question: "하나의 계정으로 여러 기기에서 사용할 수 있나요?",
-        answer: "네, 하나의 계정으로 최대 4대의 기기에서 동시에 시청이 가능합니다. 단, 요금제에 따라 시청 가능한 기기 수는 다를 수 있습니다.",
-        date: "2024.08.05",
-    },
-    {
-        id: 21,
-        question: "하나의 계정으로 여러 기기에서 사용할 수 있나요?",
-        answer: "네, 하나의 계정으로 최대 4대의 기기에서 동시에 시청이 가능합니다. 단, 요금제에 따라 시청 가능한 기기 수는 다를 수 있습니다.",
-        date: "2024.08.05",
-    },
-    {
-        id: 22,
-        question: "하나의 계정으로 여러 기기에서 사용할 수 있나요?",
-        answer: "네, 하나의 계정으로 최대 4대의 기기에서 동시에 시청이 가능합니다. 단, 요금제에 따라 시청 가능한 기기 수는 다를 수 있습니다.",
-        date: "2024.08.05",
-    },
-    {
-        id: 23,
-        question: "하나의 계정으로 여러 기기에서 사용할 수 있나요?",
-        answer: "네, 하나의 계정으로 최대 4대의 기기에서 동시에 시청이 가능합니다. 단, 요금제에 따라 시청 가능한 기기 수는 다를 수 있습니다.",
-        date: "2024.08.05",
-    }
-    // 추가적인 데이터들...
-];
-
 export default function ManageFAQ() {
+    const [data, setData] = useState<Faq[]>([]);
     const { page } = useParams<{ page: string }>();
     const navigate = useNavigate();
 
@@ -165,12 +27,37 @@ export default function ManageFAQ() {
         }
     }, [page]);
 
+    useEffect(() => {
+        const fetchFAQ = async () => {
+            try {
+                const response = await axios.get<Faq[]>('http://localhost:8088/dashboard/getFaq');
+                // 변환된 날짜 문자열로 처리
+                const updatedData = response.data.map(item => ({
+                    ...item,
+                    insertDate: item.insertDate.toString() // 날짜를 문자열로 변환
+                }));
+                setData(updatedData);
+            } catch (error) {
+                console.error("Failed to get FAQ", error);
+            }
+        };
+
+        fetchFAQ();
+    }, []);
+
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
     };
 
     const handleSearchClick = () => {
         console.log("검색어:", searchTerm);
+    };
+
+    const handleEditClick = (id: number) => {
+        const selectedFAQ = data.find(item => item.id === id);
+        if (selectedFAQ) {
+            navigate(`/dashboard/FAQManage/InsertFAQ/${id}`, { state: { question: selectedFAQ.question, answer: selectedFAQ.answer } });
+        }
     };
 
     const indexOfLastItem = currentPage * itemsPerPage;
@@ -226,8 +113,8 @@ export default function ManageFAQ() {
                                 <td>{item.id}</td>
                                 <td>{item.question}</td>
                                 <td>{item.answer}</td>
-                                <td>{item.date}</td>
-                                <td><button>수정하기</button></td>
+                                <td>{item.insertDate}</td> {/* 날짜 표시 */}
+                                <td><button onClick={() => handleEditClick(item.id)}>수정하기</button></td>
                             </tr>
                         ))}
                     </tbody>

@@ -1,11 +1,11 @@
 import ChartComponent from './ChartComponent';
 import styles from '../../pages/AdminPage/css/DashboardPage.module.css';
-import EmployeeComposition from './EmployeeComposition';
+import VisitCount from './VisitCount';
 import EmployeeStatus from './EmployeeStatus';
-import JobApplied from './JobApplied';
-import JobView from './JobView';
-import TotalEmployees from './TotalEmployees';
+import TotalMovie from './TotalMovie';
 import TotalViews from './TotalViews';
+import TodayVisit from './TodayVisit';
+import TotalUsers from './TotalUsers';
 
 export default function ManageMain() {
   return (
@@ -13,13 +13,13 @@ export default function ManageMain() {
       {/* 왼쪽 컬럼: 네 개의 카드 */}
       <div className={styles.leftColumn}>
         <div className={`${styles.card} ${styles.leftCard}`}>
-          <TotalEmployees />
+          <TotalUsers />
         </div>
         <div className={`${styles.card} ${styles.leftCard}`}>
-          <JobView />
+          <TodayVisit />
         </div>
         <div className={`${styles.card} ${styles.leftCard}`}>
-          <JobApplied />
+          <TotalMovie />
         </div>
         <div className={`${styles.card} ${styles.leftCard}`}>
           <TotalViews />
@@ -36,7 +36,7 @@ export default function ManageMain() {
         {/* 방문자 수 변동량과 최근 많이 본 영화 */}
         <div className={styles.row}>
           <div className={`${styles.card} ${styles.halfWidth}`}>
-            <EmployeeComposition />
+            <VisitCount />
           </div>
           <div className={`${styles.card} ${styles.halfWidthSmaller}`}>
             <EmployeeStatus />
