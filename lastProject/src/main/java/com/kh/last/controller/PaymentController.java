@@ -1,20 +1,22 @@
+// PaymentController.java
+
 package com.kh.last.controller;
 
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.last.service.PaymentService;
 import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
 
-@Controller
+@RestController
 @RequestMapping("/paypal")
 public class PaymentController {
 
@@ -41,20 +43,20 @@ public class PaymentController {
     }
 
     @GetMapping("/success")
-    public String successPay(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId) {
+    public ResponseEntity<Void> successPay(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId) {
         try {
             Payment payment = paymentService.executePayment(paymentId, payerId);
             if (payment.getState().equals("approved")) {
-                return "success";
+                return ResponseEntity.status(302).header("Location", "http://localhost:3000/home").build();
             }
         } catch (PayPalRESTException e) {
             e.printStackTrace();
         }
-        return "redirect:/";
+        return ResponseEntity.status(500).body(null);
     }
 
     @GetMapping("/cancel")
-    public String cancelPay() {
-        return "cancel";
+    public ResponseEntity<String> cancelPay() {
+        return ResponseEntity.ok("Payment cancelled");
     }
 }

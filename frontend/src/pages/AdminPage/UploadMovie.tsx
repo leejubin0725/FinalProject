@@ -156,7 +156,7 @@ const UploadMovie: React.FC = () => {
     formData.append('cast', displayActors);
     formData.append('releaseYear', displayReleaseYear);
     formData.append('synopsis', '');
-    formData.append('tags', Array.from(selectedGenres).join(','));
+    formData.append('tags', Array.from(selectedGenres).join(',')); // 콤마로 구분된 문자열로 변환
 
     try {
       const response = await fetch('http://localhost:8088/api/movies/upload', {
@@ -172,9 +172,10 @@ const UploadMovie: React.FC = () => {
       const result = await response.json();
       console.log('Success:', result);
     } catch (error) {
-      console.error('Error:', error); // error 객체 전체를 로그로 남김
+      console.error('Error:', error);
     }
   };
+
 
 
   return (

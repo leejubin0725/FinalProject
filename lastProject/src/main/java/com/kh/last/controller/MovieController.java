@@ -6,7 +6,7 @@ import java.util.Optional;
 
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable; // 추가
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,21 +24,22 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/movies")
 public class MovieController {
     private final MovieService movieService;
-    private final MovieRepository movieRepository; // 추가
+    private final MovieRepository movieRepository;
     
     @PostMapping("/upload")
     public Movie uploadMovie(
-        @RequestParam("file") MultipartFile file,
-        @RequestParam("thumbnail") MultipartFile thumbnail,
-        @RequestParam("title") String title,
-        @RequestParam("director") String director,
-        @RequestParam("cast") String cast,
-        @RequestParam("releaseYear") int releaseYear,
-        @RequestParam("synopsis") String synopsis,
-        @RequestParam("tags") String tags) throws IOException {
-        
-        return movieService.uploadMovie(file, thumbnail, title, director, cast, releaseYear, synopsis, tags);
-    }
+    	    @RequestParam("file") MultipartFile file,
+    	    @RequestParam("thumbnail") MultipartFile thumbnail,
+    	    @RequestParam("title") String title,
+    	    @RequestParam("director") String director,
+    	    @RequestParam("cast") String cast,
+    	    @RequestParam("releaseYear") int releaseYear,
+    	    @RequestParam("synopsis") String synopsis,
+    	    @RequestParam("rating") float rating, // Default value
+    	    @RequestParam("tags") String tags) throws IOException {
+
+    	    return movieService.uploadMovie(file, thumbnail, title, director, cast, releaseYear, synopsis, rating, tags);
+    	}
 
     @GetMapping
     public List<Movie> getAllMovies() {

@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import ReactPlayer from 'react-player';
 import { Box, IconButton, Slider, Typography } from '@mui/material';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
@@ -20,6 +19,8 @@ interface Movie {
   thumbnailUrl: string;
   tags: string[];
   genre: string;
+  castList: string[];
+  tagList: string[];
 }
 
 const MovieDetailPage: React.FC = () => {
@@ -27,18 +28,19 @@ const MovieDetailPage: React.FC = () => {
   const [movie, setMovie] = useState<Movie | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const playerRef = useRef<ReactPlayer>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const controlsRef = useRef<HTMLDivElement>(null);
   const [playing, setPlaying] = useState(false);
-  const [volume, setVolume] = useState(80); // 음량은 1에서 100 사이로 설정
-  const [previousVolume, setPreviousVolume] = useState(80);
+  const [volume, setVolume] = useState(0.7);
+  const [previousVolume, setPreviousVolume] = useState(0);
   const [muted, setMuted] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
   const [played, setPlayed] = useState(0);
   const [duration, setDuration] = useState(0);
   const [showVolumeSlider, setShowVolumeSlider] = useState(false);
   const volumeSliderTimeoutRef = useRef<number | null>(null);
+  const hideControlsTimeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
     if (movieId) {
@@ -46,43 +48,66 @@ const MovieDetailPage: React.FC = () => {
       if (!isNaN(movieIdNumber)) {
         axios.get(`http://localhost:8088/api/movies/${movieIdNumber}`)
           .then(response => {
+            console.log(response.data); // 응답 데이터 확인
             setMovie(response.data);
             setLoading(false);
           })
           .catch(error => {
-            setError(error.response?.data?.message || 'Error loading movie details');
+            console.error(error); // 에러 로그 출력
+            setError(error.response?.data?.message || '영화 세부 정보를 로드하는 중 오류가 발생했습니다.');
             setLoading(false);
           });
       } else {
-        setError('Movie ID is not a valid number');
+        setError('유효한 숫자가 아닌 영화 ID입니다.');
         setLoading(false);
       }
     } else {
-      setError('Movie ID is missing');
+      setError('영화 ID가 누락되었습니다.');
       setLoading(false);
     }
   }, [movieId]);
 
+  useEffect(() => {
+    if (movie && videoRef.current) {
+      videoRef.current.src = movie.url;
+    }
+  }, [movie]);
+
   const handlePlayPause = () => {
     setPlaying(prev => !prev);
+    if (videoRef.current) {
+      if (playing) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play();
+      }
+    }
   };
 
   const handleVolumeChange = (event: Event, newValue: number | number[]) => {
-    const maxSliderValue = 72; // 슬라이더의 최대 값
-    const adjustedVolume = Math.min(newValue as number, maxSliderValue); // 슬라이더의 값을 최대 72로 제한
-    const actualVolume = Math.round(adjustedVolume / maxSliderValue * 100); // 실제 볼륨 값 (1 ~ 100)
-    setVolume(actualVolume);
-    setMuted(false);
+    const maxSliderValue = 0.92;
+    const adjustedVolume = Math.min(newValue as number, maxSliderValue);
+    setVolume(adjustedVolume);
+    setMuted(adjustedVolume === 0);
+    if (videoRef.current) {
+      videoRef.current.volume = adjustedVolume;
+    }
   };
 
   const handleMute = () => {
     if (muted) {
       setVolume(previousVolume);
       setMuted(false);
+      if (videoRef.current) {
+        videoRef.current.volume = previousVolume;
+      }
     } else {
       setPreviousVolume(volume);
       setVolume(0);
       setMuted(true);
+      if (videoRef.current) {
+        videoRef.current.volume = 0;
+      }
     }
   };
 
@@ -108,28 +133,33 @@ const MovieDetailPage: React.FC = () => {
     setFullscreen(!fullscreen);
   };
 
-  const handleProgress = (state: { played: number }) => {
-    setPlayed(state.played);
+  const handleProgress = () => {
+    if (videoRef.current && !isNaN(videoRef.current.duration)) {
+      setPlayed(videoRef.current.currentTime / videoRef.current.duration);
+    }
   };
 
-  const handleDuration = (duration: number) => {
-    setDuration(duration);
+  const handleDuration = () => {
+    if (videoRef.current && !isNaN(videoRef.current.duration)) {
+      setDuration(videoRef.current.duration);
+    }
   };
 
   const handleSeekChange = (event: Event, newValue: number | number[]) => {
-    if (playerRef.current) {
-      playerRef.current.seekTo(newValue as number, 'fraction');
+    if (videoRef.current) {
+      videoRef.current.currentTime = (newValue as number) * videoRef.current.duration;
+      setPlayed(newValue as number);
     }
   };
 
   const handleForward10 = () => {
-    if (playerRef.current) {
-      const currentTime = playerRef.current.getCurrentTime();
+    if (videoRef.current) {
+      const currentTime = videoRef.current.currentTime;
       const remainingTime = duration - currentTime;
       if (remainingTime > 10) {
-        playerRef.current.seekTo(currentTime + 10, 'seconds');
+        videoRef.current.currentTime = currentTime + 10;
       } else {
-        playerRef.current.seekTo(duration, 'seconds');
+        videoRef.current.currentTime = duration;
         setPlaying(false);
       }
     }
@@ -175,16 +205,38 @@ const MovieDetailPage: React.FC = () => {
     if (controlsRef.current) {
       controlsRef.current.classList.add(styles.visible);
     }
+    document.body.style.cursor = 'default';
   };
 
   const hideControls = () => {
     if (controlsRef.current) {
       controlsRef.current.classList.remove(styles.visible);
     }
+    document.body.style.cursor = 'none';
   };
 
+  const handleMouseMove = () => {
+    if (hideControlsTimeoutRef.current) {
+      clearTimeout(hideControlsTimeoutRef.current);
+    }
+    showControls();
+    hideControlsTimeoutRef.current = window.setTimeout(hideControls, 4000);
+  };
+
+  useEffect(() => {
+    if (fullscreen) {
+      document.addEventListener('mousemove', handleMouseMove);
+    } else {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.body.style.cursor = 'default';
+    }
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, [fullscreen]);
+
   if (loading) {
-    return <div className={styles.loading}>Loading...</div>;
+    return <div className={styles.loading}>로딩 중...</div>;
   }
 
   if (error) {
@@ -192,7 +244,7 @@ const MovieDetailPage: React.FC = () => {
   }
 
   if (!movie) {
-    return <div className={styles.error}>Movie not found</div>;
+    return <div className={styles.error}>영화를 찾을 수 없습니다.</div>;
   }
 
   return (
@@ -205,18 +257,13 @@ const MovieDetailPage: React.FC = () => {
         {movie.title}
       </Typography>
       <Box className={styles.playerWrapper} ref={wrapperRef}>
-        <ReactPlayer
-          ref={playerRef}
+        <video
+          ref={videoRef}
           className={styles.reactPlayer}
-          url={movie.url}
-          playing={playing}
-          volume={volume / 100}
-          muted={muted}
           controls={false}
-          width="100%"
-          height="100%"
-          onProgress={handleProgress}
-          onDuration={handleDuration}
+          onTimeUpdate={handleProgress}
+          onLoadedMetadata={handleDuration}
+          autoPlay
         />
         <Box
           className={styles.controls}
@@ -225,14 +272,14 @@ const MovieDetailPage: React.FC = () => {
           <IconButton onClick={handlePlayPause} className={styles.controlButton} sx={{ color: 'white' }}>
             {playing ? <PauseIcon /> : <PlayArrowIcon />}
           </IconButton>
-          <IconButton onClick={() => playerRef.current?.seekTo(played - 10, 'seconds')} className={styles.controlButton} sx={{ color: 'white' }}>
+          <IconButton onClick={() => videoRef.current!.currentTime -= 10} className={styles.controlButton} sx={{ color: 'white' }}>
             <Replay10Icon />
           </IconButton>
           <IconButton onClick={handleForward10} className={styles.controlButton} sx={{ color: 'white' }}>
             <Forward10Icon />
           </IconButton>
           <Slider
-            value={played}
+            value={isNaN(played) ? 0 : played}
             onChange={handleSeekChange}
             aria-labelledby="progress-slider"
             className={styles.progressSlider}
@@ -251,27 +298,28 @@ const MovieDetailPage: React.FC = () => {
             </IconButton>
             <Slider
               orientation="vertical"
-              value={muted ? 0 : (volume / 100) * 72} // 슬라이더의 값을 실제 볼륨 값에 맞게 변환
+              value={muted ? 0 : volume}
               onChange={handleVolumeChange}
               aria-labelledby="continuous-slider"
               className={styles.volumeSlider}
               min={0}
-              max={72} // 슬라이더의 최대 값을 72로 설정
-              step={1}
+              max={1}
+              step={0.01}
               sx={{
-                width: '6px', // 너비를 조정합니다.
-                height: '80px', // 높이를 조정합니다.
+                width: '6px',
+                height: '80px',
                 '& .MuiSlider-thumb': {
-                  width: '12px', // thumb의 크기를 조정합니다.
+                  width: '12px',
                   height: '12px',
+                  backgroundColor: "#d6a060",
                 },
                 '& .MuiSlider-track': {
                   border: 'none',
-                  backgroundColor: '#d6a060', // track의 색상을 조정합니다.
+                  backgroundColor: '#d6a060',
                 },
                 '& .MuiSlider-rail': {
                   opacity: 0.5,
-                  backgroundColor: '#bfbfbf', // rail의 색상을 조정합니다.
+                  backgroundColor: '#bfbfbf',
                 },
               }}
             />
@@ -287,6 +335,22 @@ const MovieDetailPage: React.FC = () => {
       <Typography variant="body1" className={styles.description}>
         {movie.description}
       </Typography>
+      <Typography variant="h6" className={styles.subtitle}>
+        배우
+      </Typography>
+      <ul className={styles.list}>
+        {movie.castList.map((actor, index) => (
+          <li key={index} className={styles.listItem}>{actor}</li>
+        ))}
+      </ul>
+      <Typography variant="h6" className={styles.subtitle}>
+        태그
+      </Typography>
+      <ul className={styles.list}>
+        {movie.tagList.map((tag, index) => (
+          <li key={index} className={styles.listItem}>{tag}</li>
+        ))}
+      </ul>
     </Box>
   );
 };
