@@ -27,8 +27,8 @@ public class LastProjectApplication {
 
         System.setProperty("SMTP_HOST", dotenv.get("SMTP_HOST"));
         System.setProperty("SMTP_PORT", dotenv.get("SMTP_PORT"));
-        System.setProperty("SMTP_USERNAME", dotenv.get("SMTP_USERNAME"));
-        System.setProperty("SMTP_PASSWORD", dotenv.get("SMTP_PASSWORD"));
+        //System.setProperty("SMTP_USERNAME", dotenv.get("SMTP_USERNAME"));
+        //System.setProperty("SMTP_PASSWORD", dotenv.get("SMTP_PASSWORD"));
 
         SpringApplication.run(LastProjectApplication.class, args);
     }
