@@ -18,6 +18,7 @@ import Pwlogin from "./components/BeforePage/PasswordLogin-form";
 import PwloginPage from "./pages/BeforePage/PwLogin";
 import PwLogin from "./pages/BeforePage/PwLogin";
 
+
 function App() {
   const location = useLocation();
   const pathname = location.pathname;
