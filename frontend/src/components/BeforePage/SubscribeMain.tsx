@@ -1,4 +1,5 @@
-import { FunctionComponent } from "react";
+// src/components/SubscribeMain.tsx
+import React, { FunctionComponent } from "react";
 import axios from "axios";
 import styles from "./css/SubscribeMain.module.css";
 
@@ -62,7 +63,7 @@ const SubscribeMain: FunctionComponent<MainType> = ({ className = "" }) => {
                 <div className={styles.buttonsContainer}>
                   <button
                     className={styles.button}
-                    onClick={() => initiatePayment(2000)}
+                    onClick={() => initiatePayment(2)}
                   >
                     <div className={styles.text1}>구독하기</div>
                   </button>

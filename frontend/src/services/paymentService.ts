@@ -3,7 +3,12 @@ import axios from 'axios';
 
 const initiatePayment = async (amount: number) => {
   try {
-    const response = await axios.post('/paypal/pay', { sum: amount });
+    const response = await axios.post('http://localhost:8088/paypal/pay', null, {
+      params: {
+        sum: amount,
+      },
+    });
+
     if (response.status === 200 && response.data.redirectUrl) {
       window.location.href = response.data.redirectUrl;
     } else {
