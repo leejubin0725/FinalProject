@@ -4,19 +4,19 @@ import {
   Route,
   useLocation,
 } from "react-router-dom";
-import Signin from "./pages/SignInPage";
-import Landing from "./pages/MainPage";
-import HomePage from "./pages/HomePage";
-import DashboardPage from "./pages/DashboardPage";
-import UploadMovie from "./pages/UploadMovie";
-import MovieDetailPage from "./pages/MovieDetailPage";
-import Account from "./pages/Account";
-import AccountDelete from "./components/AccountDelete";
-import LoginPage from "./pages/LoginPage";
-import SubscribePage from "./pages/SubscribePage";
-import Pwlogin from "./components/PasswordLogin-form";
-import PwloginPage from "./pages/PwLogin";
-import PwLogin from "./pages/PwLogin";
+import Signin from "./pages/BeforePage/SignInPage";
+import Landing from "./pages/BeforePage/MainPage";
+import HomePage from "./pages/HomePage/HomePage";
+import DashboardPage from "./pages/AdminPage/DashboardPage";
+import UploadMovie from "./pages/AdminPage/UploadMovie";
+import MovieDetailPage from "./pages/HomePage/MovieDetailPage";
+import Account from "./pages/MyPage/Account";
+import AccountDelete from "./components/Mypage/AccountDelete";
+import LoginPage from "./pages/BeforePage/LoginPage";
+import SubscribePage from "./pages/BeforePage/SubscribePage";
+import Pwlogin from "./components/BeforePage/PasswordLogin-form";
+import PwloginPage from "./pages/BeforePage/PwLogin";
+import PwLogin from "./pages/BeforePage/PwLogin";
 
 function App() {
   const location = useLocation();
@@ -83,8 +83,8 @@ function App() {
       <Route path="/account" element={<Account />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/subscribe" element={<SubscribePage />} />
-      <Route path="/passwordlogin" element={<PwLogin/>} />
-      
+      <Route path="/passwordlogin" element={<PwLogin />} />
+
     </Routes>
   );
 }
