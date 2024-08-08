@@ -227,6 +227,10 @@ const MovieDetailPage: React.FC = () => {
     hideControlsTimeoutRef.current = window.setTimeout(hideControls, 5000);
   };
 
+  const handleEnded = () => {
+    setPlaying(false);
+  };
+
   useEffect(() => {
     if (fullscreen) {
       document.addEventListener('mousemove', handleMouseMove);
@@ -344,6 +348,7 @@ const MovieDetailPage: React.FC = () => {
           controls={false}
           onTimeUpdate={handleProgress}
           onLoadedMetadata={handleDuration}
+          onEnded={handleEnded}
           autoPlay
         />
         <Box
