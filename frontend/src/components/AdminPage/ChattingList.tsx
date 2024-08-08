@@ -72,7 +72,7 @@ export default function ChattingList() {
                 paginate={paginate}
                 currentPage={currentPage}
             />
-            <Chatting isOpen={isModalOpen} onClose={closeModal} chatContent={currentChat} />
+            <Chatting isOpen={isModalOpen} onClose={closeModal} chatContent={currentChat} state={'admin'} />
         </div>
     );
 }

@@ -1,9 +1,5 @@
 import { useEffect } from "react";
-import {
-  Routes,
-  Route,
-  useLocation,
-} from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Signin from "./pages/BeforePage/SignInPage";
 import Landing from "./pages/BeforePage/MainPage";
 import HomePage from "./pages/HomePage/HomePage";
@@ -15,6 +11,7 @@ import LoginPage from "./pages/BeforePage/LoginPage";
 import SubscribePage from "./pages/BeforePage/SubscribePage";
 import PwLogin from "./pages/BeforePage/PwLogin";
 import HelpPage from "./pages/MyPage/Help";
+
 import Profiles from "./pages/BeforePage/Profiles";
 
 
@@ -85,7 +82,9 @@ function App() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/subscribe" element={<SubscribePage />} />
       <Route path="/passwordlogin" element={<PwLogin />} />
+
       <Route path="/profiles" element={<Profiles />} />
+
     </Routes>
   );
 }

@@ -25,7 +25,7 @@ const data = [
   // 추가 데이터
 ];
 
-const EmployeeStatus = () => {
+const RecentMostView = () => {
   return (
     <div>
       <h2>최근 많이 본 영화 (1주일 내 100건 이상)</h2>
@@ -55,4 +55,4 @@ const EmployeeStatus = () => {
   );
 };
 
-export default EmployeeStatus;
+export default RecentMostView;
