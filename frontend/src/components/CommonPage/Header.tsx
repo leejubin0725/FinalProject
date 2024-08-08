@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styles from './css/Header.module.css';
 
@@ -11,6 +11,7 @@ export type HeaderProps = {
 const Header: React.FC<HeaderProps> = ({ className = "", onSearchClick }) => {
   const [selectedProfile, setSelectedProfile] = useState<string>('/profile.png');
   const [user, setUser] = useState<any>(null);
+  const navigate = useNavigate(); // useNavigate를 사용하여 페이지 이동을 처리합니다.
 
   useEffect(() => {
     // Fetch the current user when the component mounts
@@ -35,6 +36,15 @@ const Header: React.FC<HeaderProps> = ({ className = "", onSearchClick }) => {
 
   const handleTemporaryLogin = () => {
     // Implement temporary login logic here
+  };
+
+  const handleLogout = () => {
+    // Clear local storage
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userData');
+
+    // Redirect to login page
+    navigate('/login');
   };
 
   return (
@@ -120,9 +130,12 @@ const Header: React.FC<HeaderProps> = ({ className = "", onSearchClick }) => {
                     <Link to="/help" className={styles.dropdownItem}>
                       고객센터
                     </Link>
-                    <Link to="/logout" className={styles.dropdownItem}>
+                    <div
+                      className={styles.dropdownItem}
+                      onClick={handleLogout} // 로그아웃 클릭 시 핸들러 호출
+                    >
                       로그아웃
-                    </Link>
+                    </div>
                   </div>
                 </div>
               </div>
