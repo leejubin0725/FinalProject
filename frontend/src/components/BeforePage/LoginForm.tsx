@@ -25,7 +25,7 @@ const LoginForm: React.FC = () => {
             });
             localStorage.setItem('authToken', response.data.token);
             console.log('Login successful:', response.data);
-            window.location.href = '/home';
+            window.location.href = '/profiles';
         } catch (error) {
             setError('Login failed. Please check your email and password.');
         }
