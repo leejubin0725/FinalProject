@@ -35,7 +35,6 @@ public class MovieService {
         String videoUrl = amazonS3.getUrl(awsS3BucketName, videoKey).toString();
         String thumbnailUrl = amazonS3.getUrl(awsS3BucketName, thumbnailKey).toString();
         
-
         Movie movie = new Movie();
         movie.setTitle(title);
         movie.setDirector(director);
@@ -58,5 +57,13 @@ public class MovieService {
 
     public List<Movie> findMoviesByGenre(String genre) {
         return movieRepository.findByGenre(genre);
+    }
+    
+    public List<Movie> findMoviesByTag(String tag) {
+        return movieRepository.findByTagsContaining(tag);
+    }
+
+    public List<Movie> findMoviesByCast(String cast) {
+        return movieRepository.findByCastContaining(cast);
     }
 }
