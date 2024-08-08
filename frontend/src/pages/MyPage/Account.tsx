@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import CinemaCloudButtonContainer from '../../../src/components/Mypage/CinemaCloudButtonContainer';
+import CinemaCloudButtonContainer from '../../components/Mypage/CinemaCloudButtonContainer';
 import styles from './css/Account.module.css';
 import Header from '../../../src/components/CommonPage/Header';
 import OverView from '../../../src/components/Mypage/OverView';

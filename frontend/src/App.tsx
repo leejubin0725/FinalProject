@@ -11,12 +11,12 @@ import DashboardPage from "./pages/AdminPage/DashboardPage";
 import UploadMovie from "./pages/AdminPage/UploadMovie";
 import MovieDetailPage from "./pages/HomePage/MovieDetailPage";
 import Account from "./pages/MyPage/Account";
-import AccountDelete from "./components/Mypage/AccountDelete";
 import LoginPage from "./pages/BeforePage/LoginPage";
 import SubscribePage from "./pages/BeforePage/SubscribePage";
-import Pwlogin from "./components/BeforePage/PasswordLogin-form";
-import PwloginPage from "./pages/BeforePage/PwLogin";
 import PwLogin from "./pages/BeforePage/PwLogin";
+import HelpPage from "./pages/MyPage/Help";
+import ProfileSelectionPage from "./pages/BeforePage/ProfileSelectionPage";
+
 
 function App() {
   const location = useLocation();
@@ -81,10 +81,11 @@ function App() {
       <Route path="/upload" element={<UploadMovie />} />
       <Route path="/movie/:movieId" element={<MovieDetailPage />} />
       <Route path="/account" element={<Account />} />
+      <Route path="/help" element={<HelpPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/subscribe" element={<SubscribePage />} />
       <Route path="/passwordlogin" element={<PwLogin />} />
-
+      <Route path="/profiles" element={<ProfileSelectionPage />} />
     </Routes>
   );
 }
