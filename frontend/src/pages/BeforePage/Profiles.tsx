@@ -16,21 +16,37 @@ const ProfilePage: React.FC = () => {
     const [selectedProfile, setSelectedProfile] = useState<Profile | null>(null);
 
     useEffect(() => {
-        const dummyProfiles: Profile[] = [
-            { profileNo: 1, profileImg: '/profile.png', profileName: 'Profile 1' },
-            { profileNo: 2, profileImg: '/profile2.png', profileName: 'Profile 2' },
-            { profileNo: 3, profileImg: '/profile3.png', profileName: 'Profile 3' },
-        ];
-        setProfiles(dummyProfiles);
-        if (dummyProfiles.length > 0) {
-            setSelectedMenu('select');
+        const token = localStorage.getItem('authToken');
+        if (token) {
+            axios.get('http://localhost:8088/api/users/me', { headers: { 'Authorization': `Bearer ${token}` } })
+                .then(response => {
+                    const userNo = response.data.userNo;
+                    axios.get(`http://localhost:8088/api/profiles/user/${userNo}`, { headers: { 'Authorization': `Bearer ${token}` } })
+                        .then(response => {
+                            if (Array.isArray(response.data)) {
+                                setProfiles(response.data);
+                                if (response.data.length > 0) {
+                                    setSelectedMenu('select');
+                                }
+                            } else {
+                                console.error('프로필 데이터가 배열이 아닙니다:', response.data);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('프로필 조회 중 오류 발생:', error);
+                        });
+                })
+                .catch(error => {
+                    console.error('사용자 정보 조회 중 오류 발생:', error);
+                });
         } else {
-            setSelectedMenu('create');
+            console.error('토큰이 없습니다');
         }
     }, []);
 
     const handleProfileSelect = (profile: Profile) => {
         setSelectedProfile(profile);
+        console.log('Selected profile:', profile);
     };
 
     const handleProfileCreated = (newProfile: Profile) => {

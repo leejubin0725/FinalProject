@@ -12,24 +12,23 @@ import com.kh.last.repository.UserRepository;
 
 @Service
 public class ProfileService {
+	 @Autowired
+	    private ProfileRepository profileRepository;
 
-	@Autowired
-	private ProfileRepository profileRepository;
+	    @Autowired
+	    private UserRepository userRepository;
 
-	@Autowired
-	private UserRepository userRepository;
+	    public List<Profile> getProfilesByUserNo(Long userNo) {
+	        USERS user = userRepository.findById(userNo).orElseThrow(() -> new IllegalArgumentException("Invalid user ID"));
+	        return profileRepository.findByUserNo(user);
+	    }
 
-	public List<Profile> getProfilesByUserNo(Long userNo) {
-		USERS user = userRepository.findById(userNo).orElseThrow(() -> new IllegalArgumentException("Invalid user ID"));
-		return profileRepository.findByUserNo(user);
+	    public Profile createProfile(Long userNo, String profileName, String profileImg) {
+	        USERS user = userRepository.findById(userNo).orElseThrow(() -> new IllegalArgumentException("Invalid user ID"));
+	        Profile profile = new Profile();
+	        profile.setUserNo(user);
+	        profile.setProfileName(profileName);
+	        profile.setProfileImg(profileImg);
+	        return profileRepository.save(profile);
+	    }
 	}
-
-	public Profile createProfile(Long userNo, String profileName, String profileImg) {
-		USERS user = userRepository.findById(userNo).orElseThrow(() -> new IllegalArgumentException("Invalid user ID"));
-		Profile profile = new Profile();
-		profile.setUserNo(user);
-		profile.setProfileName(profileName);
-		profile.setProfileImg(profileImg);
-		return profileRepository.save(profile);
-	}
-}
