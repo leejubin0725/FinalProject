@@ -15,7 +15,8 @@ import java.util.List;
 @SequenceGenerator(name = "movie_seq", sequenceName = "seq_movie_no", allocationSize = 1)
 public class Movie {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "movie_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "movie_seq") /*통합시 주석 관리 해야함(주빈)*/
+    @SequenceGenerator(name = "movie_seq", sequenceName = "movie_seq", allocationSize = 1)
     private Long id;
 
     private String title;
