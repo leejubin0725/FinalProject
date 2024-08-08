@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import javax.crypto.SecretKey;
 
+import com.kh.last.model.vo.USERS;
 import org.apache.http.auth.InvalidCredentialsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;

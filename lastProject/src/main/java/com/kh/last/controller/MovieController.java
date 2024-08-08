@@ -28,18 +28,18 @@ public class MovieController {
     
     @PostMapping("/upload")
     public Movie uploadMovie(
-    	    @RequestParam("file") MultipartFile file,
-    	    @RequestParam("thumbnail") MultipartFile thumbnail,
-    	    @RequestParam("title") String title,
-    	    @RequestParam("director") String director,
-    	    @RequestParam("cast") String cast,
-    	    @RequestParam("releaseYear") int releaseYear,
-    	    @RequestParam("synopsis") String synopsis,
-    	    @RequestParam("rating") float rating, // Default value
-    	    @RequestParam("tags") String tags) throws IOException {
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("thumbnail") MultipartFile thumbnail,
+            @RequestParam("title") String title,
+            @RequestParam("director") String director,
+            @RequestParam("cast") String cast,
+            @RequestParam("releaseYear") int releaseYear,
+            @RequestParam("synopsis") String synopsis,
+            @RequestParam("rating") float rating, // Default value
+            @RequestParam("tags") String tags) throws IOException {
 
-    	    return movieService.uploadMovie(file, thumbnail, title, director, cast, releaseYear, synopsis, rating, tags);
-    	}
+            return movieService.uploadMovie(file, thumbnail, title, director, cast, releaseYear, synopsis, rating, tags);
+    }
 
     @GetMapping
     public List<Movie> getAllMovies() {
@@ -54,5 +54,15 @@ public class MovieController {
         } else {
             throw new ResourceNotFoundException("Movie not found with id " + id);
         }
+    }
+    
+    @GetMapping("/tag")
+    public List<Movie> getMoviesByTag(@RequestParam("tag") String tag) {
+        return movieService.findMoviesByTag(tag);
+    }
+
+    @GetMapping("/cast")
+    public List<Movie> getMoviesByCast(@RequestParam("cast") String cast) {
+        return movieService.findMoviesByCast(cast);
     }
 }

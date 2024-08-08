@@ -76,6 +76,24 @@ public class UserController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
 		}
 	}
+  
+      @PostMapping("/check-email")
+    public ResponseEntity<?> checkEmail(@RequestBody EmailCheckRequest request) {
+        boolean exists = userService.emailExists(request.getEmail());
+        return ResponseEntity.ok(new EmailCheckResponse(exists));
+    }
+    
+    @PostMapping("/check-password")
+    public ResponseEntity<?> checkPassword(@RequestBody PasswordRequest request) {
+        try {
+            boolean isValid = userService.checkPassword(request.getPassword());
+            visitService.updateVisitCount();
+            return ResponseEntity.ok(new PasswordResponse(isValid));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while checking the password.");
+        }
+    }
+   
 }
 
 @Getter
