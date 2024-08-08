@@ -4,8 +4,8 @@ import styles from './css/ProfileSelectionPage.module.css';
 
 interface Profile {
     profileNo: number;
-    image: string;
-    name: string;
+    profileImg: string;
+    profileName: string;
 }
 
 const ProfileSelectionPage: React.FC = () => {
@@ -22,7 +22,11 @@ const ProfileSelectionPage: React.FC = () => {
                     const userNo = response.data.userNo;
                     axios.get(`/api/profiles/user/${userNo}`)
                         .then(response => {
-                            setProfiles(response.data);
+                            if (Array.isArray(response.data)) {
+                                setProfiles(response.data);
+                            } else {
+                                console.error('프로필 데이터가 배열이 아닙니다:', response.data);
+                            }
                         })
                         .catch(error => {
                             console.error('프로필 조회 중 오류 발생:', error);
@@ -56,8 +60,8 @@ const ProfileSelectionPage: React.FC = () => {
                 if (userNo && newProfileName && newProfileImage) {
                     const formData = new FormData();
                     formData.append('userNo', userNo);
-                    formData.append('name', newProfileName);
-                    formData.append('image', newProfileImage);
+                    formData.append('profileName', newProfileName);
+                    formData.append('profileImg', newProfileImage);
 
                     axios.post('/api/profiles/create', formData, {
                         headers: {
@@ -96,16 +100,16 @@ const ProfileSelectionPage: React.FC = () => {
             <div className={styles.profiles}>
                 {profiles.map(profile => (
                     <div key={profile.profileNo} className={styles.profile} onClick={() => handleProfileSelect(profile)}>
-                        <img src={`/profile-images/${profile.image}`} alt={profile.name} className={styles.profileImage} />
-                        <h2 className={styles.profileName}>{profile.name}</h2>
+                        <img src={`/profile-images/${profile.profileImg}`} alt={profile.profileName} className={styles.profileImage} />
+                        <h2 className={styles.profileName}>{profile.profileName}</h2>
                     </div>
                 ))}
             </div>
             {selectedProfile && (
                 <div className={styles.selectedProfile}>
                     <h2>프로필을 골라주세요:</h2>
-                    <img src={`/profile-images/${selectedProfile.image}`} alt={selectedProfile.name} className={styles.profileImage} />
-                    <h2 className={styles.profileName}>{selectedProfile.name}</h2>
+                    <img src={`/profile-images/${selectedProfile.profileImg}`} alt={selectedProfile.profileName} className={styles.profileImage} />
+                    <h2 className={styles.profileName}>{selectedProfile.profileName}</h2>
                 </div>
             )}
             <div className={styles.createProfile}>

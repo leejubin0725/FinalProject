@@ -21,9 +21,9 @@ public class Profile {
     @JoinColumn(name = "user_no", nullable = false)
     private USERS userNo;
 
-    @Column(nullable = false)
-    private String image;
+    @Column(name = "profile_img",nullable = false)
+    private String profileImg;
 
-    @Column(nullable = false)
-    private String name;
+    @Column(name = "profile_name", nullable = false)
+    private String profileName;
 }

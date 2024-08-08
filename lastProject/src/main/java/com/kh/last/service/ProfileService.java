@@ -24,12 +24,12 @@ public class ProfileService {
 		return profileRepository.findByUserNo(user);
 	}
 
-	public Profile createProfile(Long userNo, String name, String image) {
+	public Profile createProfile(Long userNo, String profileName, String profileImg) {
 		USERS user = userRepository.findById(userNo).orElseThrow(() -> new IllegalArgumentException("Invalid user ID"));
 		Profile profile = new Profile();
 		profile.setUserNo(user);
-		profile.setName(name);
-		profile.setImage(image);
+		profile.setProfileName(profileName);
+		profile.setProfileImg(profileImg);
 		return profileRepository.save(profile);
 	}
 }

@@ -30,9 +30,9 @@ public class ProfileController {
 	}
 
 	@PostMapping("/create")
-	public ResponseEntity<Profile> createProfile(@RequestParam Long userNo, @RequestParam String name,
-			@RequestParam String image) {
-		Profile profile = profileService.createProfile(userNo, name, image);
+	public ResponseEntity<Profile> createProfile(@RequestParam Long userNo, @RequestParam String profileName,
+			@RequestParam String profileImg) {
+		Profile profile = profileService.createProfile(userNo, profileName, profileImg);
 		return ResponseEntity.ok(profile);
 	}
 }
