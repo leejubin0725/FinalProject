@@ -17,7 +17,7 @@ import com.kh.last.service.ProfileService;
 
 @RestController
 @RequestMapping("/api/profiles")
-@CrossOrigin(origins = "http://localhost:3000") // 클라이언트의 출처 설정
+@CrossOrigin(origins = "http://localhost:3000") 
 public class ProfileController {
 
 	@Autowired

@@ -15,7 +15,7 @@ import LoginPage from "./pages/BeforePage/LoginPage";
 import SubscribePage from "./pages/BeforePage/SubscribePage";
 import PwLogin from "./pages/BeforePage/PwLogin";
 import HelpPage from "./pages/MyPage/Help";
-import ProfileSelectionPage from "./pages/BeforePage/ProfileSelectionPage";
+import Profiles from "./pages/BeforePage/Profiles";
 
 
 function App() {
@@ -85,7 +85,7 @@ function App() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/subscribe" element={<SubscribePage />} />
       <Route path="/passwordlogin" element={<PwLogin />} />
-      <Route path="/profiles" element={<ProfileSelectionPage />} />
+      <Route path="/profiles" element={<Profiles />} />
     </Routes>
   );
 }
