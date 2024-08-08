@@ -85,7 +85,7 @@ const MovieDetailPage: React.FC = () => {
   };
 
   const handleVolumeChange = (event: Event, newValue: number | number[]) => {
-    const maxSliderValue = 0.92;
+    const maxSliderValue = 0.91;
     const adjustedVolume = Math.min(newValue as number, maxSliderValue);
     setVolume(adjustedVolume);
     setMuted(adjustedVolume === 0);
@@ -146,9 +146,11 @@ const MovieDetailPage: React.FC = () => {
   };
 
   const handleSeekChange = (event: Event, newValue: number | number[]) => {
+    const maxSliderValue = 0.91;
+    const adjustedSeek = Math.min(newValue as number, maxSliderValue);
     if (videoRef.current) {
-      videoRef.current.currentTime = (newValue as number) * videoRef.current.duration;
-      setPlayed(newValue as number);
+      videoRef.current.currentTime = adjustedSeek * videoRef.current.duration;
+      setPlayed(adjustedSeek);
     }
   };
 
@@ -220,18 +222,25 @@ const MovieDetailPage: React.FC = () => {
       clearTimeout(hideControlsTimeoutRef.current);
     }
     showControls();
-    hideControlsTimeoutRef.current = window.setTimeout(hideControls, 4000);
+    hideControlsTimeoutRef.current = window.setTimeout(hideControls, 5000); // 5초로 변경
   };
 
   useEffect(() => {
     if (fullscreen) {
       document.addEventListener('mousemove', handleMouseMove);
+      hideControlsTimeoutRef.current = window.setTimeout(hideControls, 5000); // 초기 설정
     } else {
       document.removeEventListener('mousemove', handleMouseMove);
+      if (hideControlsTimeoutRef.current) {
+        clearTimeout(hideControlsTimeoutRef.current);
+      }
       document.body.style.cursor = 'default';
     }
     return () => {
       document.removeEventListener('mousemove', handleMouseMove);
+      if (hideControlsTimeoutRef.current) {
+        clearTimeout(hideControlsTimeoutRef.current);
+      }
     };
   }, [fullscreen]);
 
@@ -284,9 +293,9 @@ const MovieDetailPage: React.FC = () => {
             aria-labelledby="progress-slider"
             className={styles.progressSlider}
             min={0}
-            max={1}
+            max={0.91}
             step={0.01}
-            style={{ color: '#d6a060' }}
+            style={{ color: '#d6a060', width: '80%' }}
           />
           <Box
             className={`${styles.volumeControl} ${showVolumeSlider ? styles.showSlider : ''}`}
@@ -303,11 +312,14 @@ const MovieDetailPage: React.FC = () => {
               aria-labelledby="continuous-slider"
               className={styles.volumeSlider}
               min={0}
-              max={1}
+              max={0.91}
               step={0.01}
               sx={{
                 width: '6px',
                 height: '80px',
+                position: 'absolute',
+                right: '5px',
+                bottom: '50px', // 볼륨 슬라이더를 볼륨 버튼 위로 이동
                 '& .MuiSlider-thumb': {
                   width: '12px',
                   height: '12px',
