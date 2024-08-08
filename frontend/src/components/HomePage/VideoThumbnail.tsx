@@ -1,3 +1,5 @@
+// VideoThumbnail.tsx
+
 import React, { useRef, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './css/VideoThumbnail.module.css';
@@ -17,7 +19,6 @@ const VideoThumbnail: React.FC<VideoThumbnailProps> = ({ video }) => {
     const [isHovered, setIsHovered] = useState(false);
     const [isVideoError, setIsVideoError] = useState(false);
     const [isVideoLoaded, setIsVideoLoaded] = useState(false);
-    const [isVideoPlaying, setIsVideoPlaying] = useState(false);
     const navigate = useNavigate();
 
     const handleMouseEnter = () => {
@@ -34,7 +35,6 @@ const VideoThumbnail: React.FC<VideoThumbnailProps> = ({ video }) => {
         if (videoRef.current) {
             videoRef.current.pause();
             videoRef.current.currentTime = 0;
-            setIsVideoPlaying(false);
         }
     };
 
@@ -54,9 +54,10 @@ const VideoThumbnail: React.FC<VideoThumbnailProps> = ({ video }) => {
     useEffect(() => {
         const videoElement = videoRef.current;
         if (videoElement) {
+            console.log("Video URL:", video.url);
             videoElement.addEventListener('loadeddata', handleLoadedData);
             videoElement.addEventListener('error', handleError);
-            videoElement.load(); // 비디오를 미리 로드
+            videoElement.load();
 
             return () => {
                 videoElement.removeEventListener('loadeddata', handleLoadedData);

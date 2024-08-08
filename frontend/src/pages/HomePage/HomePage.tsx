@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Slider from 'react-slick';
 import Header from '../../../src/components/CommonPage/Header';
 import Frame from '../../../src/components/HomePage/HomeFrame';
@@ -7,46 +7,24 @@ import SearchOverlay from '../../../src/components/HomePage/SearchOverlay';
 import styles from './css/HomePage.module.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import axios from 'axios';
 import Footer from '../../components/CommonPage/Footer';
-
-interface Movie {
-  id: number;
-  title: string;
-  description: string;
-  url: string;
-  thumbnailUrl: string;
-  tags: string[];
-  genre: string;
-}
+import useMovies from '../../components/Movies/useMovies';
+import { Movie } from '../../types/Movie';
 
 const HomePage: React.FC = () => {
-  const [movies, setMovies] = React.useState<Movie[]>([]);
-  const [filteredMovies, setFilteredMovies] = React.useState<Movie[]>([]);
-  const [isSearchVisible, setIsSearchVisible] = React.useState(false);
-  const [searchTerm, setSearchTerm] = React.useState('');
-  const [selectedGenre, setSelectedGenre] = React.useState<string | undefined>(undefined);
+  const { movies, loading, error } = useMovies();
+  const [filteredMovies, setFilteredMovies] = useState<Movie[]>(movies);
+  const [isSearchVisible, setIsSearchVisible] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedGenre, setSelectedGenre] = useState<string | undefined>(undefined);
 
   React.useEffect(() => {
-    axios.get('http://localhost:8088/api/movies')
-      .then(response => {
-        console.log('Fetched movies:', response.data);
-        const formattedMovies = response.data.map((movie: any) => ({
-          ...movie,
-          id: movie.id,
-          tags: movie.tags ? movie.tags.split(',') : []
-        }));
-        setMovies(formattedMovies);
-        setFilteredMovies(formattedMovies);
-      })
-      .catch(error => {
-        console.error('There was an error fetching the movies!', error);
-      });
-  }, []);
+    setFilteredMovies(movies);
+  }, [movies]);
 
   React.useEffect(() => {
     filterMovies();
-  }, [searchTerm, selectedGenre, movies]);
+  }, [searchTerm, selectedGenre]);
 
   const filterMovies = () => {
     let filtered = movies;
@@ -140,6 +118,14 @@ const HomePage: React.FC = () => {
       </Slider>
     </div>
   );
+
+  if (loading) {
+    return <div>로딩 중...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
 
   return (
     <div className={styles.main}>
