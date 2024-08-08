@@ -34,10 +34,22 @@ public class ManageService {
         String formattedDate = date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
         // 변환된 String 값을 사용하여 쿼리 실행
-        int count = postRepository.dailyCount(formattedDate);
+        Integer dailyCount = postRepository.dailyCount(formattedDate);
+        int count = (dailyCount != null) ? dailyCount.intValue() : 0;
+
         log.debug("count = {}", count);
 
         return count;
+    }
+
+    public int todayVisit(LocalDate date) {
+    	
+        Integer count = visitRepository.todayVisit(date);
+        if (count == null) {
+            count = 0;
+        }
+        log.debug("count = {}", count);
+        return count.intValue();
     }
 
 	public int movieCount() {

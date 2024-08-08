@@ -15,4 +15,11 @@ public interface VisitRepository extends JpaRepository<Visit, LocalDate> {
     
     @Query("SELECT v FROM Visit v WHERE v.visitDate >= :startDate AND v.visitDate <= :endDate ORDER BY v.visitDate ASC")
     List<Visit> findVisitsInRange(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
+
+    @Query(value = "SELECT visit_count " +
+            "FROM visit " +
+            "WHERE visit_date = :queryDate", 
+    nativeQuery = true)
+    Integer todayVisit(@Param("queryDate") LocalDate queryDate);
+
 }
