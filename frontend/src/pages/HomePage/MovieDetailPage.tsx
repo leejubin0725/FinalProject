@@ -335,22 +335,28 @@ const MovieDetailPage: React.FC = () => {
       <Typography variant="body1" className={styles.description}>
         {movie.description}
       </Typography>
-      <Typography variant="h6" className={styles.subtitle}>
-        배우
-      </Typography>
-      <ul className={styles.list}>
-        {movie.castList.map((actor, index) => (
-          <li key={index} className={styles.listItem}>{actor}</li>
-        ))}
-      </ul>
-      <Typography variant="h6" className={styles.subtitle}>
-        태그
-      </Typography>
-      <ul className={styles.list}>
-        {movie.tagList.map((tag, index) => (
-          <li key={index} className={styles.listItem}>{tag}</li>
-        ))}
-      </ul>
+      <Box className={styles.bottomSection}>
+        <Box className={styles.section}>
+          <Typography variant="h6" className={styles.subtitle}>
+            배우
+          </Typography>
+          <ul className={styles.list}>
+            {movie.castList.map((actor, index) => (
+              <li key={index} className={styles.listItem}>{actor}</li>
+            ))}
+          </ul>
+        </Box>
+        <Box className={styles.section}>
+          <Typography variant="h6" className={styles.subtitle}>
+            태그
+          </Typography>
+          <ul className={styles.list}>
+            {movie.tagList.map((tag, index) => (
+              <li key={index} className={styles.listItem}>{tag}</li>
+            ))}
+          </ul>
+        </Box>
+      </Box>
     </Box>
   );
 };
