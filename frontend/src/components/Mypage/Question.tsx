@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import styles from './css/HelpPage.module.css';
 
@@ -24,10 +25,13 @@ const Question: React.FC = () => {
                         onChange={(e) => setChatContent(e.target.value)}
                     />
                     <button className={styles.sendButton}>전송하기</button>
+
                 </div>
             </div>
         </div>
     );
 };
 
+
 export default Question;
+

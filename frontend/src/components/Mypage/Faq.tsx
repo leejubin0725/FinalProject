@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import styles from './css/HelpPage.module.css';
 
@@ -34,9 +35,11 @@ const Faq: React.FC<FaqProps> = ({ faqList }) => {
                         </li>
                     ))}
                 </ul>
+
             </div>
         </div>
     );
 };
 
 export default Faq;
+

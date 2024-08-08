@@ -12,6 +12,9 @@ import SubscribePage from "./pages/BeforePage/SubscribePage";
 import PwLogin from "./pages/BeforePage/PwLogin";
 import HelpPage from "./pages/MyPage/Help";
 
+import Profiles from "./pages/BeforePage/Profiles";
+
+
 function App() {
   const location = useLocation();
   const pathname = location.pathname;
@@ -75,10 +78,13 @@ function App() {
       <Route path="/upload" element={<UploadMovie />} />
       <Route path="/movie/:movieId" element={<MovieDetailPage />} />
       <Route path="/account" element={<Account />} />
+      <Route path="/help" element={<HelpPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/subscribe" element={<SubscribePage />} />
       <Route path="/passwordlogin" element={<PwLogin />} />
-      <Route path="/help" element={<HelpPage />} />
+
+      <Route path="/profiles" element={<Profiles />} />
+
     </Routes>
   );
 }

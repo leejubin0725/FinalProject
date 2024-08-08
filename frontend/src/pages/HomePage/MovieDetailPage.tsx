@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { Box, IconButton, Slider, Typography } from '@mui/material';
+import { Box, IconButton, Slider as MuiSlider, Typography } from '@mui/material';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
@@ -9,25 +9,25 @@ import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import Replay10Icon from '@mui/icons-material/Replay10';
 import Forward10Icon from '@mui/icons-material/Forward10';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 import styles from './css/MovieDetailPage.module.css';
-
-interface Movie {
-  id: number;
-  title: string;
-  description: string;
-  url: string;
-  thumbnailUrl: string;
-  tags: string[];
-  genre: string;
-  castList: string[];
-  tagList: string[];
-}
+import useRelatedMovies from '../../components/Movies/useRelatedMovies';
+import useMoviesByCast from '../../components/Movies/useMoviesByCast';
+import { Movie } from '../../types/Movie';
+import VideoThumbnail from '../../../src/components/HomePage/VideoThumbnail';
 
 const MovieDetailPage: React.FC = () => {
   const { movieId } = useParams<{ movieId: string }>();
   const [movie, setMovie] = useState<Movie | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedTag, setSelectedTag] = useState<string | null>(null);
+  const [selectedCast, setSelectedCast] = useState<string | null>(null);
+  const { relatedMovies, loading: relatedLoading, error: relatedError } = useRelatedMovies(selectedTag || '');
+  const { moviesByCast, loading: castLoading, error: castError } = useMoviesByCast(selectedCast || '');
+
   const videoRef = useRef<HTMLVideoElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const controlsRef = useRef<HTMLDivElement>(null);
@@ -48,13 +48,11 @@ const MovieDetailPage: React.FC = () => {
       if (!isNaN(movieIdNumber)) {
         axios.get(`http://localhost:8088/api/movies/${movieIdNumber}`)
           .then(response => {
-            console.log(response.data); // 응답 데이터 확인
             setMovie(response.data);
             setLoading(false);
           })
           .catch(error => {
-            console.error(error); // 에러 로그 출력
-            setError(error.response?.data?.message || '영화 세부 정보를 로드하는 중 오류가 발생했습니다.');
+            setError('영화 세부 정보를 로드하는 중 오류가 발생했습니다.');
             setLoading(false);
           });
       } else {
@@ -73,6 +71,10 @@ const MovieDetailPage: React.FC = () => {
     }
   }, [movie]);
 
+  useEffect(() => {
+    console.log('Related Movies:', relatedMovies);
+  }, [relatedMovies]);
+
   const handlePlayPause = () => {
     setPlaying(prev => !prev);
     if (videoRef.current) {
@@ -85,7 +87,7 @@ const MovieDetailPage: React.FC = () => {
   };
 
   const handleVolumeChange = (event: Event, newValue: number | number[]) => {
-    const maxSliderValue = 0.92;
+    const maxSliderValue = 0.91;
     const adjustedVolume = Math.min(newValue as number, maxSliderValue);
     setVolume(adjustedVolume);
     setMuted(adjustedVolume === 0);
@@ -146,9 +148,11 @@ const MovieDetailPage: React.FC = () => {
   };
 
   const handleSeekChange = (event: Event, newValue: number | number[]) => {
+    const maxSliderValue = 0.91;
+    const adjustedSeek = Math.min(newValue as number, maxSliderValue);
     if (videoRef.current) {
-      videoRef.current.currentTime = (newValue as number) * videoRef.current.duration;
-      setPlayed(newValue as number);
+      videoRef.current.currentTime = adjustedSeek * videoRef.current.duration;
+      setPlayed(adjustedSeek);
     }
   };
 
@@ -220,20 +224,100 @@ const MovieDetailPage: React.FC = () => {
       clearTimeout(hideControlsTimeoutRef.current);
     }
     showControls();
-    hideControlsTimeoutRef.current = window.setTimeout(hideControls, 4000);
+    hideControlsTimeoutRef.current = window.setTimeout(hideControls, 5000);
+  };
+
+  const handleEnded = () => {
+    setPlaying(false);
   };
 
   useEffect(() => {
     if (fullscreen) {
       document.addEventListener('mousemove', handleMouseMove);
+      hideControlsTimeoutRef.current = window.setTimeout(hideControls, 5000);
     } else {
       document.removeEventListener('mousemove', handleMouseMove);
+      if (hideControlsTimeoutRef.current) {
+        clearTimeout(hideControlsTimeoutRef.current);
+      }
       document.body.style.cursor = 'default';
     }
     return () => {
       document.removeEventListener('mousemove', handleMouseMove);
+      if (hideControlsTimeoutRef.current) {
+        clearTimeout(hideControlsTimeoutRef.current);
+      }
     };
   }, [fullscreen]);
+
+  const handleTagClick = (tag: string) => {
+    setSelectedTag(tag);
+    setSelectedCast(null); // Reset selectedCast when a tag is selected
+  };
+
+  const handleCastClick = (cast: string) => {
+    setSelectedCast(cast);
+    setSelectedTag(null); // Reset selectedTag when a cast is selected
+  };
+
+  const getSliderSettings = (movieCount: number) => ({
+    dots: false,
+    infinite: movieCount > 1,
+    speed: 600,
+    slidesToShow: 2,
+    slidesToScroll: 1,
+    prevArrow: <CustomPrevArrow />,
+    nextArrow: <CustomNextArrow />,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          infinite: movieCount > 2
+        }
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          initialSlide: 1,
+          infinite: movieCount > 1
+        }
+      }
+    ]
+  });
+
+  const CustomPrevArrow = (props: any) => {
+    const { className, onClick } = props;
+    return (
+      <button className={`${className} ${styles.arrowButton} ${styles.left}`} onClick={onClick}>
+        &lt;
+      </button>
+    );
+  };
+
+  const CustomNextArrow = (props: any) => {
+    const { className, onClick } = props;
+    return (
+      <button className={`${className} ${styles.arrowButton} ${styles.right}`} onClick={onClick}>
+        &gt;
+      </button>
+    );
+  };
+
+  const renderMoviesSlider = (title: string, movies: Movie[]) => (
+    <div className={styles.relatedMoviesSection}>
+      <Slider {...getSliderSettings(movies.length)} className={styles.tileRows}>
+        {movies.map((movie, index) => (
+          <div className={styles.tile} key={index}>
+            <VideoThumbnail video={movie} />
+          </div>
+        ))}
+      </Slider>
+    </div>
+  );
 
   if (loading) {
     return <div className={styles.loading}>로딩 중...</div>;
@@ -263,6 +347,7 @@ const MovieDetailPage: React.FC = () => {
           controls={false}
           onTimeUpdate={handleProgress}
           onLoadedMetadata={handleDuration}
+          onEnded={handleEnded}
           autoPlay
         />
         <Box
@@ -278,15 +363,15 @@ const MovieDetailPage: React.FC = () => {
           <IconButton onClick={handleForward10} className={styles.controlButton} sx={{ color: 'white' }}>
             <Forward10Icon />
           </IconButton>
-          <Slider
+          <MuiSlider
             value={isNaN(played) ? 0 : played}
             onChange={handleSeekChange}
             aria-labelledby="progress-slider"
             className={styles.progressSlider}
             min={0}
-            max={1}
+            max={0.91}
             step={0.01}
-            style={{ color: '#d6a060' }}
+            style={{ color: '#d6a060', width: '80%' }}
           />
           <Box
             className={`${styles.volumeControl} ${showVolumeSlider ? styles.showSlider : ''}`}
@@ -296,18 +381,21 @@ const MovieDetailPage: React.FC = () => {
             <IconButton onClick={handleVolumeClick} className={styles.controlButton} sx={{ color: 'white' }}>
               {muted ? <VolumeOffIcon /> : <VolumeUpIcon />}
             </IconButton>
-            <Slider
+            <MuiSlider
               orientation="vertical"
               value={muted ? 0 : volume}
               onChange={handleVolumeChange}
               aria-labelledby="continuous-slider"
               className={styles.volumeSlider}
               min={0}
-              max={1}
+              max={0.91}
               step={0.01}
               sx={{
                 width: '6px',
                 height: '80px',
+                position: 'absolute',
+                right: '5px',
+                bottom: '50px', // 볼륨 슬라이더를 볼륨 버튼 위로 이동
                 '& .MuiSlider-thumb': {
                   width: '12px',
                   height: '12px',
@@ -335,22 +423,34 @@ const MovieDetailPage: React.FC = () => {
       <Typography variant="body1" className={styles.description}>
         {movie.description}
       </Typography>
-      <Typography variant="h6" className={styles.subtitle}>
-        배우
-      </Typography>
-      <ul className={styles.list}>
-        {movie.castList.map((actor, index) => (
-          <li key={index} className={styles.listItem}>{actor}</li>
-        ))}
-      </ul>
-      <Typography variant="h6" className={styles.subtitle}>
-        태그
-      </Typography>
-      <ul className={styles.list}>
-        {movie.tagList.map((tag, index) => (
-          <li key={index} className={styles.listItem}>{tag}</li>
-        ))}
-      </ul>
+      <Box className={styles.bottomSection}>
+        <Box className={styles.section}>
+          <Typography variant="h6" className={styles.subtitle}>
+            배우
+          </Typography>
+          <ul className={styles.list}>
+            {movie.castList.map((actor, index) => (
+              <li key={index} className={styles.listItem}>
+                <button onClick={() => handleCastClick(actor)} className={styles.tagButton}>{actor}</button>
+              </li>
+            ))}
+          </ul>
+        </Box>
+        <Box className={styles.section}>
+          <Typography variant="h6" className={styles.subtitle}>
+            태그
+          </Typography>
+          <ul className={styles.list}>
+            {movie.tagList.map((tag, index) => (
+              <li key={index} className={styles.listItem}>
+                <button onClick={() => handleTagClick(tag)} className={styles.tagButton}>{tag}</button>
+              </li>
+            ))}
+          </ul>
+        </Box>
+      </Box>
+      {selectedTag && relatedMovies.length > 0 && renderMoviesSlider('태그 관련 영화', relatedMovies)}
+      {selectedCast && moviesByCast.length > 0 && renderMoviesSlider('배우 관련 영화', moviesByCast)}
     </Box>
   );
 };

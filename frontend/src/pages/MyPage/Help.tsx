@@ -1,9 +1,12 @@
+
 import React, { useEffect, useState } from 'react';
+
 import HelpButtonContainer from '../../components/Mypage/HelpButtonContainer';
 import styles from './css/Account.module.css';
 import Header from '../../../src/components/CommonPage/Header';
 import Faq from '../../components/Mypage/Faq';
 import Question from '../../components/Mypage/Question';
+
 import axios from 'axios';
 
 interface FaqType {
@@ -13,8 +16,10 @@ interface FaqType {
   insertDate: string; // LocalDate를 문자열로 처리
 }
 
+
 const HelpPage: React.FC = () => {
   const [selectedMenu, setSelectedMenu] = useState<string>('faq');
+
 
   const [faqList, setFaqList] = useState<FaqType[]>([]);
 
@@ -43,8 +48,10 @@ const HelpPage: React.FC = () => {
           <HelpButtonContainer onMenuClick={setSelectedMenu} />
         </div>
         <div className={styles.content}>
+
           {selectedMenu === 'faq' && <Faq faqList={faqList} />}
           {selectedMenu === 'question' && <Question />}
+
 
         </div>
 

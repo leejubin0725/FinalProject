@@ -2,11 +2,14 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
+
     overflow: hidden; /* 페이지 전체에서 스크롤을 숨깁니다 */
+
 }
 
 .content {
     padding-left: 20px;
+
     display: flex;
     flex-direction: column;
 }
@@ -17,8 +20,10 @@
     border-radius: 30px;
     padding: 20px;
     border: solid rgb(221, 221, 221) 1px;
+
     overflow-y: auto; /* quickLinks에 스크롤을 적용 */
     max-height: 60vh; /* 높이를 제한하여 스크롤이 발생하도록 설정 */
+
 }
 
 .profileSection {
@@ -60,7 +65,9 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
+
     overflow-y: auto; /* quickLinks에 스크롤을 적용 */
+
 }
 
 .quickLinks ul {
@@ -103,6 +110,7 @@
 .arrow {
     font-size: 16px;
     color: #000;
+
 }
 
 .answer {
@@ -233,4 +241,5 @@
 
 .endChatButton:hover {
     background-color: #d32f2f;
+
 }
