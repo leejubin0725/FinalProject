@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import javax.crypto.SecretKey;
 
+import com.kh.last.model.vo.USERS;
 import org.apache.http.auth.InvalidCredentialsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,7 +32,6 @@ public class UserService {
 
     public USERS createUser(String userId, String email, String password, String status, String birthday, String username, Long vNumber) {
         USERS user = new USERS();
-        user.setUserId(userId);
         user.setEmail(email);
         user.setPassword(passwordEncoder.encode(password)); // 비밀번호 인코딩
         user.setStatus(status);

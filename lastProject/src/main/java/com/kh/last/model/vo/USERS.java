@@ -15,9 +15,6 @@ public class USERS {
     @Column(name = "user_no")
     private Long userNo;
 
-    @Column(name = "userid", nullable = false, length = 255)
-    private String userId;
-
     @Column(name = "email", nullable = false, length = 255)
     private String email;
 
