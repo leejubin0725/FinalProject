@@ -23,8 +23,9 @@ const LoginForm: React.FC = () => {
                 email,
                 password
             });
-            localStorage.setItem('authToken', response.data.token);
-            console.log('Login successful:', response.data);
+            const token = response.data.token;
+            localStorage.setItem('authToken', token);
+            console.log('Login successful. Token:', token); // 콘솔에 토큰 출력
             window.location.href = '/home';
         } catch (error) {
             setError('Login failed. Please check your email and password.');
