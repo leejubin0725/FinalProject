@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './css/SigninPage-input-fields.css';
 
@@ -10,8 +10,13 @@ export const InputFields: React.FC<{ className?: string }> = ({ className = '' }
     confirmPassword: '',
     NAME: '',
     PHONE: '',
+    verificationCode: '',
   });
 
+  const [isCodeSent, setIsCodeSent] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [formErrors, setFormErrors] = useState<string[]>([]);
+  
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,39 +27,100 @@ export const InputFields: React.FC<{ className?: string }> = ({ className = '' }
     }));
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSendVerificationCode = async () => {
+    if (!formData.PHONE) {
+      alert('전화번호를 입력해주세요.');
+      return;
+    }
 
-    // 비밀번호 확인 체크
-    if (formData.PASSWORD !== formData.confirmPassword) {
-      alert('비밀번호가 일치하지 않습니다.');
+    setLoading(true);
+
+    try {
+      await axios.post('http://localhost:8088/api/sms/send-code', {
+        phoneNumber: formData.PHONE,
+      });
+      setIsCodeSent(true);
+      alert('인증 코드가 발송되었습니다.');
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const message = error.response?.data?.message || error.message || 'Unknown error';
+        console.error('Server responded with error:', message);
+        alert('인증 코드 발송에 실패하였습니다.');
+      } else {
+        console.error('Unexpected error:', error);
+        alert('인증 코드 발송에 실패하였습니다.');
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleVerifyCode = async () => {
+    if (!formData.verificationCode) {
+      alert('인증 코드를 입력해주세요.');
       return;
     }
 
     try {
-      // 회원가입 요청 보내기
+      const response = await axios.post('http://localhost:8088/api/sms/verify-code', {
+        phoneNumber: formData.PHONE,
+        verificationCode: formData.verificationCode,
+      });
+      alert(response.data); // 인증 결과 메시지 표시
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const message = error.response?.data?.message || error.message || 'Unknown error';
+        console.error('Server responded with error:', message);
+        alert('인증 코드 검증에 실패하였습니다.');
+      } else {
+        console.error('Unexpected error:', error);
+        alert('인증 코드 검증에 실패하였습니다.');
+      }
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    let errors: string[] = [];
+
+    // 비밀번호 확인 체크
+    if (formData.PASSWORD !== formData.confirmPassword) {
+      errors.push('비밀번호가 일치하지 않습니다.');
+    }
+
+    // 인증 코드 검증 체크
+    if (!isCodeSent) {
+      errors.push('전화번호 인증을 먼저 완료해주세요.');
+    }
+
+    if (errors.length > 0) {
+      setFormErrors(errors);
+      return;
+    }
+
+    setFormErrors([]); // Reset errors
+
+    try {
       const response = await axios.post('http://localhost:8088/api/users/register', {
         userId: formData.ID,
-        email: formData.ID, // 이메일 필드가 ID로 사용되고 있음
+        email: formData.ID,
         password: formData.PASSWORD,
-        status: 'A', // 상태 코드 (예: 활성화된 사용자)
-        birthday: '1990-01-01',  // Placeholder, 실제 사용자 입력 필요
+        status: 'A',
+        birthday: '1990-01-01',
         username: formData.NAME,
-        vNumber: 1 // Placeholder, 실제 사용자 입력 필요
+        vNumber: 1,
       });
 
       console.log('User registered:', response.data);
-      // 회원가입 성공 시 로그인 페이지로 리디렉션
       alert('회원가입이 완료 되었습니다.');
       navigate('/login'); // 로그인 페이지로 리디렉션
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        // 서버 응답에서 에러 메시지 추출
         const message = error.response?.data?.message || error.message || 'Unknown error';
         console.error('Server responded with error:', message);
-        alert(`모든 입력창을 입력해주세요`);
+        alert('회원가입에 실패하였습니다.');
       } else {
-        // 네트워크 에러 또는 기타 문제
         console.error('Unexpected error:', error);
         alert('회원가입에 실패하였습니다.');
       }
@@ -102,13 +168,31 @@ export const InputFields: React.FC<{ className?: string }> = ({ className = '' }
             />
             <input
               className="input-values4"
-              placeholder="휴대폰 인증"
+              placeholder="휴대폰 번호"
               type="text"
               name="PHONE"
               value={formData.PHONE}
               onChange={handleChange}
-
             />
+            {isCodeSent && (
+              <input
+                className="input-values5"
+                placeholder="인증 코드"
+                type="text"
+                name="verificationCode"
+                value={formData.verificationCode}
+                onChange={handleChange}
+              />
+            )}
+            {!isCodeSent ? (
+              <button type="button" onClick={handleSendVerificationCode} disabled={loading}>
+                {loading ? '인증 코드 발송 중...' : '인증 코드 받기'}
+              </button>
+            ) : (
+              <button type="button" onClick={handleVerifyCode} disabled={loading}>
+                {loading ? '인증 코드 검증 중...' : '인증 코드 검증'}
+              </button>
+            )}
           </div>
         </div>
       </div>
