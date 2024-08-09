@@ -8,42 +8,72 @@ export type HeaderProps = {
   onSearchClick?: () => void;
 };
 
+interface Profile {
+  profileNo: number;
+  profileImg: string;
+  profileName: string;
+}
+
 const Header: React.FC<HeaderProps> = ({ className = "", onSearchClick }) => {
-  const [selectedProfile, setSelectedProfile] = useState<string>('/profile.png');
+  const [selectedProfile, setSelectedProfile] = useState<Profile | null>(null);
   const [user, setUser] = useState<any>(null);
-  const navigate = useNavigate(); // useNavigate를 사용하여 페이지 이동을 처리합니다.
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Fetch the current user when the component mounts
-    axios.get('/api/users/current')
-      .then(response => {
-        setUser(response.data);
-        setSelectedProfile(response.data?.profileImage || '/profile.png');
-      })
-      .catch(error => console.error("Error fetching user data", error));
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      const decodedUser = decodeJWT(token);
+      setUser(decodedUser);
+
+      if (decodedUser) {
+        axios.get('/api/users/me', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+          .then(response => {
+            setUser(response.data);
+
+            // 선택된 프로필 정보를 localStorage에서 가져옴
+            const selectedProfileData = localStorage.getItem('selectedProfile');
+            if (selectedProfileData) {
+              const profile = JSON.parse(selectedProfileData);
+              setSelectedProfile(profile);
+            } else {
+              setSelectedProfile(null); // 기본 프로필 이미지를 사용할 경우
+            }
+          })
+          .catch(error => console.error("Error fetching user data", error));
+      }
+    }
   }, []);
 
-  const profiles = [
-    { id: 'profile', src: '/profile.png', name: '멀티 프로필1' },
-    { id: 'profile2', src: '/profile2.png', name: '멀티 프로필2' },
-    { id: 'profile3', src: '/profile3.png', name: '멀티 프로필3' },
-    { id: 'profile4', src: '/profile4.png', name: '멀티 프로필4' },
-  ];
-
-  const handleProfileClick = (profileSrc: string) => {
-    setSelectedProfile(profileSrc);
+  const decodeJWT = (token: string) => {
+    try {
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(
+        atob(base64)
+          .split('')
+          .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+          .join('')
+      );
+      return JSON.parse(jsonPayload);
+    } catch (error) {
+      console.error('Failed to decode token:', error);
+      return null;
+    }
   };
 
-  const handleTemporaryLogin = () => {
-    // Implement temporary login logic here
+  const handleProfileChange = () => {
+    // 프로필 선택 화면으로 리디렉션
+    navigate('/profiles');
   };
 
   const handleLogout = () => {
-    // Clear local storage
     localStorage.removeItem('authToken');
     localStorage.removeItem('userData');
-
-    // Redirect to login page
+    localStorage.removeItem('selectedProfile');
     navigate('/login');
   };
 
@@ -99,7 +129,7 @@ const Header: React.FC<HeaderProps> = ({ className = "", onSearchClick }) => {
                     className={styles.profileBackgroundIcon}
                     loading="lazy"
                     alt="Profile"
-                    src={selectedProfile}
+                    src={selectedProfile?.profileImg || '/profile.png'}
                   />
                   <img
                     className={styles.antDesigncaretDownFilledIcon}
@@ -108,22 +138,14 @@ const Header: React.FC<HeaderProps> = ({ className = "", onSearchClick }) => {
                     src="/antdesigncaretdownfilled.svg"
                   />
                   <div className={styles.dropdownMenu}>
-                    {user ? (
-                      profiles.map((profile) => (
-                        <div
-                          key={profile.id}
-                          className={styles.dropdownItem}
-                          onClick={() => handleProfileClick(profile.src)}
-                        >
-                          <img src={profile.src} alt={profile.name} />
-                          {profile.name}
-                        </div>
-                      ))
-                    ) : (
-                      <button className={styles.temporaryLoginButton} onClick={handleTemporaryLogin}>
-                        임시 로그인
-                      </button>
+                    {selectedProfile && (
+                      <div className={`${styles.dropdownItem} ${styles.disabledItem}`}>
+                        <h3>{selectedProfile.profileName} 님</h3>
+                      </div>
                     )}
+                    <div className={styles.dropdownItem} onClick={handleProfileChange}>
+                      계정 전환
+                    </div>
                     <Link to="/account" className={styles.dropdownItem}>
                       계정
                     </Link>
@@ -132,7 +154,7 @@ const Header: React.FC<HeaderProps> = ({ className = "", onSearchClick }) => {
                     </Link>
                     <div
                       className={styles.dropdownItem}
-                      onClick={handleLogout} // 로그아웃 클릭 시 핸들러 호출
+                      onClick={handleLogout}
                     >
                       로그아웃
                     </div>
