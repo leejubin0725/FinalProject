@@ -1,23 +1,22 @@
 package com.kh.last.service;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import net.nurigo.java_sdk.api.Message;
+import net.nurigo.java_sdk.exceptions.CoolsmsException;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import okhttp3.Credentials;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 public class SmsService {
+
+    private static final Logger logger = LoggerFactory.getLogger(SmsService.class);
+
     @Value("${coolsms.api_key}")
     private String apiKey;
 
@@ -27,36 +26,53 @@ public class SmsService {
     @Value("${coolsms.from}")
     private String from;
 
-    private static final String SMS_URL = "https://api.coolsms.co.kr/messages/v4/send";
+    // 인증번호를 저장하기 위한 Map
+    private final Map<String, String> verificationCodes = new ConcurrentHashMap<>();
 
-    public void sendVerificationCode(String to, String code) throws IOException {
-        OkHttpClient client = new OkHttpClient();
-        ObjectMapper objectMapper = new ObjectMapper();
+    public String sendVerificationCode(String to) throws CoolsmsException {
+        String generatedCode = generateVerificationCode(); // Generate a random 4-digit code
+        System.out.println("생성된 코드는" + generatedCode);
+        Message coolsms = new Message(apiKey, apiSecret);
 
-        Map<String, Object> message = new HashMap<>();
-        message.put("to", to);
-        message.put("from", from);
-        message.put("text", "Your verification code is " + code);
-        message.put("type", "SMS");
+        HashMap<String, String> params = new HashMap<>();
+        params.put("to", to); // 수신 전화번호
+        params.put("from", from); // 발신 전화번호
+        params.put("type", "sms");
+        params.put("text", "인증번호는 [" + generatedCode + "] 입니다.");
 
-        Map<String, Object> body = new HashMap<>();
-        body.put("messages", new Object[]{message});
+        coolsms.send(params); // 메시지 전송
 
-        MediaType JSON = MediaType.get("application/json; charset=utf-8");
-        RequestBody requestBody = RequestBody.create(objectMapper.writeValueAsString(body), JSON);
-        String credential = Credentials.basic(apiKey, apiSecret);
+        // 인증번호를 Map에 저장
+        verificationCodes.put(to, generatedCode);
 
-        Request request = new Request.Builder()
-                .url(SMS_URL)
-                .post(requestBody)
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Authorization", credential)
-                .build();
+        // 로깅 추가
+        logger.info("Sent verification code [{}] to phone number [{}]", generatedCode, to);
 
-        try (Response response = client.newCall(request).execute()) {
-            if (!response.isSuccessful()) {
-                throw new IOException("Unexpected code " + response);
-            }
+        return generatedCode;
+    }
+
+    public boolean verifyCode(String phoneNumber, String code) {
+        // 저장된 인증번호를 가져와서 비교
+    	System.out.println("입력 코드는" + code);
+
+        String storedCode = verificationCodes.get(phoneNumber);
+        System.out.println("입력후 코드는" + storedCode);
+
+        if (storedCode != null && storedCode.equals(code)) {
+            // 인증 성공 시, 인증번호를 제거
+            verificationCodes.remove(phoneNumber);
+            // 로깅 추가
+            logger.info("Verification successful for phone number [{}]", phoneNumber);
+            return true;
         }
+        // 로깅 추가
+        logger.warn("Verification failed for phone number [{}]. Expected [{}], but got [{}]", phoneNumber, storedCode, code);
+        return false;
+    }
+
+    private String generateVerificationCode() {
+        Random random = new Random();
+        int code = 1000 + random.nextInt(9000); // Generate a random 4-digit code
+        return Integer.toString(code);
     }
 }
