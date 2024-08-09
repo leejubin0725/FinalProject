@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Box, IconButton, Slider as MuiSlider, Typography } from '@mui/material';
@@ -71,7 +71,7 @@ const MovieDetailPage: React.FC = () => {
     }
   }, [movie]);
 
-  const handlePlayPause = () => {
+  const handlePlayPause = useCallback(() => {
     setPlaying(prev => !prev);
     if (videoRef.current) {
       if (playing) {
@@ -80,19 +80,18 @@ const MovieDetailPage: React.FC = () => {
         videoRef.current.play();
       }
     }
-  };
+  }, [playing]);
 
-  const handleVolumeChange = (event: Event, newValue: number | number[]) => {
-    const maxSliderValue = 0.91;
-    const adjustedVolume = Math.min(newValue as number, maxSliderValue);
+  const handleVolumeChange = useCallback((event: Event, newValue: number | number[]) => {
+    const adjustedVolume = Math.min(newValue as number, 1);
     setVolume(adjustedVolume);
     setMuted(adjustedVolume === 0);
     if (videoRef.current) {
       videoRef.current.volume = adjustedVolume;
     }
-  };
+  }, []);
 
-  const handleMute = () => {
+  const handleMute = useCallback(() => {
     if (muted) {
       setVolume(previousVolume);
       setMuted(false);
@@ -107,18 +106,18 @@ const MovieDetailPage: React.FC = () => {
         videoRef.current.volume = 0;
       }
     }
-  };
-
-  const toggleVolumeSlider = () => {
-    setShowVolumeSlider(prev => !prev);
-  };
+  }, [muted, previousVolume, volume]);
 
   const handleVolumeClick = () => {
     handleMute();
     toggleVolumeSlider();
   };
 
-  const handleFullscreen = () => {
+  const toggleVolumeSlider = useCallback(() => {
+    setShowVolumeSlider(prev => !prev);
+  }, []);
+
+  const handleFullscreen = useCallback(() => {
     if (!fullscreen) {
       if (wrapperRef.current?.requestFullscreen) {
         wrapperRef.current.requestFullscreen();
@@ -129,30 +128,29 @@ const MovieDetailPage: React.FC = () => {
       }
     }
     setFullscreen(!fullscreen);
-  };
+  }, [fullscreen]);
 
-  const handleProgress = () => {
+  const handleProgress = useCallback(() => {
     if (videoRef.current && !isNaN(videoRef.current.duration)) {
       setPlayed(videoRef.current.currentTime / videoRef.current.duration);
     }
-  };
+  }, []);
 
-  const handleDuration = () => {
+  const handleDuration = useCallback(() => {
     if (videoRef.current && !isNaN(videoRef.current.duration)) {
       setDuration(videoRef.current.duration);
     }
-  };
+  }, []);
 
-  const handleSeekChange = (event: Event, newValue: number | number[]) => {
-    const maxSliderValue = 0.91;
-    const adjustedSeek = Math.min(newValue as number, maxSliderValue);
+  const handleSeekChange = useCallback((event: Event, newValue: number | number[]) => {
+    const adjustedSeek = Math.min(newValue as number, 1);
     if (videoRef.current) {
       videoRef.current.currentTime = adjustedSeek * videoRef.current.duration;
       setPlayed(adjustedSeek);
     }
-  };
+  }, []);
 
-  const handleForward10 = () => {
+  const handleForward10 = useCallback(() => {
     if (videoRef.current) {
       const currentTime = videoRef.current.currentTime;
       const remainingTime = duration - currentTime;
@@ -163,7 +161,7 @@ const MovieDetailPage: React.FC = () => {
         setPlaying(false);
       }
     }
-  };
+  }, [duration]);
 
   const formatTime = (seconds: number) => {
     const h = Math.floor(seconds / 3600);
@@ -174,19 +172,19 @@ const MovieDetailPage: React.FC = () => {
       .join(':');
   };
 
-  const handleMouseLeaveVolumeControl = () => {
+  const handleMouseLeaveVolumeControl = useCallback(() => {
     volumeSliderTimeoutRef.current = window.setTimeout(() => {
       setShowVolumeSlider(false);
     }, 2000);
-  };
+  }, []);
 
-  const handleMouseEnterVolumeControl = () => {
+  const handleMouseEnterVolumeControl = useCallback(() => {
     if (volumeSliderTimeoutRef.current) {
       clearTimeout(volumeSliderTimeoutRef.current);
       volumeSliderTimeoutRef.current = null;
     }
     setShowVolumeSlider(true);
-  };
+  }, []);
 
   useEffect(() => {
     if (showVolumeSlider) {
@@ -201,31 +199,31 @@ const MovieDetailPage: React.FC = () => {
     }
   }, [showVolumeSlider]);
 
-  const showControls = () => {
+  const showControls = useCallback(() => {
     if (controlsRef.current) {
       controlsRef.current.classList.add(styles.visible);
     }
     document.body.style.cursor = 'default';
-  };
+  }, []);
 
-  const hideControls = () => {
+  const hideControls = useCallback(() => {
     if (controlsRef.current) {
       controlsRef.current.classList.remove(styles.visible);
     }
     document.body.style.cursor = 'none';
-  };
+  }, []);
 
-  const handleMouseMove = () => {
+  const handleMouseMove = useCallback(() => {
     if (hideControlsTimeoutRef.current) {
       clearTimeout(hideControlsTimeoutRef.current);
     }
     showControls();
     hideControlsTimeoutRef.current = window.setTimeout(hideControls, 5000);
-  };
+  }, [showControls, hideControls]);
 
-  const handleEnded = () => {
+  const handleEnded = useCallback(() => {
     setPlaying(false);
-  };
+  }, []);
 
   useEffect(() => {
     if (fullscreen) {
@@ -244,7 +242,7 @@ const MovieDetailPage: React.FC = () => {
         clearTimeout(hideControlsTimeoutRef.current);
       }
     };
-  }, [fullscreen]);
+  }, [fullscreen, handleMouseMove, hideControls]);
 
   const handleTagClick = (tag: string) => {
     setSelectedTag(tag);
@@ -256,37 +254,23 @@ const MovieDetailPage: React.FC = () => {
 
   const getSliderSettings = (movieCount: number) => ({
     dots: false,
-    infinite: movieCount > 3,
+    infinite: movieCount > 2,
     speed: 600,
-    slidesToShow: 3,
+    slidesToShow: 2,
     slidesToScroll: 1,
+    draggable: false,
+    arrows: movieCount > 2,
     prevArrow: <CustomPrevArrow />,
     nextArrow: <CustomNextArrow />,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 2,
-          infinite: movieCount > 2,
-        },
-      },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-          initialSlide: 1,
-          infinite: movieCount > 2,
-        },
-      },
-    ],
   });
 
   const CustomPrevArrow = (props: any) => {
     const { className, onClick } = props;
     return (
-      <button className={`${className} ${styles.arrowButton} ${styles.left}`} onClick={onClick}>
+      <button
+        className={`${className} slick-prev ${styles.arrowButton} ${styles.left}`}
+        onClick={onClick}
+      >
         &lt;
       </button>
     );
@@ -295,7 +279,10 @@ const MovieDetailPage: React.FC = () => {
   const CustomNextArrow = (props: any) => {
     const { className, onClick } = props;
     return (
-      <button className={`${className} ${styles.arrowButton} ${styles.right}`} onClick={onClick}>
+      <button
+        className={`${className} slick-next ${styles.arrowButton} ${styles.right}`}
+        onClick={onClick}
+      >
         &gt;
       </button>
     );
@@ -406,7 +393,7 @@ const MovieDetailPage: React.FC = () => {
             ))}
           </ul>
           {moviesByCast.length > 0 && (
-            <Box className={styles.sliderContainer}>
+            <Box className={`${styles.sliderContainer} my-custom-slider`}>
               <Slider {...getSliderSettings(moviesByCast.length)} className={styles.tileRows}>
                 {moviesByCast.map((movie, index) => (
                   <div className={styles.tile} key={index}>
@@ -429,7 +416,7 @@ const MovieDetailPage: React.FC = () => {
             ))}
           </ul>
           {relatedMovies.length > 0 && (
-            <Box className={styles.sliderContainer}>
+            <Box className={`${styles.sliderContainer} my-custom-slider`}>
               <Slider {...getSliderSettings(relatedMovies.length)} className={styles.tileRows}>
                 {relatedMovies.map((movie, index) => (
                   <div className={styles.tile} key={index}>

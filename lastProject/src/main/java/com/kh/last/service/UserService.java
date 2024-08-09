@@ -29,7 +29,7 @@ public class UserService {
 	private PasswordEncoder passwordEncoder;
 
 	private final SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS256); // 보안 키 생성
-	private final long tokenValidity = 3600000; // 1 hour in milliseconds
+	private final long tokenValidity = 36000000; // 1 hour in milliseconds
 
 	public SecretKey getKey() {
 		return key;

@@ -1,6 +1,10 @@
 .thumbnail {
     width: 90%;
+    /* 슬라이더 컨테이너의 너비에 맞춤 */
+    max-width: 500px;
+    /* 썸네일의 최대 너비를 고정 */
     height: 300px;
+    /* 높이 고정 */
     position: relative;
     overflow: hidden;
     cursor: pointer;
@@ -8,6 +12,7 @@
     border-radius: 10%;
     background-color: black;
 }
+
 
 .thumbnail img,
 .thumbnail video {
