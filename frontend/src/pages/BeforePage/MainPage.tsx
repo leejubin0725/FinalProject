@@ -27,6 +27,11 @@ const Landing: FunctionComponent = () => {
     }
   };
 
+  const handleGoogleLogin = () => {
+    // 백엔드의 OAuth2 인증 요청 URI로 리디렉션
+    window.location.href = "http://localhost:8088/oauth2/authorization/google";
+  };
+
   return (
     <div className={styles.landing}>
       <div className={styles.background}></div>
@@ -56,8 +61,17 @@ const Landing: FunctionComponent = () => {
           <button className={styles.getStartedButton} onClick={handleGetStarted}>
             시작하기
           </button>
+          
+
+          {/* <a href="#" onClick={handleGoogleLogin}>
+          <img src="https://developers.google.com/identity/images/btn_google_signin_dark_normal_web.png" alt="Google Sign-In" />
+          </a> */}
+
           {error && <p className={styles.error}>{error}</p>}
         </div>
+        <button className={styles.googleLoginButton} onClick={handleGoogleLogin}>
+            Google 로그인하기
+          </button>
       </section>
     </div>
   );

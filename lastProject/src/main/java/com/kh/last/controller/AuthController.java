@@ -25,6 +25,6 @@ public class AuthController {
 
         String name = (String) oauth2User.getAttribute("name");
         model.addAttribute("name", name != null ? name : "Anonymous User");
-        return "redirect:http://localhost:3000/main";
+        return "redirect:http://localhost:3000/home";
     }
 }
