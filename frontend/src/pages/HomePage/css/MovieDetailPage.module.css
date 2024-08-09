@@ -78,6 +78,7 @@
   background-color: rgba(0, 0, 0, 0.7);
   border-radius: 10px;
   border: 1px solid #333;
+  background-color: #000;
 }
 
 .subtitle {
@@ -135,7 +136,7 @@
 
 .sectionTitle {
   color: white;
-  font-size: 30px;
+  font-size: 24px;
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
@@ -143,34 +144,22 @@
   position: relative;
 }
 
-.section:first-child .sectionTitle {
-  margin-top: 500px;
-}
-
 .tileRows {
-  /* flex 컨테이너로 설정 */
   flex-direction: row;
   flex-wrap: nowrap;
   gap: 10px;
-  /* 간격을 조금 추가 */
   justify-content: center;
-  /* 중앙 정렬 */
   align-items: center;
-  /* 아이템을 중앙에 정렬 */
 }
 
 .tile {
-  display: flex;
   flex-direction: column;
   align-items: center;
   height: auto;
   margin: 16.4px;
   flex: 0 0 auto;
-  /* 아이템이 컨테이너 크기에 맞춰 늘어나지 않도록 설정 */
   width: 100%;
-  /* 필요에 따라 아이템의 너비를 조정 */
 }
-
 
 .arrowButton {
   position: absolute;
@@ -193,64 +182,9 @@
   right: 0;
 }
 
-.relatedMoviesSection {
+.sliderContainer {
   margin-top: 20px;
-}
-
-@media screen and (max-width: 1250px) {
-
-  .tileComponentGroup,
-  .tileComponentParent,
-  .tileRows {
-    flex-wrap: wrap;
-    min-width: 100%;
-
-  }
-
-  .content {
-    padding-left: 32px;
-    padding-top: 20px;
-    padding-bottom: 64px;
-  }
-
-  .main {
-    gap: 59px;
-  }
-}
-
-@media screen and (max-width: 825px) {
-  .content {
-    gap: 40px;
-    padding-bottom: 42px;
-  }
-
-  .main {
-    gap: 29px;
-  }
-}
-
-@media screen and (max-width: 450px) {
-  .heroContent {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-
-  .seeAgain,
-  .seeAgain1,
-  .seeAgain2 {
-    font-size: 16px;
-    line-height: 26px;
-  }
-
-  .titleImageIcon {
-    width: 100%;
-    height: auto;
-  }
-
-  .Tile5 {
-    margin: 10px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-  }
+  background-color: #000;
+  padding: 10px;
+  border-radius: 10px;
 }

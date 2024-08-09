@@ -25,8 +25,8 @@ const MovieDetailPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [selectedCast, setSelectedCast] = useState<string | null>(null);
-  const { relatedMovies, loading: relatedLoading, error: relatedError } = useRelatedMovies(selectedTag || '');
-  const { moviesByCast, loading: castLoading, error: castError } = useMoviesByCast(selectedCast || '');
+  const { relatedMovies } = useRelatedMovies(selectedTag || '');
+  const { moviesByCast } = useMoviesByCast(selectedCast || '');
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -70,10 +70,6 @@ const MovieDetailPage: React.FC = () => {
       videoRef.current.src = movie.url;
     }
   }, [movie]);
-
-  useEffect(() => {
-    console.log('Related Movies:', relatedMovies);
-  }, [relatedMovies]);
 
   const handlePlayPause = () => {
     setPlaying(prev => !prev);
@@ -252,19 +248,17 @@ const MovieDetailPage: React.FC = () => {
 
   const handleTagClick = (tag: string) => {
     setSelectedTag(tag);
-    setSelectedCast(null); // Reset selectedCast when a tag is selected
   };
 
   const handleCastClick = (cast: string) => {
     setSelectedCast(cast);
-    setSelectedTag(null); // Reset selectedTag when a cast is selected
   };
 
   const getSliderSettings = (movieCount: number) => ({
     dots: false,
-    infinite: movieCount > 1,
+    infinite: movieCount > 3,
     speed: 600,
-    slidesToShow: 2,
+    slidesToShow: 3,
     slidesToScroll: 1,
     prevArrow: <CustomPrevArrow />,
     nextArrow: <CustomNextArrow />,
@@ -272,10 +266,10 @@ const MovieDetailPage: React.FC = () => {
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: 1,
           slidesToScroll: 2,
-          infinite: movieCount > 2
-        }
+          infinite: movieCount > 2,
+        },
       },
       {
         breakpoint: 600,
@@ -283,10 +277,10 @@ const MovieDetailPage: React.FC = () => {
           slidesToShow: 1,
           slidesToScroll: 1,
           initialSlide: 1,
-          infinite: movieCount > 1
-        }
-      }
-    ]
+          infinite: movieCount > 2,
+        },
+      },
+    ],
   });
 
   const CustomPrevArrow = (props: any) => {
@@ -307,30 +301,6 @@ const MovieDetailPage: React.FC = () => {
     );
   };
 
-  const renderMoviesSlider = (title: string, movies: Movie[]) => (
-    <div className={styles.relatedMoviesSection}>
-      <Slider {...getSliderSettings(movies.length)} className={styles.tileRows}>
-        {movies.map((movie, index) => (
-          <div className={styles.tile} key={index}>
-            <VideoThumbnail video={movie} />
-          </div>
-        ))}
-      </Slider>
-    </div>
-  );
-
-  if (loading) {
-    return <div className={styles.loading}>로딩 중...</div>;
-  }
-
-  if (error) {
-    return <div className={styles.error}>{error}</div>;
-  }
-
-  if (!movie) {
-    return <div className={styles.error}>영화를 찾을 수 없습니다.</div>;
-  }
-
   return (
     <Box
       className={styles.container}
@@ -338,7 +308,7 @@ const MovieDetailPage: React.FC = () => {
       onMouseLeave={hideControls}
     >
       <Typography variant="h3" className={styles.title}>
-        {movie.title}
+        {movie?.title}
       </Typography>
       <Box className={styles.playerWrapper} ref={wrapperRef}>
         <video
@@ -395,7 +365,7 @@ const MovieDetailPage: React.FC = () => {
                 height: '80px',
                 position: 'absolute',
                 right: '5px',
-                bottom: '50px', // 볼륨 슬라이더를 볼륨 버튼 위로 이동
+                bottom: '50px',
                 '& .MuiSlider-thumb': {
                   width: '12px',
                   height: '12px',
@@ -421,7 +391,7 @@ const MovieDetailPage: React.FC = () => {
         </Box>
       </Box>
       <Typography variant="body1" className={styles.description}>
-        {movie.description}
+        {movie?.description}
       </Typography>
       <Box className={styles.bottomSection}>
         <Box className={styles.section}>
@@ -429,28 +399,48 @@ const MovieDetailPage: React.FC = () => {
             배우
           </Typography>
           <ul className={styles.list}>
-            {movie.castList.map((actor, index) => (
+            {movie?.castList.map((actor, index) => (
               <li key={index} className={styles.listItem}>
                 <button onClick={() => handleCastClick(actor)} className={styles.tagButton}>{actor}</button>
               </li>
             ))}
           </ul>
+          {moviesByCast.length > 0 && (
+            <Box className={styles.sliderContainer}>
+              <Slider {...getSliderSettings(moviesByCast.length)} className={styles.tileRows}>
+                {moviesByCast.map((movie, index) => (
+                  <div className={styles.tile} key={index}>
+                    <VideoThumbnail video={movie} />
+                  </div>
+                ))}
+              </Slider>
+            </Box>
+          )}
         </Box>
         <Box className={styles.section}>
           <Typography variant="h6" className={styles.subtitle}>
             태그
           </Typography>
           <ul className={styles.list}>
-            {movie.tagList.map((tag, index) => (
+            {movie?.tagList.map((tag, index) => (
               <li key={index} className={styles.listItem}>
                 <button onClick={() => handleTagClick(tag)} className={styles.tagButton}>{tag}</button>
               </li>
             ))}
           </ul>
+          {relatedMovies.length > 0 && (
+            <Box className={styles.sliderContainer}>
+              <Slider {...getSliderSettings(relatedMovies.length)} className={styles.tileRows}>
+                {relatedMovies.map((movie, index) => (
+                  <div className={styles.tile} key={index}>
+                    <VideoThumbnail video={movie} />
+                  </div>
+                ))}
+              </Slider>
+            </Box>
+          )}
         </Box>
       </Box>
-      {selectedTag && relatedMovies.length > 0 && renderMoviesSlider('태그 관련 영화', relatedMovies)}
-      {selectedCast && moviesByCast.length > 0 && renderMoviesSlider('배우 관련 영화', moviesByCast)}
     </Box>
   );
 };
