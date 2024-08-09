@@ -43,7 +43,7 @@ public class UserController {
 	@PostMapping("/register")
 	public ResponseEntity<?> createUser(@RequestBody UserCreateRequest request) {
 		try {
-			USERS createdUser = userService.createUser(request.getUserId(), request.getEmail(), request.getPassword(),
+			USERS createdUser = userService.createUser( request.getEmail(), request.getPassword(),
 					request.getStatus(), request.getBirthday(), request.getUsername(), request.getVNumber());
 			return ResponseEntity.status(HttpStatus.CREATED).body(createdUser); // 생성된 리소스를 반환
 		} catch (Exception e) {
@@ -114,8 +114,7 @@ class PasswordResponse {
 
 @Getter
 @Setter
-class UserCreateRequest {
-	private String userId;
+class UserCreateRequest {	
 	private String email;
 	private String password;
 	private String status;

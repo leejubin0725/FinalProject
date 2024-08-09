@@ -12,7 +12,7 @@ interface Profile {
 
 const ProfilePage: React.FC = () => {
     const [profiles, setProfiles] = useState<Profile[]>([]);
-    const [selectedMenu, setSelectedMenu] = useState<string>('create');
+    const [selectedMenu, setSelectedMenu] = useState<string>('select');
     const [selectedProfile, setSelectedProfile] = useState<Profile | null>(null);
 
     useEffect(() => {
@@ -54,10 +54,18 @@ const ProfilePage: React.FC = () => {
         setSelectedMenu('select');
     };
 
+    const handleAddProfile = () => {
+        setSelectedMenu('create');
+    };
+
+    const handleCancelCreate = () => {
+        setSelectedMenu('select');
+    };
+
     return (
         <div className={styles.profilePage}>
-            {selectedMenu === 'create' && <ProfileCreate onProfileCreated={handleProfileCreated} />}
-            {selectedMenu === 'select' && <ProfileSelect profiles={profiles} onProfileSelect={handleProfileSelect} />}
+            {selectedMenu === 'create' && <ProfileCreate onProfileCreated={handleProfileCreated} onCancel={handleCancelCreate} />}
+            {selectedMenu === 'select' && <ProfileSelect profiles={profiles} onProfileSelect={handleProfileSelect} onAddProfile={handleAddProfile} />}
         </div>
     );
 };

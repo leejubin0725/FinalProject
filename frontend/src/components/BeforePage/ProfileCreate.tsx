@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import styles from '../../components/BeforePage/css/ProfileCreate.module.css';
 
-
 interface Profile {
     profileNo: number;
     profileImg: string;
@@ -11,9 +10,10 @@ interface Profile {
 
 interface ProfileCreateProps {
     onProfileCreated: (newProfile: Profile) => void;
+    onCancel: () => void; // 취소 버튼 클릭 시 호출되는 콜백
 }
 
-const ProfileCreate: React.FC<ProfileCreateProps> = ({ onProfileCreated }) => {
+const ProfileCreate: React.FC<ProfileCreateProps> = ({ onProfileCreated, onCancel }) => {
     const [newProfileName, setNewProfileName] = useState('');
     const [newProfileImage, setNewProfileImage] = useState<File | null>(null);
     const [error, setError] = useState<string | null>(null);
@@ -79,6 +79,7 @@ const ProfileCreate: React.FC<ProfileCreateProps> = ({ onProfileCreated }) => {
                 className={styles.input}
             />
             <button onClick={handleCreateProfile} className={styles.createButton}>프로필 생성</button>
+            <button onClick={onCancel} className={styles.cancelButton}>취소</button>
             {error && <p className={styles.error}>{error}</p>}
         </div>
     );

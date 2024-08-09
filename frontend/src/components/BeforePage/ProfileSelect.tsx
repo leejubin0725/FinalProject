@@ -10,9 +10,10 @@ interface Profile {
 interface ProfileSelectProps {
     profiles: Profile[];
     onProfileSelect: (profile: Profile) => void;
+    onAddProfile: () => void;
 }
 
-const ProfileSelect: React.FC<ProfileSelectProps> = ({ profiles, onProfileSelect }) => {
+const ProfileSelect: React.FC<ProfileSelectProps> = ({ profiles, onProfileSelect, onAddProfile }) => {
     return (
         <div className={styles.profileSelectionPage}>
             <h1>환영합니다!</h1>
@@ -23,6 +24,11 @@ const ProfileSelect: React.FC<ProfileSelectProps> = ({ profiles, onProfileSelect
                         <h2 className={styles.profileName}>{profile.profileName}</h2>
                     </div>
                 ))}
+                {profiles.length < 4 && (
+                    <div className={styles.addProfile} onClick={onAddProfile}>
+                        <h2>+ 추가</h2>
+                    </div>
+                )}
             </div>
         </div>
     );
