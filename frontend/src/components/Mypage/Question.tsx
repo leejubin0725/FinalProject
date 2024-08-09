@@ -1,42 +1,37 @@
-import React from 'react';
-import styles from './css/HelpPage.module.css'
 
-interface QuestionProps {
-    onMenuClick: (menu: string) => void;
-}
+import React, { useState } from 'react';
+import styles from './css/HelpPage.module.css';
 
-const Question: React.FC<QuestionProps> = ({ onMenuClick }) => {
+const Question: React.FC = () => {
+    const [chatContent, setChatContent] = useState<string>('여기에 채팅 내용이 표시됩니다.');
+
     return (
         <div className={styles.profileManagementPage}>
-            <div className={styles.content}>
-                <h1>FAQ</h1>
-
+            <div className={styles.header}>
+                <h1>1:1 문의</h1>
+                <button className={styles.endChatButton}>대화종료</button>
             </div>
-            <div className={styles.content}>
-                <h3>1:1문의</h3>
-                <div className={styles.quickLinks}>
-                    <ul>
-                        <li><a href="/watch-settings">사용 <span className={styles.arrow}>&gt;</span></a></li>
-                        <li><a href="/watch-history">하세용 <span className={styles.arrow}>&gt;</span></a></li>
-                        <li><a href="/payment-info">사용 <span className={styles.arrow}>&gt;</span></a></li>
-                        <li><a href="/privacy-policy">하세용 <span className={styles.arrow}>&gt;</span></a></li>
-                        <li>
-                            <a
-                                href="#"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    onMenuClick('');
-                                }}
-                                className={styles.link}
-                            >
-                                이걸로 다른 화면에있는 tsx를 가져올수있음여 <span className={styles.arrow}>&gt;</span>
-                            </a>
-                        </li>
-                    </ul>
+            <div className={styles.chatContainer}>
+                <div className={styles.chatBox}>
+                    <div className={styles.chatContent}>
+                        {chatContent}
+                    </div>
+                </div>
+                <div className={styles.chatInputContainer}>
+                    <input
+                        type="text"
+                        placeholder="메시지를 입력하세요"
+                        className={styles.chatInput}
+                        onChange={(e) => setChatContent(e.target.value)}
+                    />
+                    <button className={styles.sendButton}>전송하기</button>
+
                 </div>
             </div>
         </div>
     );
 };
 
+
 export default Question;
+

@@ -5,7 +5,7 @@ import styles from '../../pages/AdminPage/css/DashboardPage.module.css';
 import Pagination from './Pagination'; // 공통 컴포넌트 호출
 import axios from 'axios';
 
-interface Faq {
+interface FaqType {
     id: number;
     question: string;
     answer: string;
@@ -13,7 +13,7 @@ interface Faq {
 }
 
 export default function ManageFAQ() {
-    const [data, setData] = useState<Faq[]>([]);
+    const [data, setData] = useState<FaqType[]>([]);
     const { page } = useParams<{ page: string }>();
     const navigate = useNavigate();
 
@@ -30,7 +30,7 @@ export default function ManageFAQ() {
     useEffect(() => {
         const fetchFAQ = async () => {
             try {
-                const response = await axios.get<Faq[]>('http://localhost:8088/dashboard/getFaq');
+                const response = await axios.get<FaqType[]>('http://localhost:8088/dashboard/getFaq');
                 // 변환된 날짜 문자열로 처리
                 const updatedData = response.data.map(item => ({
                     ...item,

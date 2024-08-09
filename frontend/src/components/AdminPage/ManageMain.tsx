@@ -1,7 +1,7 @@
 import ChartComponent from './ChartComponent';
 import styles from '../../pages/AdminPage/css/DashboardPage.module.css';
 import VisitCount from './VisitCount';
-import EmployeeStatus from './EmployeeStatus';
+import RecentMostView from './RecentMostView';
 import TotalMovie from './TotalMovie';
 import TotalViews from './TotalViews';
 import TodayVisit from './TodayVisit';
@@ -39,7 +39,7 @@ export default function ManageMain() {
             <VisitCount />
           </div>
           <div className={`${styles.card} ${styles.halfWidthSmaller}`}>
-            <EmployeeStatus />
+            <RecentMostView />
           </div>
         </div>
       </div>

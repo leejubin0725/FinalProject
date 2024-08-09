@@ -309,7 +309,6 @@ const MovieDetailPage: React.FC = () => {
 
   const renderMoviesSlider = (title: string, movies: Movie[]) => (
     <div className={styles.relatedMoviesSection}>
-      <h2 className={styles.sectionTitle}>{title}</h2>
       <Slider {...getSliderSettings(movies.length)} className={styles.tileRows}>
         {movies.map((movie, index) => (
           <div className={styles.tile} key={index}>

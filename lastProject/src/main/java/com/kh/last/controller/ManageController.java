@@ -33,6 +33,15 @@ public class ManageController {
 		return count;
 	}
 	
+	@GetMapping("/todayVisit")
+	public int todayVisit() {
+		LocalDate date = LocalDate.now();
+		int count = 0;
+		count = service.todayVisit(date);
+		
+		return count;
+	}
+	
 	@GetMapping("/movieCount")
 	public int movieCount() {
 		int count = service.movieCount();
@@ -60,11 +69,6 @@ public class ManageController {
 		}
 		
 		return list;
-	}
-	
-	@GetMapping("/todayVisit")
-	public int todayVisit() {
-		return 0;  //미완성(일별 방문자 테이블 만든 후 viewCount 참고해 날짜 변수 보낼 예정)
 	}
 	
 	@GetMapping("/getFaq")

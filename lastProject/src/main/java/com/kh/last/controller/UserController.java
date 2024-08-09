@@ -28,6 +28,7 @@ import lombok.Setter;
 @CrossOrigin(origins = "http://localhost:3000") // 클라이언트의 출처 설정
 public class UserController {
 
+
 	private final UserService userService;
 	private final SecretKey key;
 
@@ -78,6 +79,7 @@ public class UserController {
 	}
   
       @PostMapping("/check-email")
+
     public ResponseEntity<?> checkEmail(@RequestBody EmailCheckRequest request) {
         boolean exists = userService.emailExists(request.getEmail());
         return ResponseEntity.ok(new EmailCheckResponse(exists));
@@ -93,7 +95,6 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while checking the password.");
         }
     }
-   
 }
 
 @Getter
