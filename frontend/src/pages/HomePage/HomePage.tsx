@@ -112,7 +112,7 @@ const HomePage: React.FC = () => {
     infinite: movieCount > 4,
     speed: 600,
     slidesToShow: 4,
-    slidesToScroll: 2,
+    slidesToScroll: 1,
     prevArrow: <CustomPrevArrow />,
     nextArrow: <CustomNextArrow />,
     responsive: [

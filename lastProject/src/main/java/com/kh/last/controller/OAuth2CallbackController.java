@@ -43,6 +43,6 @@ public class OAuth2CallbackController {
 
         // Optionally: Save the token or use it to make further API calls
 
-        return "redirect:/main"; // Redirect to main page after successful login
+        return "redirect:/home"; // Redirect to main page after successful login
     }
 }
