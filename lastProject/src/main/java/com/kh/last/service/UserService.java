@@ -38,7 +38,6 @@ public class UserService {
 	public USERS createUser(String userId, String email, String password, String status, String birthday,
 			String username, Long vNumber) {
 		USERS user = new USERS();
-		user.setUserId(userId);
 		user.setEmail(email);
 		user.setPassword(passwordEncoder.encode(password)); // 비밀번호 인코딩
 		user.setStatus(status);
