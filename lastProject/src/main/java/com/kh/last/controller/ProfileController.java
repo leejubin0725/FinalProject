@@ -1,6 +1,7 @@
 package com.kh.last.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.crypto.SecretKey;
 
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -69,4 +72,31 @@ public class ProfileController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error creating profile");
 		}
 	}
+
+	@PostMapping("/upload")
+	public ResponseEntity<?> uploadProfileImage(@RequestParam("profileImg") MultipartFile file,
+			@RequestParam("profileNo") Long profileNo) {
+		try {
+			String profileImgUrl = profileService.uploadProfileImage(file, profileNo);
+			return ResponseEntity.ok().body(Map.of("success", true, "profileImg", profileImgUrl));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(Map.of("success", false, "message", e.getMessage()));
+		}
+	}
+
+	// 닉네임 변경 엔드포인트
+	@PutMapping("/update-name")
+	public ResponseEntity<?> updateProfileName(@RequestBody Map<String, String> request) {
+		try {
+			Long profileNo = Long.parseLong(request.get("profileNo"));
+			String profileName = request.get("profileName");
+			profileService.updateProfileName(profileNo, profileName);
+			return ResponseEntity.ok().body(Map.of("success", true));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(Map.of("success", false, "message", e.getMessage()));
+		}
+	}
+
 }

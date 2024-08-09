@@ -3,14 +3,19 @@ package com.kh.last.controller;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.last.model.vo.Faq;
+import com.kh.last.model.vo.Movie;
+import com.kh.last.model.vo.USERS;
 import com.kh.last.model.vo.Visit;
 import com.kh.last.service.ManageService;
 
@@ -90,7 +95,27 @@ public class ManageController {
 		}
 	}
 	
+	@DeleteMapping("/faq/{id}")
+    public ResponseEntity<String> deleteFaq(@PathVariable Long id) {
+        try {
+        	service.deleteFaq(id);
+            return ResponseEntity.ok("FAQ 삭제가 완료되었습니다.");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("FAQ 삭제 중 오류가 발생했습니다.");
+        }
+    }
 	
+	@GetMapping("/getMovie")
+	public List<Movie> getMovie(){
+		List<Movie> list = service.getMovie();
+		return list;
+	}
+	
+	@GetMapping("/getUser")
+	public List<USERS> getUser(){
+		List<USERS> list = service.getUser();
+		return list;
+	}
 }
 
 

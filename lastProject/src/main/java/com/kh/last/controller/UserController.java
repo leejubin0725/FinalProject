@@ -59,6 +59,7 @@ public class UserController {
 	public ResponseEntity<?> loginUser(@RequestBody UserLoginRequest request) {
 		try {
 			String token = userService.loginUser(request.getEmail(), request.getPassword());
+            visitService.updateVisitCount();
 			return ResponseEntity.ok(new LoginResponse(token));
 		} catch (InvalidCredentialsException e) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password.");

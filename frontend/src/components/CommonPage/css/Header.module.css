@@ -51,7 +51,7 @@
   z-index: 1;
 }
 
-.iconButton:hover{
+.iconButton:hover {
   cursor: pointer;
 }
 
@@ -210,5 +210,12 @@
   justify-content: center;
   position: relative;
   padding: 30px;
+
+}
+
+.disabledItem {
+  pointer-events: none;
+  cursor: default;
+  color: #d6a060;
 
 }

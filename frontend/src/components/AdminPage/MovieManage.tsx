@@ -1,28 +1,39 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from '../../pages/AdminPage/css/DashboardPage.module.css';
 import Pagination from './Pagination'; // Pagination 컴포넌트를 import 합니다.
+import axios from 'axios';
 
 interface Movie {
   id: number;
   title: string;
-  genre: string;
-  actors: string;
+  tags: string;
+  cast: string;
   director: string;
-  duration: string;
-  releaseDate: string;
+  //duration: string;
+  releaseYear: string;
   views: string;
-  rating: string;
+  //rating: string;
 }
-
-const moviesData: Movie[] = [
-  { id: 1, title: 'testtitle', genre: '호러', actors: '배우1, 배우2, 배우3', director: '감독1', duration: '200분', releaseDate: '2020.01.01', views: '8000회', rating: '5.0/5.0' },
-  // 추가적인 영화 데이터들...
-];
 
 export default function MovieManage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+
+  const [moviesData, setMoviesData] = useState<Movie[]>([]);
+
+  useEffect(() => {
+    const getMovie = async () => {
+      try {
+        const response = await axios.get<Movie[]>('http://localhost:8088/dashboard/getMovie');
+        setMoviesData(response.data);
+      } catch (error) {
+        console.error("Failed to get Movie", error);
+      }
+    };
+
+    getMovie();
+  }, []);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
@@ -92,13 +103,13 @@ export default function MovieManage() {
               <tr key={movie.id}>
                 <td>{movie.id}</td>
                 <td>{movie.title}</td>
-                <td>{movie.genre}</td>
-                <td>{movie.actors}</td>
+                <td>{movie.tags}</td>
+                <td>{movie.cast}</td>
                 <td>{movie.director}</td>
-                <td>{movie.duration}</td>
-                <td>{movie.releaseDate}</td>
+                <td>0</td>
+                <td>{movie.releaseYear}</td>
                 <td>{movie.views}</td>
-                <td>{movie.rating}</td>
+                <td>5.0</td>
                 <td><button>delete</button></td>
               </tr>
             ))}
