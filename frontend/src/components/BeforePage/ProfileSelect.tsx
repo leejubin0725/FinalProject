@@ -16,7 +16,7 @@ interface ProfileSelectProps {
 const ProfileSelect: React.FC<ProfileSelectProps> = ({ profiles, onProfileSelect, onAddProfile }) => {
     return (
         <div className={styles.profileSelectionPage}>
-            <h1>환영합니다!</h1>
+            <h1>계정을 선택해주세요.</h1>
             <div className={styles.profiles}>
                 {profiles.map(profile => (
                     <div key={profile.profileNo} className={styles.profile} onClick={() => onProfileSelect(profile)}>

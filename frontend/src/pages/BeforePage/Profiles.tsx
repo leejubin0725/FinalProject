@@ -3,6 +3,7 @@ import axios from 'axios';
 import ProfileCreate from '../../components/BeforePage/ProfileCreate';
 import ProfileSelect from '../../components/BeforePage/ProfileSelect';
 import styles from './css/Profiles.module.css';
+import { useNavigate } from 'react-router-dom';
 
 interface Profile {
     profileNo: number;
@@ -14,6 +15,7 @@ const ProfilePage: React.FC = () => {
     const [profiles, setProfiles] = useState<Profile[]>([]);
     const [selectedMenu, setSelectedMenu] = useState<string>('select');
     const [selectedProfile, setSelectedProfile] = useState<Profile | null>(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const token = localStorage.getItem('authToken');
@@ -47,6 +49,12 @@ const ProfilePage: React.FC = () => {
     const handleProfileSelect = (profile: Profile) => {
         setSelectedProfile(profile);
         console.log('Selected profile:', profile);
+
+        // 선택된 프로필 정보를 localStorage에 저장
+        localStorage.setItem('selectedProfile', JSON.stringify(profile));
+
+        // home 페이지로 이동
+        navigate('/home');
     };
 
     const handleProfileCreated = (newProfile: Profile) => {
