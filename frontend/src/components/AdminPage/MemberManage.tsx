@@ -1,15 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from '../../pages/AdminPage/css/DashboardPage.module.css';
 import Pagination from './Pagination'; // Pagination 컴포넌트를 불러옵니다.
+import axios from 'axios';
 
 interface Member {
-  id: number;
-  name: string;
-  nickname: string;
+  userNo: number;
+  username: string;
+  status: string;
   email: string;
-  joinDate: string;
-  subscription: string;
-  suspended: boolean;
+  createdAt: string;
 }
 
 interface Profile {
@@ -19,37 +18,6 @@ interface Profile {
   kidsMode: boolean;
   password: string;
 }
-
-const membersData: Member[] = [
-  { id: 1, name: '1번회원', nickname: 'user1', email: 'user1@cinema.cloud', joinDate: '2024.08.02', subscription: '200분', suspended: false },
-  { id: 2, name: '1번회원', nickname: 'user1', email: 'user1@cinema.cloud', joinDate: '2024.08.02', subscription: '200분', suspended: false },
-  { id: 3, name: '1번회원', nickname: 'user1', email: 'user1@cinema.cloud', joinDate: '2024.08.02', subscription: '200분', suspended: false },
-  { id: 4, name: '1번회원', nickname: 'user1', email: 'user1@cinema.cloud', joinDate: '2024.08.02', subscription: '200분', suspended: false },
-  { id: 5, name: '1번회원', nickname: 'user1', email: 'user1@cinema.cloud', joinDate: '2024.08.02', subscription: '200분', suspended: false },
-  { id: 6, name: '1번회원', nickname: 'user1', email: 'user1@cinema.cloud', joinDate: '2024.08.02', subscription: '200분', suspended: false },
-  { id: 7, name: '1번회원', nickname: 'user1', email: 'user1@cinema.cloud', joinDate: '2024.08.02', subscription: '200분', suspended: false },
-  { id: 8, name: '1번회원', nickname: 'user1', email: 'user1@cinema.cloud', joinDate: '2024.08.02', subscription: '200분', suspended: false },
-  { id: 9, name: '1번회원', nickname: 'user1', email: 'user1@cinema.cloud', joinDate: '2024.08.02', subscription: '200분', suspended: false },
-  { id: 10, name: '1번회원', nickname: 'user1', email: 'user1@cinema.cloud', joinDate: '2024.08.02', subscription: '200분', suspended: false },
-  { id: 11, name: '1번회원', nickname: 'user1', email: 'user1@cinema.cloud', joinDate: '2024.08.02', subscription: '200분', suspended: false },
-  { id: 12, name: '1번회원', nickname: 'user1', email: 'user1@cinema.cloud', joinDate: '2024.08.02', subscription: '200분', suspended: false },
-  { id: 13, name: '1번회원', nickname: 'user1', email: 'user1@cinema.cloud', joinDate: '2024.08.02', subscription: '200분', suspended: false },
-  { id: 14, name: '1번회원', nickname: 'user1', email: 'user1@cinema.cloud', joinDate: '2024.08.02', subscription: '200분', suspended: false },
-  { id: 15, name: '1번회원', nickname: 'user1', email: 'user1@cinema.cloud', joinDate: '2024.08.02', subscription: '200분', suspended: false },
-  { id: 16, name: '1번회원', nickname: 'user1', email: 'user1@cinema.cloud', joinDate: '2024.08.02', subscription: '200분', suspended: false },
-  { id: 17, name: '1번회원', nickname: 'user1', email: 'user1@cinema.cloud', joinDate: '2024.08.02', subscription: '200분', suspended: false },
-  { id: 18, name: '1번회원', nickname: 'user1', email: 'user1@cinema.cloud', joinDate: '2024.08.02', subscription: '200분', suspended: false },
-  { id: 198, name: '1번회원', nickname: 'user1', email: 'user1@cinema.cloud', joinDate: '2024.08.02', subscription: '200분', suspended: false },
-  { id: 19, name: '1번회원', nickname: 'user1', email: 'user1@cinema.cloud', joinDate: '2024.08.02', subscription: '200분', suspended: false },
-  { id: 20, name: '1번회원', nickname: 'user1', email: 'user1@cinema.cloud', joinDate: '2024.08.02', subscription: '200분', suspended: false },
-  { id: 134, name: '1번회원', nickname: 'user1', email: 'user1@cinema.cloud', joinDate: '2024.08.02', subscription: '200분', suspended: false },
-  { id: 1344, name: '1번회원', nickname: 'user1', email: 'user1@cinema.cloud', joinDate: '2024.08.02', subscription: '200분', suspended: false },
-  { id: 1768, name: '1번회원', nickname: 'user1', email: 'user1@cinema.cloud', joinDate: '2024.08.02', subscription: '200분', suspended: false },
-  { id: 1980098, name: '1번회원', nickname: 'user1', email: 'user1@cinema.cloud', joinDate: '2024.08.02', subscription: '200분', suspended: false },
-  { id: 155, name: '1번회원', nickname: 'user1', email: 'user1@cinema.cloud', joinDate: '2024.08.02', subscription: '200분', suspended: false },
-  { id: 26, name: '1번회원', nickname: 'user1', email: 'user1@cinema.cloud', joinDate: '2024.08.02', subscription: '200분', suspended: false },
-  // 추가 데이터...
-];
 
 const profilesData: { [key: number]: Profile[] } = {
   1: [
@@ -65,7 +33,28 @@ export default function MemberManage() {
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  const [membersData, setMembersData] = useState<Member[]>([]);
   const itemsPerPage = 10;
+
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+        const response = await axios.get<Member[]>('http://localhost:8088/dashboard/getUser');
+        console.log(response.data);
+        // 변환된 날짜 문자열로 처리
+        const updatedData = response.data.map(item => ({
+          ...item,
+          createdAt: item.createdAt ? item.createdAt.toString().substring(0, 10) : 'N/A' // 날짜를 문자열로 변환
+        }));
+        console.log(updatedData);
+        setMembersData(updatedData);
+      } catch (error) {
+        console.error("Failed to get user", error);
+      }
+    };
+
+    getUser();
+  }, []);
 
   const handleRowClick = (id: number) => {
     setExpandedRow(expandedRow === id ? null : id);
@@ -80,7 +69,7 @@ export default function MemberManage() {
   };
 
   const filteredMembers = membersData.filter(
-    (member) => member.name.includes(searchTerm) || member.nickname.includes(searchTerm)
+    (member) => member.username.includes(searchTerm)
   );
 
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -129,17 +118,17 @@ export default function MemberManage() {
           </thead>
           <tbody>
             {currentItems.map((member) => (
-              <React.Fragment key={member.id}>
-                <tr onClick={() => handleRowClick(member.id)}>
-                  <td>{member.id}</td>
-                  <td>{member.name}</td>
-                  <td>{member.nickname}</td>
+              <React.Fragment key={member.userNo}>
+                <tr onClick={() => handleRowClick(member.userNo)}>
+                  <td>{member.userNo}</td>
+                  <td>0</td>
+                  <td>{member.username}</td>
                   <td>{member.email}</td>
-                  <td>{member.joinDate}</td>
-                  <td>{member.subscription}</td>
-                  <td><button>{member.suspended ? '정지해제' : '이용정지'}</button></td>
+                  <td>{member.createdAt}</td>
+                  <td>0</td>
+                  <td><button>{member.status ? '정지해제' : '이용정지'}</button></td>
                 </tr>
-                {expandedRow === member.id && (
+                {expandedRow === member.userNo && (
                   <tr>
                     <td colSpan={7} className={styles.expandedRow}>
                       <table className={styles.innerTable}>
@@ -153,7 +142,7 @@ export default function MemberManage() {
                           </tr>
                         </thead>
                         <tbody>
-                          {profilesData[member.id]?.map((profile) => (
+                          {profilesData[member.userNo]?.map((profile) => (
                             <tr key={profile.profileId}>
                               <td>{profile.profileId}</td>
                               <td>{profile.profileName}</td>

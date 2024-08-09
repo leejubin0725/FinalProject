@@ -25,9 +25,9 @@ public class Post {
     private LocalDate viewDate;  // 조회수가 기록된 날짜
     private int viewCount;           // 해당 날짜의 조회수
     
-//    @ManyToOne
-//    @JoinColumn(name = "profile_id", nullable = false)
-    private int profileNo;         // 프로필 번호
+    @ManyToOne
+    @JoinColumn(name = "profile_no", nullable = false)
+    private Profile profile;         // 프로필 엔티티를 참조
     
 }
 

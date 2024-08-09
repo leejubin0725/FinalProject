@@ -9,6 +9,8 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.kh.last.model.vo.Faq;
+import com.kh.last.model.vo.Movie;
+import com.kh.last.model.vo.USERS;
 import com.kh.last.model.vo.Visit;
 import com.kh.last.repository.FaqRepository;
 import com.kh.last.repository.MovieRepository;
@@ -100,9 +102,25 @@ public class ManageService {
 
 	public List<Faq> getFaq() {
 		List<Faq> list = faqRepository.findAll();
-		
-		Collections.reverse(list);	
 
         return list;
+	}
+
+	public void deleteFaq(Long id) {
+	    faqRepository.deleteById(id);  // 해당 ID의 FAQ 항목을 삭제
+	}
+
+	public List<Movie> getMovie() {
+		List<Movie> list = movieRepository.findAll();
+		
+		Collections.reverse(list);
+
+		return list;
+	}
+
+	public List<USERS> getUser() {
+	    List<USERS> list = userRepository.findAll();
+	    Collections.reverse(list);  // 리스트를 역순으로 정렬
+	    return list;
 	}
 }

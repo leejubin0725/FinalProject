@@ -28,10 +28,6 @@ const InsertFAQ: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            console.log(id);
-            console.log(question);
-            console.log(answer);
-            // POST 요청을 사용하며, id가 있으면 수정, 없으면 새로 추가
             const response = await axios.post('http://localhost:8088/dashboard/faq', {
                 id, // id가 있을 경우 전송, 없으면 undefined
                 question,
@@ -47,6 +43,21 @@ const InsertFAQ: React.FC = () => {
             navigate('/dashboard/FAQManage');
         } catch (error) {
             console.error('FAQ 등록/수정 중 오류가 발생했습니다:', error);
+        }
+    };
+
+    const handleDelete = async () => {
+        if (id) {
+            const confirmDelete = window.confirm('정말로 이 FAQ를 삭제하시겠습니까?');
+            if (confirmDelete) {
+                try {
+                    await axios.delete(`http://localhost:8088/dashboard/faq/${id}`);
+                    console.log('FAQ가 성공적으로 삭제되었습니다.');
+                    navigate('/dashboard/FAQManage');
+                } catch (error) {
+                    console.error('FAQ 삭제 중 오류가 발생했습니다:', error);
+                }
+            }
         }
     };
 
@@ -78,6 +89,15 @@ const InsertFAQ: React.FC = () => {
                     <button className={styles.FAQSubmitButton} type="submit">
                         {id ? '수정하기' : '등록하기'}
                     </button>
+                    {id && (
+                        <button
+                            className={styles.FAQSubmitButton}
+                            type="button"
+                            onClick={handleDelete}
+                        >
+                            삭제하기
+                        </button>
+                    )}
                     <button
                         className={styles.FAQSubmitButton}
                         type="button"
@@ -85,6 +105,7 @@ const InsertFAQ: React.FC = () => {
                     >
                         목록보기
                     </button>
+                    
                 </div>
             </form>
         </div>
