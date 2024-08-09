@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
+import { GoogleOAuthProvider } from '@react-oauth/google'; // 구글 인증관련
 import Signin from "./pages/BeforePage/SignInPage";
 import Landing from "./pages/BeforePage/MainPage";
 import HomePage from "./pages/HomePage/HomePage";
@@ -11,9 +12,7 @@ import LoginPage from "./pages/BeforePage/LoginPage";
 import SubscribePage from "./pages/BeforePage/SubscribePage";
 import PwLogin from "./pages/BeforePage/PwLogin";
 import HelpPage from "./pages/MyPage/Help";
-
 import Profiles from "./pages/BeforePage/Profiles";
-
 
 function App() {
   const location = useLocation();
@@ -70,22 +69,22 @@ function App() {
   }, [pathname]);
 
   return (
-    <Routes>
-      <Route path="/signin" element={<Signin />} />
-      <Route path="/" element={<Landing />} />
-      <Route path="/home" element={<HomePage />} />
-      <Route path="/dashboard/*" element={<DashboardPage />} />
-      <Route path="/upload" element={<UploadMovie />} />
-      <Route path="/movie/:movieId" element={<MovieDetailPage />} />
-      <Route path="/account" element={<Account />} />
-      <Route path="/help" element={<HelpPage />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/subscribe" element={<SubscribePage />} />
-      <Route path="/passwordlogin" element={<PwLogin />} />
-
-      <Route path="/profiles" element={<Profiles />} />
-
-    </Routes>
+    <GoogleOAuthProvider clientId="YOUR_GOOGLE_CLIENT_ID">
+      <Routes>
+        <Route path="/signin" element={<Signin />} />
+        <Route path="/" element={<Landing />} />
+        <Route path="/home" element={<HomePage />} />
+        <Route path="/dashboard/*" element={<DashboardPage />} />
+        <Route path="/upload" element={<UploadMovie />} />
+        <Route path="/movie/:movieId" element={<MovieDetailPage />} />
+        <Route path="/account" element={<Account />} />
+        <Route path="/help" element={<HelpPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/subscribe" element={<SubscribePage />} />
+        <Route path="/passwordlogin" element={<PwLogin />} />
+        <Route path="/profiles" element={<Profiles />} />
+      </Routes>
+    </GoogleOAuthProvider>
   );
 }
 

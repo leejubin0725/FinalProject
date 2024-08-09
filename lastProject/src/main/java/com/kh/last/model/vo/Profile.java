@@ -1,12 +1,6 @@
 package com.kh.last.model.vo;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -14,7 +8,9 @@ import lombok.Data;
 public class Profile {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "profile_seq_generator")
+    @SequenceGenerator(name = "profile_seq_generator", sequenceName = "profile_seq", allocationSize = 1)
     private Long profileNo;
 
     @ManyToOne

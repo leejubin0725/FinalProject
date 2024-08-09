@@ -100,6 +100,26 @@
   background-color: #a36e2e;
 }
 
+/* Google 로그인 버튼 스타일 추가 */
+.googleLoginButton {
+  background-color: #4285f4; /* 구글의 파란색 */
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-family: var(--font-roboto);
+  cursor: pointer;
+  width: 632px; /* 시작하기 버튼과 같은 크기로 조정 */
+  height: 50px;
+  margin-top: 10px;
+}
+
+.googleLoginButton:hover{
+  background-color: #0743a3;
+}
+
+
 .landing {
   position: relative;
   background-color: #000;
