@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.kh.last.model.dto.EmailCheckRequest;
 import com.kh.last.model.dto.EmailCheckResponse;
 import com.kh.last.model.dto.LoginResponse;
-import com.kh.last.model.dto.PasswordRequest;
-import com.kh.last.model.dto.PasswordResponse;
 import com.kh.last.model.dto.UserCreateRequest;
 import com.kh.last.model.dto.UserLoginRequest;
 import com.kh.last.model.vo.USERS;
@@ -86,17 +84,5 @@ public class UserController {
     public ResponseEntity<EmailCheckResponse> checkEmail(@RequestBody EmailCheckRequest request) {
         boolean exists = userService.emailExists(request.getEmail());
         return ResponseEntity.ok(new EmailCheckResponse(exists));
-    }
-
-    @PostMapping("/check-password")
-    public ResponseEntity<PasswordResponse> checkPassword(@RequestBody PasswordRequest request) {
-        try {
-            boolean isValid = userService.checkPassword(request.getPassword());
-            visitService.updateVisitCount();
-            return ResponseEntity.ok(new PasswordResponse(isValid));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new PasswordResponse(false));
-        }
     }
 }

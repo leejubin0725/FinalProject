@@ -1,7 +1,6 @@
 package com.kh.last.service;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 import javax.crypto.SecretKey;
@@ -64,16 +63,6 @@ public class UserService {
 
     public boolean emailExists(String email) {
         return userRepository.findByEmail(email).isPresent();
-    }
-
-    public boolean checkPassword(String password) {
-        List<USERS> users = userRepository.findAll();
-        for (USERS user : users) {
-            if (passwordEncoder.matches(password, user.getPassword())) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public USERS getUserByEmail(String email) {
