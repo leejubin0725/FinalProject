@@ -74,7 +74,7 @@
 
 .section {
   flex: 1;
-  padding: 10px;
+  padding: 30px;
   background-color: rgba(0, 0, 0, 0.7);
   border-radius: 10px;
   border: 1px solid #333;
@@ -163,73 +163,6 @@
   width: 100%;
 }
 
-.arrowButton {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: rgba(255, 255, 255, 0.3);
-  border: none;
-  color: #333;
-  font-size: 24px;
-  padding: 15px;
-  cursor: pointer;
-  z-index: 10;
-  /* 적절한 z-index를 유지 */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-  opacity: 0.8;
-  transition: background-color 0.3s ease, transform 0.3s ease, opacity 0.3s ease;
-}
-
-.arrowButton.left {
-  left: 20px;
-}
-
-.arrowButton.right {
-  right: 20px;
-}
-
-.arrowButton:hover {
-  background-color: rgba(255, 255, 255, 0.8);
-  color: #000;
-  transform: translateY(-50%) scale(1.1);
-  opacity: 1;
-}
-
-.arrowButton:active {
-  transform: translateY(-50%) scale(1);
-  background-color: rgba(255, 255, 255, 1);
-  opacity: 1;
-}
-
-/* slick-prev 클래스의 화살표 숨기기 */
-.slick-prev,
-.slick-next {
-  display: none !important;
-  /* 기본 화살표 숨기기 */
-}
-
-.sliderContainer {
-  position: relative;
-  overflow: visible;
-  /* 화살표 버튼이 잘리지 않도록 */
-  padding: 10px;
-  border-radius: 10px;
-  width: 90%;
-  max-width: 1200px;
-  margin: 0 auto;
-  background-color: #000;
-}
-
-
-
-
-
-
-
 .sliderContainer {
   margin-top: 20px;
   background-color: #000;
@@ -238,10 +171,29 @@
   width: 90%;
   max-width: 1200px;
   margin: 0 auto;
-  overflow: hidden;
+  overflow: visible;
+  /* overflow를 visible로 변경 */
 }
 
-/* 기본 slick 화살표 완전 숨기기 */
 .slick-prev {
-  font-size: 0px;
+  left: -25px;
+  /* 왼쪽 화살표의 위치를 조금 더 왼쪽으로 */
+  z-index: 1;
+  /* 필요 시 화살표가 가려지지 않도록 z-index 조정 */
+}
+
+.slick-next {
+  right: -25px;
+  /* 오른쪽 화살표의 위치를 조금 더 오른쪽으로 */
+  z-index: 1;
+  /* 필요 시 화살표가 가려지지 않도록 z-index 조정 */
+}
+
+
+.leftArrow {
+  left: -40px;
+}
+
+.rightArrow {
+  right: -40px;
 }

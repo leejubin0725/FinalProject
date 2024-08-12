@@ -11,6 +11,7 @@ import Replay10Icon from '@mui/icons-material/Replay10';
 import Forward10Icon from '@mui/icons-material/Forward10';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
+import { CustomPrevArrow, CustomNextArrow } from './CustomArrows'; // 파일 경로에 맞게 import
 import 'slick-carousel/slick/slick-theme.css';
 import styles from './css/MovieDetailPage.module.css';
 import useRelatedMovies from '../../components/Movies/useRelatedMovies';
@@ -260,33 +261,7 @@ const MovieDetailPage: React.FC = () => {
     slidesToScroll: 1,
     draggable: false,
     arrows: movieCount > 2,
-    prevArrow: <CustomPrevArrow />,
-    nextArrow: <CustomNextArrow />,
   });
-
-  const CustomPrevArrow = (props: any) => {
-    const { className, onClick } = props;
-    return (
-      <button
-        className={`${className} slick-prev ${styles.arrowButton} ${styles.left}`}
-        onClick={onClick}
-      >
-        &lt;
-      </button>
-    );
-  };
-
-  const CustomNextArrow = (props: any) => {
-    const { className, onClick } = props;
-    return (
-      <button
-        className={`${className} slick-next ${styles.arrowButton} ${styles.right}`}
-        onClick={onClick}
-      >
-        &gt;
-      </button>
-    );
-  };
 
   return (
     <Box
