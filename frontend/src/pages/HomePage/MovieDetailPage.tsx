@@ -9,6 +9,8 @@ import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import Replay10Icon from '@mui/icons-material/Replay10';
 import Forward10Icon from '@mui/icons-material/Forward10';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import { CustomPrevArrow, CustomNextArrow } from './CustomArrows'; // 파일 경로에 맞게 import
@@ -26,6 +28,7 @@ const MovieDetailPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [selectedCast, setSelectedCast] = useState<string | null>(null);
+  const [liked, setLiked] = useState(false);  // 좋아요 상태를 관리합니다.
   const { relatedMovies } = useRelatedMovies(selectedTag || '');
   const { moviesByCast } = useMoviesByCast(selectedCast || '');
 
@@ -42,6 +45,11 @@ const MovieDetailPage: React.FC = () => {
   const [showVolumeSlider, setShowVolumeSlider] = useState(false);
   const volumeSliderTimeoutRef = useRef<number | null>(null);
   const hideControlsTimeoutRef = useRef<number | null>(null);
+
+  interface LikeRequest {
+    movieId: number;
+    profileNo: number;  // 실제 프로필 번호를 받기 위해 수정 필요
+  }
 
   useEffect(() => {
     if (movieId) {
@@ -71,6 +79,13 @@ const MovieDetailPage: React.FC = () => {
       videoRef.current.src = movie.url;
     }
   }, [movie]);
+
+  useEffect(() => {
+    // 좋아요 상태를 서버에서 가져오는 로직을 추가할 수 있습니다.
+    // 예: axios.get(`http://localhost:8088/api/movies/${movieId}/like-status`)
+    //   .then(response => setLiked(response.data.liked))
+    //   .catch(error => console.error('Error fetching like status:', error));
+  }, [movieId]);
 
   const handlePlayPause = useCallback(() => {
     setPlaying(prev => !prev);
@@ -253,6 +268,26 @@ const MovieDetailPage: React.FC = () => {
     setSelectedCast(cast);
   };
 
+  const handleLikeClick = useCallback(() => {
+    if (movie) {
+      const newLikedStatus = !liked;
+      setLiked(newLikedStatus);
+      // Call API to update like status
+      axios.post('http://localhost:8088/api/movies/toggle-like', {
+        movieId: movie.id,
+        profileNo: 123 // 여기에 실제 프로필 번호를 제공해야 합니다.
+      })
+      .then(response => {
+        // Optionally handle success response
+        console.log('Like status updated successfully');
+      })
+      .catch(error => {
+        // Optionally handle error response
+        console.error('Error updating like status:', error);
+      });
+    }
+  }, [liked, movie]);
+
   const getSliderSettings = (movieCount: number) => ({
     dots: false,
     infinite: movieCount > 2,
@@ -263,12 +298,11 @@ const MovieDetailPage: React.FC = () => {
     arrows: movieCount > 2,
   });
 
+  if (loading) return <Typography>Loading...</Typography>;
+  if (error) return <Typography>{error}</Typography>;
+
   return (
-    <Box
-      className={styles.container}
-      onMouseEnter={showControls}
-      onMouseLeave={hideControls}
-    >
+    <Box className={styles.container} onMouseEnter={showControls} onMouseLeave={hideControls}>
       <Typography variant="h3" className={styles.title}>
         {movie?.title}
       </Typography>
@@ -282,10 +316,7 @@ const MovieDetailPage: React.FC = () => {
           onEnded={handleEnded}
           autoPlay
         />
-        <Box
-          className={styles.controls}
-          ref={controlsRef}
-        >
+        <Box className={styles.controls} ref={controlsRef}>
           <IconButton onClick={handlePlayPause} className={styles.controlButton} sx={{ color: 'white' }}>
             {playing ? <PauseIcon /> : <PlayArrowIcon />}
           </IconButton>
@@ -352,6 +383,14 @@ const MovieDetailPage: React.FC = () => {
           </IconButton>
         </Box>
       </Box>
+      
+      {/* Move like button here */}
+      <Box className={styles.likeButtonWrapper}>
+        <IconButton onClick={handleLikeClick} className={styles.likeButton}>
+          {liked ? <ThumbUpIcon style={{color : 'white'}}/> : <ThumbUpOffAltIcon style={{color : 'white'}} />}
+        </IconButton>
+      </Box>
+      
       <Typography variant="body1" className={styles.description}>
         {movie?.description}
       </Typography>
