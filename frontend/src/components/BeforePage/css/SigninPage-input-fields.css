@@ -128,6 +128,24 @@
   z-index: 2;
 }
 
+.button-join:disabled {
+  background-color: #cccccc;
+  /* 비활성화 상태일 때 회색 */
+  color: #666666;
+  /* 비활성화 상태일 때 텍스트 색상 */
+  cursor: not-allowed;
+  /* 비활성화 상태일 때 커서 */
+}
+
+/* 비활성화 상태에서는 호버 효과를 제거 */
+.button-join:disabled:hover {
+  background-color: #cccccc;
+  /* 호버 시에도 회색 유지 */
+  color: #666666;
+  /* 텍스트 색상 유지 */
+}
+
+
 .button-join:hover,
 .button-send:hover {
   background-color: var(--color-peru);

@@ -67,6 +67,12 @@ public class UserController {
         }
     }
 
+    @PostMapping("/check-email")
+    public ResponseEntity<EmailCheckResponse> checkEmail(@RequestBody EmailCheckRequest request) {
+        boolean exists = userService.emailExists(request.getEmail());
+        return ResponseEntity.ok(new EmailCheckResponse(exists));
+    }
+
     @GetMapping("/me")
     public ResponseEntity<USERS> getCurrentUser(@RequestHeader("Authorization") String token) {
         String jwt = token.substring(7); // "Bearer " 부분을 제거
@@ -78,11 +84,5 @@ public class UserController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
-    }
-
-    @PostMapping("/check-email")
-    public ResponseEntity<EmailCheckResponse> checkEmail(@RequestBody EmailCheckRequest request) {
-        boolean exists = userService.emailExists(request.getEmail());
-        return ResponseEntity.ok(new EmailCheckResponse(exists));
     }
 }
