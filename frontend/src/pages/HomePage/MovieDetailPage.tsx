@@ -363,7 +363,9 @@ const MovieDetailPage: React.FC = () => {
           <ul className={styles.list}>
             {movie?.castList.map((actor, index) => (
               <li key={index} className={styles.listItem}>
-                <button onClick={() => handleCastClick(actor)} className={styles.tagButton}>{actor}</button>
+                <button onClick={() => handleCastClick(actor)} className={styles.tagButton}>
+                  {actor}
+                </button>
               </li>
             ))}
           </ul>
@@ -386,7 +388,9 @@ const MovieDetailPage: React.FC = () => {
           <ul className={styles.list}>
             {movie?.tagList.map((tag, index) => (
               <li key={index} className={styles.listItem}>
-                <button onClick={() => handleTagClick(tag)} className={styles.tagButton}>{tag}</button>
+                <button onClick={() => handleTagClick(tag)} className={styles.tagButton}>
+                  {tag}
+                </button>
               </li>
             ))}
           </ul>
