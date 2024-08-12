@@ -16,12 +16,4 @@ public class SubscriptionScheduler {
         this.subscriptionService = subscriptionService;
     }
 
-    @Scheduled(cron = "0 0 0 * * ?") // 매일 자정에 갱신
-    public void checkSubscriptions() {
-        LocalDate today = LocalDate.now();
-        List<Subscription> expiringSubscriptions = subscriptionService.findExpiringSubscriptions(today.plusWeeks(1));
-        for (Subscription subscription : expiringSubscriptions) {
-            subscriptionService.sendExpiryNotification(subscription);
-        }
-    }
 }

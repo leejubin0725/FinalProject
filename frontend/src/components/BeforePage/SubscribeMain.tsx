@@ -15,7 +15,12 @@ const SubscribeMain: FunctionComponent<MainType> = ({ className = "" }) => {
       });
       console.log(response.data); // 응답 데이터 확인
       if (response.status === 200 && response.data.redirectUrl) {
+        // 결제 완료 후, PayPal 결제 페이지로 리디렉션
         window.location.href = response.data.redirectUrl;
+      } else if (response.status === 200 && response.data.success) {
+        // 결제가 완료된 후에 백엔드에서 성공 응답을 받은 경우
+        console.log('결제 성공:', response.data);
+        window.location.href = '/profiles'; // 구독 완료 후 멀티프로필 페이지로 리디렉션
       } else {
         console.error('결제 요청 실패');
       }

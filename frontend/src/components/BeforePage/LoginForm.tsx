@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import styles from '../../pages/BeforePage/css/LoginPage.module.css';
+import { useNavigate } from 'react-router-dom';
 
 const LoginForm: React.FC = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const navigate = useNavigate();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { id, value } = e.target;
@@ -25,7 +27,13 @@ const LoginForm: React.FC = () => {
             });
             localStorage.setItem('authToken', response.data.token);
             console.log('Login successful:', response.data);
-            window.location.href = '/profiles';
+
+            // 구독 여부에 따라 페이지 리디렉션
+            if (response.data.subscribed) {
+                navigate('/profiles');  // 구독 상태가 ACTIVE이면 프로필 페이지로 이동
+            } else {
+                navigate('/subscribe');  // 구독 상태가 ACTIVE가 아니면 구독 페이지로 이동
+            }
         } catch (error) {
             setError('Login failed. Please check your email and password.');
         }
