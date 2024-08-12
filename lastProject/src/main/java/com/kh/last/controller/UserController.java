@@ -6,14 +6,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import org.springframework.web.bind.annotation.*;
-import com.kh.last.model.dto.*;
-import com.kh.last.model.vo.USERS;
+import com.kh.last.model.dto.EmailCheckRequest;
+import com.kh.last.model.dto.EmailCheckResponse;
+import com.kh.last.model.dto.LoginResponse;
+import com.kh.last.model.dto.UserCreateRequest;
+import com.kh.last.model.dto.UserLoginRequest;
 import com.kh.last.model.vo.Subscription;
+import com.kh.last.model.vo.USERS;
+import com.kh.last.service.SubscriptionService;
 import com.kh.last.service.UserService;
 import com.kh.last.service.VisitService;
-import com.kh.last.service.SubscriptionService;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -88,24 +99,6 @@ public class UserController {
         }
     }
 
-    // 이메일 중복 체크
-    @PostMapping("/check-email")
-    public ResponseEntity<EmailCheckResponse> checkEmail(@RequestBody EmailCheckRequest request) {
-        boolean exists = userService.emailExists(request.getEmail());
-        return ResponseEntity.ok(new EmailCheckResponse(exists));
-    }
-
-    // 비밀번호 확인
-    @PostMapping("/check-password")
-    public ResponseEntity<PasswordResponse> checkPassword(@RequestBody PasswordRequest request) {
-        try {
-            boolean isValid = userService.checkPassword(request.getPassword());
-            visitService.updateVisitCount();
-            return ResponseEntity.ok(new PasswordResponse(isValid));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new PasswordResponse(false));
-        }
-    }
 
     // 사용자 구독 처리
     @PostMapping("/subscribe")
@@ -119,5 +112,4 @@ public class UserController {
     }
 }
 
-}
 
