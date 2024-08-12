@@ -40,11 +40,14 @@ const ProfilePage: React.FC = () => {
                 })
                 .catch(error => {
                     console.error('사용자 정보 조회 중 오류 발생:', error);
+                    if (error.response && error.response.status === 403) {
+                        navigate('/subscribe');  // 구독이 필요하면 구독 페이지로 리디렉션
+                    }
                 });
         } else {
             console.error('토큰이 없습니다');
         }
-    }, []);
+    }, [navigate]);
 
     const handleProfileSelect = (profile: Profile) => {
         setSelectedProfile(profile);
