@@ -12,18 +12,22 @@ const PwLoginForm: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        const email = localStorage.getItem('email');
+
+        if (!email) {
+            setError('이메일 정보가 없습니다. 처음부터 다시 시도해주세요.');
+            return;
+        }
+
         try {
-            const response = await axios.post('http://localhost:8088/api/users/check-password', {
+            const response = await axios.post('http://localhost:8088/api/users/login', {
+                email,
                 password
             });
-            if (response.data.valid) {
-                console.log('Password is valid');
-                window.location.href = '/profiles'; // 비밀번호가 유효할 경우 홈 페이지로 이동
-            } else {
-                setError('Invalid password. Please try again.');
-            }
+            localStorage.setItem('authToken', response.data.token);
+            window.location.href = '/profiles'; // 비밀번호가 유효할 경우 프로필 페이지로 이동
         } catch (error) {
-            setError('Password check failed. Please try again.');
+            setError('로그인에 실패했습니다. 이메일 또는 비밀번호를 확인하세요.');
         }
     };
 

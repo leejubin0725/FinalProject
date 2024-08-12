@@ -10,13 +10,14 @@ export const InputFields: React.FC<{ className?: string }> = ({ className = '' }
     confirmPassword: '',
     NAME: '',
     PHONE: '',
-    BIRTHDATE: '', // 생년월일 속성 추가
+    BIRTHDATE: '',
   });
 
-  // 인증번호 관련 상태 제거 또는 주석 처리
+  const [isEmailVerified, setIsEmailVerified] = useState(false); // 이메일 인증 상태
   const [isCodeSent, setIsCodeSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [formErrors, setFormErrors] = useState<string[]>([]);
+  const [isVerificationComplete, setIsVerificationComplete] = useState(false); // 인증 완료 상태
 
   const navigate = useNavigate();
 
@@ -28,80 +29,90 @@ export const InputFields: React.FC<{ className?: string }> = ({ className = '' }
     }));
   };
 
-  // 인증번호 전송 함수 주석 처리
-  /*
-  const handleSendVerificationCode = async () => {
-    if (!formData.PHONE) {
-      alert('전화번호를 입력해주세요.');
+  const handleSendVerificationEmail = async () => {
+    if (!formData.ID) {
+      alert('이메일을 입력해주세요.');
       return;
     }
 
     setLoading(true);
 
     try {
-      await axios.post('http://localhost:8088/api/sms/send-code', {
-        phoneNumber: formData.PHONE,
+      // 이메일 중복 체크
+      const emailCheckResponse = await axios.post('http://localhost:8088/api/users/check-email', {
+        email: formData.ID,
+      });
+
+      if (emailCheckResponse.data.exists) {
+        alert('이미 사용 중인 이메일입니다.');
+        setLoading(false);
+        return;
+      }
+
+      await axios.post('http://localhost:8088/api/email/send-code', {
+        email: formData.ID,
       });
       setIsCodeSent(true);
-      alert('인증 코드가 발송되었습니다.');
+      alert('이메일 인증 코드가 발송되었습니다.');
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const message = error.response?.data?.message || error.message || 'Unknown error';
         console.error('Server responded with error:', message);
-        alert('인증 코드 발송에 실패하였습니다.');
+        alert('이메일 인증 코드 발송에 실패하였습니다.');
       } else {
         console.error('Unexpected error:', error);
-        alert('인증 코드 발송에 실패하였습니다.');
+        alert('이메일 인증 코드 발송에 실패하였습니다.');
       }
     } finally {
       setLoading(false);
     }
   };
-  */
 
-  // 인증번호 검증 함수 주석 처리
-  /*
-  const handleVerifyCode = async () => {
-    if (!formData.verificationCode) {
-      alert('인증 코드를 입력해주세요.');
+  const handleVerifyCode = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const code = e.target.value;
+
+    // 코드가 6자리가 아닐 경우 검증하지 않음
+    if (code.length !== 6) {
       return;
     }
 
     try {
-      const response = await axios.post('http://localhost:8088/api/sms/verify-code', {
-        phoneNumber: formData.PHONE,
-        verificationCode: formData.verificationCode,
+      const response = await axios.post('http://localhost:8088/api/email/verify-code', {
+        email: formData.ID,
+        code: code,
       });
-      alert(response.data); // 인증 결과 메시지 표시
+
+      if (response.data.verified) {
+        setIsEmailVerified(true);
+        setIsVerificationComplete(true); // 인증 완료 상태로 설정
+        alert('이메일 인증이 완료되었습니다.');
+      } else {
+        alert('인증 코드가 유효하지 않습니다.');
+      }
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const message = error.response?.data?.message || error.message || 'Unknown error';
         console.error('Server responded with error:', message);
-        alert('인증 코드 검증에 실패하였습니다.');
+        alert('이메일 인증에 실패하였습니다.');
       } else {
         console.error('Unexpected error:', error);
-        alert('인증 코드 검증에 실패하였습니다.');
+        alert('이메일 인증에 실패하였습니다.');
       }
     }
   };
-  */
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     let errors: string[] = [];
 
-    // 비밀번호 확인 체크
     if (formData.PASSWORD !== formData.confirmPassword) {
       errors.push('비밀번호가 일치하지 않습니다.');
     }
 
-    // 인증 코드 검증 체크 주석 처리
-    /*
-    if (!isCodeSent) {
-      errors.push('전화번호 인증을 먼저 완료해주세요.');
+    if (!isEmailVerified) {
+      errors.push('이메일 인증을 완료해주세요.');
     }
-    */
 
     if (errors.length > 0) {
       setFormErrors(errors);
@@ -116,13 +127,13 @@ export const InputFields: React.FC<{ className?: string }> = ({ className = '' }
         email: formData.ID,
         password: formData.PASSWORD,
         status: 'A',
-        birthday: formData.BIRTHDATE, // 생년월일을 등록 시 사용
+        birthday: formData.BIRTHDATE,
         username: formData.NAME,
       });
 
       console.log('User registered:', response.data);
       alert('회원가입이 완료 되었습니다.');
-      navigate('/login'); // 로그인 페이지로 리디렉션
+      navigate('/login');
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const message = error.response?.data?.message || error.message || 'Unknown error';
@@ -144,12 +155,33 @@ export const InputFields: React.FC<{ className?: string }> = ({ className = '' }
           <div className="input-boxes">
             <input
               className="input-values"
-              placeholder="아이디"
+              placeholder="아이디 (이메일)"
               type="email"
               name="ID"
               value={formData.ID}
               onChange={handleChange}
             />
+            <button
+              type="button"
+              onClick={handleSendVerificationEmail}
+              disabled={loading || isVerificationComplete} // 인증 완료 시 비활성화
+            >
+              {isVerificationComplete
+                ? '이메일 인증 완료'
+                : loading
+                  ? '이메일 발송 중...'
+                  : '이메일 인증 코드 받기'}
+            </button>
+            {isCodeSent && !isVerificationComplete && (
+              <input
+                className="input-values"
+                placeholder="이메일 인증 코드"
+                type="text"
+                name="emailCode"
+                maxLength={6} // 최대 길이 6자로 제한
+                onChange={handleVerifyCode} // 사용자가 6자리 입력 후에만 검증 실행
+              />
+            )}
             <input
               className="input-values1"
               placeholder="비밀번호"
@@ -190,34 +222,11 @@ export const InputFields: React.FC<{ className?: string }> = ({ className = '' }
               value={formData.PHONE}
               onChange={handleChange}
             />
-
-            {/* 인증번호 관련 UI 요소 주석 처리 */}
-            {/*
-            {isCodeSent && (
-              <input
-                className="input-values5"
-                placeholder="인증 코드"
-                type="text"
-                name="verificationCode"
-                value={formData.verificationCode}
-                onChange={handleChange}
-              />
-            )}
-            {!isCodeSent ? (
-              <button type="button" onClick={handleSendVerificationCode} disabled={loading}>
-                {loading ? '인증 코드 발송 중...' : '인증 코드 받기'}
-              </button>
-            ) : (
-              <button type="button" onClick={handleVerifyCode} disabled={loading}>
-                {loading ? '인증 코드 검증 중...' : '인증 코드 검증'}
-              </button>
-            )}
-            */}
           </div>
         </div>
       </div>
       <div className="signup-form">
-        <button className="button-join" type="submit">
+        <button className="button-join" type="submit" disabled={!isEmailVerified}>
           <div className="button-join-child" />
           <b className="b">회원가입</b>
         </button>

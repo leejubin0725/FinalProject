@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.web.bind.annotation.*;
 
+import org.springframework.web.bind.annotation.*;
 import com.kh.last.model.dto.*;
 import com.kh.last.model.vo.USERS;
 import com.kh.last.model.vo.Subscription;
@@ -69,6 +69,12 @@ public class UserController {
     }
 
     // 현재 로그인된 사용자 정보 가져오기
+    @PostMapping("/check-email")
+    public ResponseEntity<EmailCheckResponse> checkEmail(@RequestBody EmailCheckRequest request) {
+        boolean exists = userService.emailExists(request.getEmail());
+        return ResponseEntity.ok(new EmailCheckResponse(exists));
+    }
+
     @GetMapping("/me")
     public ResponseEntity<USERS> getCurrentUser(@RequestHeader("Authorization") String token) {
         String jwt = token.substring(7); // "Bearer " 부분을 제거
@@ -112,3 +118,6 @@ public class UserController {
         return ResponseEntity.ok(subscription);
     }
 }
+
+}
+

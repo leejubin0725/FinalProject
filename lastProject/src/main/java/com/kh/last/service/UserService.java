@@ -2,6 +2,7 @@ package com.kh.last.service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Date;
 import java.util.Optional;
 
 import javax.crypto.SecretKey;
@@ -71,6 +72,7 @@ public class UserService {
         return userRepository.findByEmail(email).isPresent();
     }
 
+
     public boolean checkPassword(String password) {
         List<USERS> users = userRepository.findAll();
         for (USERS user : users) {
@@ -115,7 +117,6 @@ public class UserService {
         System.out.println(months + " months subscription confirmed for user " + user.getEmail());
         return subscription;
     }
-
     public USERS getUserByEmail(String email) {
         return userRepository.findByEmail(email).orElse(null);
     }

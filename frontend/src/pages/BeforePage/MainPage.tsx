@@ -16,7 +16,8 @@ const Landing: FunctionComponent = () => {
     try {
       const response = await axios.post('http://localhost:8088/api/users/check-email', { email });
       if (response.data.exists) {
-        navigate('/passwordlogin'); // 페이지 이동
+        localStorage.setItem('email', email);
+        navigate('/passwordlogin');
       } else {
         alert('이메일이 존재하지 않습니다. 회원가입 페이지로 이동합니다.');
         navigate('/signin');
@@ -35,18 +36,10 @@ const Landing: FunctionComponent = () => {
   return (
     <div className={styles.landing}>
       <div className={styles.background}></div>
-      <img
-        className={styles.logo}
-        alt="Logo"
-        src="/logo-text-2@2x.png"
-      />
+      <img className={styles.logo} alt="Logo" src="/logo-text-2@2x.png" />
       <section className={styles.landingInner}>
-        <h1 className={styles.title}>
-          영화, 시리즈 등을 무제한으로
-        </h1>
-        <h2 className={styles.subtitle}>
-          어디서나 자유롭게 시청하세요. 해지는 언제든 가능합니다.
-        </h2>
+        <h1 className={styles.title}>영화, 시리즈 등을 무제한으로</h1>
+        <h2 className={styles.subtitle}>어디서나 자유롭게 시청하세요. 해지는 언제든 가능합니다.</h2>
         <p className={styles.description}>
           시청할 준비가 되셨나요? 멤버십을 등록하거나 재시작하려면 이메일 주소를 입력하세요.
         </p>
@@ -61,17 +54,11 @@ const Landing: FunctionComponent = () => {
           <button className={styles.getStartedButton} onClick={handleGetStarted}>
             시작하기
           </button>
-          
-
-          {/* <a href="#" onClick={handleGoogleLogin}>
-          <img src="https://developers.google.com/identity/images/btn_google_signin_dark_normal_web.png" alt="Google Sign-In" />
-          </a> */}
-
           {error && <p className={styles.error}>{error}</p>}
         </div>
         <button className={styles.googleLoginButton} onClick={handleGoogleLogin}>
-            Google 로그인하기
-          </button>
+          Google 로그인하기
+        </button>
       </section>
     </div>
   );

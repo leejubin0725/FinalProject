@@ -8,9 +8,9 @@ import lombok.Data;
 public class Profile {
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "profile_seq_generator")
-    @SequenceGenerator(name = "profile_seq_generator", sequenceName = "profile_seq", allocationSize = 1)
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "profile_seq_generator")
+//    @SequenceGenerator(name = "profile_seq_generator", sequenceName = "profile_seq", allocationSize = 1)
     private Long profileNo;
 
     @ManyToOne
