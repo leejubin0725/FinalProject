@@ -25,6 +25,7 @@ const PwLoginForm: React.FC = () => {
                 password
             });
             localStorage.setItem('authToken', response.data.token);
+            localStorage.removeItem('email');
             window.location.href = '/profiles'; // 비밀번호가 유효할 경우 프로필 페이지로 이동
         } catch (error) {
             setError('로그인에 실패했습니다. 이메일 또는 비밀번호를 확인하세요.');

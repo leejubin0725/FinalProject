@@ -1,0 +1,28 @@
+.subscribeSuccess {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f4f8;
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+.subscribeSuccess h1 {
+    font-size: 2.5rem;
+    color: #4caf50;
+    /* 성공 메시지에 적합한 녹색 색상 */
+    margin-bottom: 20px;
+}
+
+.subscribeSuccess p {
+    font-size: 1.2rem;
+    color: #555555;
+}
+
+.subscribeSuccess .loading {
+    margin-top: 20px;
+    font-size: 1rem;
+    color: #999999;
+}

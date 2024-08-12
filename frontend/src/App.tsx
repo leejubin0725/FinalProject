@@ -13,6 +13,7 @@ import SubscribePage from "./pages/BeforePage/SubscribePage";
 import PwLogin from "./pages/BeforePage/PwLogin";
 import HelpPage from "./pages/MyPage/Help";
 import Profiles from "./pages/BeforePage/Profiles";
+import SubscribeSuccess from "./pages/HomePage/SubscribeSuccess";
 
 function App() {
   const location = useLocation();
@@ -83,6 +84,7 @@ function App() {
         <Route path="/subscribe" element={<SubscribePage />} />
         <Route path="/passwordlogin" element={<PwLogin />} />
         <Route path="/profiles" element={<Profiles />} />
+        <Route path="/subscribe/success" element={<SubscribeSuccess />} /> {/* 구독 성공 페이지 경로 추가 */}
       </Routes>
     </GoogleOAuthProvider>
   );

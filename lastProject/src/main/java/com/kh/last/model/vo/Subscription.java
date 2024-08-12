@@ -24,7 +24,7 @@ public class Subscription {
     @Column(name = "end_date", nullable = false)
     private Date endDate;
     
-    @Column(name = "sub_status", nullable = false, length = 3)
+    @Column(name = "sub_status", nullable = false, length = 30)
     private String subStatus;
 
     // expiryDate 필드 추가

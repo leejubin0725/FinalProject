@@ -48,7 +48,7 @@ public class PaymentController {
             Payment payment = paymentService.executePayment(paymentId, payerId);
             if (payment.getState().equals("approved")) {
             	
-                return ResponseEntity.status(302).header("Location", "http://localhost:3000/home").build();
+                return ResponseEntity.status(302).header("Location", "http://localhost:3000/subscribe/success").build();
             }
         } catch (PayPalRESTException e) {
             e.printStackTrace();
