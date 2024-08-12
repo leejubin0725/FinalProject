@@ -10,13 +10,14 @@ export const InputFields: React.FC<{ className?: string }> = ({ className = '' }
     confirmPassword: '',
     NAME: '',
     PHONE: '',
-    verificationCode: '',
+    BIRTHDATE: '', // 생년월일 속성 추가
   });
 
+  // 인증번호 관련 상태 제거 또는 주석 처리
   const [isCodeSent, setIsCodeSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [formErrors, setFormErrors] = useState<string[]>([]);
-  
+
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,6 +28,8 @@ export const InputFields: React.FC<{ className?: string }> = ({ className = '' }
     }));
   };
 
+  // 인증번호 전송 함수 주석 처리
+  /*
   const handleSendVerificationCode = async () => {
     if (!formData.PHONE) {
       alert('전화번호를 입력해주세요.');
@@ -54,7 +57,10 @@ export const InputFields: React.FC<{ className?: string }> = ({ className = '' }
       setLoading(false);
     }
   };
+  */
 
+  // 인증번호 검증 함수 주석 처리
+  /*
   const handleVerifyCode = async () => {
     if (!formData.verificationCode) {
       alert('인증 코드를 입력해주세요.');
@@ -78,6 +84,7 @@ export const InputFields: React.FC<{ className?: string }> = ({ className = '' }
       }
     }
   };
+  */
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -89,10 +96,12 @@ export const InputFields: React.FC<{ className?: string }> = ({ className = '' }
       errors.push('비밀번호가 일치하지 않습니다.');
     }
 
-    // 인증 코드 검증 체크
+    // 인증 코드 검증 체크 주석 처리
+    /*
     if (!isCodeSent) {
       errors.push('전화번호 인증을 먼저 완료해주세요.');
     }
+    */
 
     if (errors.length > 0) {
       setFormErrors(errors);
@@ -107,9 +116,8 @@ export const InputFields: React.FC<{ className?: string }> = ({ className = '' }
         email: formData.ID,
         password: formData.PASSWORD,
         status: 'A',
-        birthday: '1990-01-01',
+        birthday: formData.BIRTHDATE, // 생년월일을 등록 시 사용
         username: formData.NAME,
-        vNumber: 1,
       });
 
       console.log('User registered:', response.data);
@@ -167,6 +175,14 @@ export const InputFields: React.FC<{ className?: string }> = ({ className = '' }
               onChange={handleChange}
             />
             <input
+              className="input-values3"
+              placeholder="생년월일"
+              type="date"
+              name="BIRTHDATE"
+              value={formData.BIRTHDATE}
+              onChange={handleChange}
+            />
+            <input
               className="input-values4"
               placeholder="휴대폰 번호"
               type="text"
@@ -174,6 +190,9 @@ export const InputFields: React.FC<{ className?: string }> = ({ className = '' }
               value={formData.PHONE}
               onChange={handleChange}
             />
+
+            {/* 인증번호 관련 UI 요소 주석 처리 */}
+            {/*
             {isCodeSent && (
               <input
                 className="input-values5"
@@ -193,6 +212,7 @@ export const InputFields: React.FC<{ className?: string }> = ({ className = '' }
                 {loading ? '인증 코드 검증 중...' : '인증 코드 검증'}
               </button>
             )}
+            */}
           </div>
         </div>
       </div>
