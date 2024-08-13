@@ -102,7 +102,7 @@ const MovieDetailPage: React.FC = () => {
   
           if (!isNaN(movieIdNumber)) {
             try {
-              // 같은 프로필과 영화에 대한 기존 시청 로그를 삭제합니다.
+              // 기존 시청 로그를 삭제합니다.
               await axios.delete('http://localhost:8088/api/movies/watchlog', {
                 params: {
                   movieId: movieIdNumber,
@@ -114,7 +114,7 @@ const MovieDetailPage: React.FC = () => {
               });
   
               // 새로운 시청 로그를 추가합니다.
-              await axios.post('http://localhost:8088/api/watchlog', null, {
+              await axios.post('http://localhost:8088/api/movies/watchlog', null, {
                 params: {
                   movieId: movieIdNumber,
                   profileNo
@@ -125,10 +125,8 @@ const MovieDetailPage: React.FC = () => {
               });
             } catch (error) {
               if (error instanceof Error) {
-                // Error 타입으로 처리
                 console.error('시청 로그 관리 중 오류 발생:', error.message);
               } else {
-                // Error가 아닌 경우 처리
                 console.error('예상치 못한 오류 발생:', error);
               }
             }
@@ -143,13 +141,15 @@ const MovieDetailPage: React.FC = () => {
       }
     };
   
+    // 비동기 함수 호출
     addWatchLog();
   
+    // 정리 작업 (필요한 경우)
     return () => {
-      // 필요한 경우 정리 작업을 여기에 추가할 수 있습니다.
+      // 예: 정리 작업 코드 추가
     };
   }, [movieId]);
-
+  
 
 
 
