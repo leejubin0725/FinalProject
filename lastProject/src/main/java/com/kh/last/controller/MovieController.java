@@ -24,7 +24,6 @@ import com.kh.last.repository.HeartRepository; // 추가
 import com.kh.last.repository.MovieRepository;
 import com.kh.last.repository.ProfileRepository; // 추가
 import com.kh.last.service.MovieService;
-import com.kh.last.repository.WatchLogRepository;
 
 import lombok.RequiredArgsConstructor;
 
