@@ -12,6 +12,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.kh.last.model.vo.Movie;
 import com.kh.last.repository.MovieRepository;
+import com.kh.last.repository.WatchLogRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 public class MovieService {
     private final AmazonS3 amazonS3;
     private final MovieRepository movieRepository;
+    private final WatchLogRepository watchLogRepository;
 
     @Value("${aws.s3.bucketName}")
     private String awsS3BucketName;
@@ -41,7 +43,7 @@ public class MovieService {
         movie.setReleaseYear(releaseYear);
         movie.setUrl(videoUrl);
         movie.setThumbnailUrl(thumbnailUrl);
-        movie.setRating(rating); // 기본값으로 0.0 설정
+        movie.setRating(rating);
         movie.setGenre(""); // 기본값으로 빈 문자열 설정
 
         // JSON 문자열로 변환하여 설정

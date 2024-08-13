@@ -18,11 +18,13 @@ import com.kh.last.model.vo.Heart;
 import com.kh.last.model.vo.HeartId;
 import com.kh.last.model.vo.Movie;
 import com.kh.last.model.vo.Profile;
-import com.kh.last.repository.HeartRepository; // 추가
+import com.kh.last.model.vo.WatchLog;
+import com.kh.last.model.vo.WatchLogId;
+import com.kh.last.repository.HeartRepository;
 import com.kh.last.repository.MovieRepository;
-import com.kh.last.repository.ProfileRepository; // 추가
+import com.kh.last.repository.ProfileRepository;
+import com.kh.last.repository.WatchLogRepository;
 import com.kh.last.service.MovieService;
-import com.kh.last.model.vo.Heart;
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,9 +34,10 @@ import lombok.RequiredArgsConstructor;
 public class MovieController {
     private final MovieService movieService;
     private final MovieRepository movieRepository;
-    private final HeartRepository heartRepository; // 추가
-    private final ProfileRepository profileRepository; // 추가
-    
+    private final HeartRepository heartRepository;
+    private final ProfileRepository profileRepository;
+    private final WatchLogRepository watchLogRepository; // 추가
+
     @PostMapping("/upload")
     public Movie uploadMovie(
             @RequestParam("file") MultipartFile file,
@@ -96,5 +99,25 @@ public class MovieController {
         }
 
         return ResponseEntity.ok().build(); // 응답을 반환합니다.
+    }
+
+    // 새로운 기능: 영화 시청 기록 추가
+    @PostMapping("/watch")
+    public ResponseEntity<?> logWatch(@RequestParam Long movieId, @RequestParam Long profileNo) {
+        Profile profile = profileRepository.findById(profileNo)
+                .orElseThrow(() -> new ResourceNotFoundException("Profile not found with id " + profileNo));
+        Movie movie = movieRepository.findById(movieId)
+                .orElseThrow(() -> new ResourceNotFoundException("Movie not found with id " + movieId));
+
+        WatchLogId watchLogId = new WatchLogId(profile, movie);
+        Optional<WatchLog> watchLogOpt = watchLogRepository.findById(watchLogId);
+
+        if (watchLogOpt.isPresent()) {
+            return ResponseEntity.ok("Already watched");
+        } else {
+            WatchLog watchLog = new WatchLog(profile, movie);
+            watchLogRepository.save(watchLog);
+            return ResponseEntity.ok("Watch log added");
+        }
     }
 }
