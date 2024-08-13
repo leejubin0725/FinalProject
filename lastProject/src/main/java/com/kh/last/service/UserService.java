@@ -2,21 +2,21 @@ package com.kh.last.service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Date;
 import java.util.Optional;
 
 import javax.crypto.SecretKey;
 
-import com.kh.last.model.vo.Subscription;
-import com.kh.last.model.vo.USERS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.kh.last.model.vo.Subscription;
+import com.kh.last.model.vo.USERS;
 import com.kh.last.repository.SubscriptionRepository;
 import com.kh.last.repository.UserRepository;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -120,4 +120,25 @@ public class UserService {
     public USERS getUserByEmail(String email) {
         return userRepository.findByEmail(email).orElse(null);
     }
+    
+    public String getEmailFromToken(String token) {
+        try {
+            // "Bearer " 부분을 제거
+            String jwt = token.substring(7);
+            
+            // 토큰에서 클레임 추출 (이 경우 이메일이 subject로 저장된다고 가정)
+            Claims claims = Jwts.parserBuilder()
+                                .setSigningKey(key)
+                                .build()
+                                .parseClaimsJws(jwt)
+                                .getBody();
+            
+            // 추출된 subject가 이메일이라고 가정
+            return claims.getSubject();
+        } catch (Exception e) {
+            // 예외가 발생하면 null 반환 (토큰이 잘못되었을 경우)
+            return null;
+        }
+    }
+
 }
