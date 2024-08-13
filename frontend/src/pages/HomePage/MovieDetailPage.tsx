@@ -269,24 +269,51 @@ const MovieDetailPage: React.FC = () => {
   };
 
   const handleLikeClick = useCallback(() => {
-    if (movie) {
-      const newLikedStatus = !liked;
-      setLiked(newLikedStatus);
-      // Call API to update like status
-      axios.post('http://localhost:8088/api/movies/toggle-like', {
-        movieId: movie.id,
-        profileNo: 123 // 여기에 실제 프로필 번호를 제공해야 합니다.
-      })
-      .then(response => {
-        // Optionally handle success response
-        console.log('Like status updated successfully');
-      })
-      .catch(error => {
-        // Optionally handle error response
-        console.error('Error updating like status:', error);
-      });
+    if (movie && movieId) {
+        const newLikedStatus = !liked;
+        setLiked(newLikedStatus);
+
+        const storedProfile = sessionStorage.getItem('selectedProfile');
+
+        if (storedProfile) {
+            const profile = JSON.parse(storedProfile);
+            const profileNo = profile.profileNo;
+
+            // movieId를 숫자로 변환합니다.
+            const movieIdNumber = parseInt(movieId, 10);
+
+            if (!isNaN(movieIdNumber)) {
+                console.log('Sending request with movieId:', movieIdNumber, 'profileNo:', profileNo);
+                axios.post('http://localhost:8088/api/movies/toggle-like', null, {
+                    params: {
+                        movieId: movieIdNumber,
+                        profileNo
+                    },
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                })
+                .then(response => {
+                    console.log('Like status updated successfully');
+                })
+                .catch(error => {
+                    console.error('Error updating like status:', error.response?.data || error.message);
+                });
+            } else {
+                console.error('movieId is not a valid number');
+            }
+        } else {
+            console.error('No profile information found in session storage');
+        }
+    } else {
+        console.error('movieId or movie is not available');
     }
-  }, [liked, movie]);
+}, [movie, liked, movieId]);
+
+  
+  
+  
+  
 
   const getSliderSettings = (movieCount: number) => ({
     dots: false,

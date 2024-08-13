@@ -53,8 +53,8 @@ const ProfilePage: React.FC = () => {
         setSelectedProfile(profile);
         console.log('Selected profile:', profile);
 
-        // 선택된 프로필 정보를 localStorage에 저장
-        localStorage.setItem('selectedProfile', JSON.stringify(profile));
+        // 선택된 프로필 정보를 sessionStorage에 저장
+        sessionStorage.setItem('selectedProfile', JSON.stringify(profile));
 
         // home 페이지로 이동
         navigate('/home');

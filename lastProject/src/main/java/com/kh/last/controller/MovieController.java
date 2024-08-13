@@ -15,12 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.last.model.vo.Heart;
+import com.kh.last.model.vo.HeartId;
 import com.kh.last.model.vo.Movie;
 import com.kh.last.model.vo.Profile;
 import com.kh.last.repository.HeartRepository; // 추가
 import com.kh.last.repository.MovieRepository;
 import com.kh.last.repository.ProfileRepository; // 추가
 import com.kh.last.service.MovieService;
+import com.kh.last.model.vo.Heart;
 
 import lombok.RequiredArgsConstructor;
 
@@ -74,26 +76,25 @@ public class MovieController {
     }
     
     @PostMapping("/toggle-like")
-    public ResponseEntity<?> toggleLike(
-            @RequestParam("movieId") Long movieId,
-            @RequestParam("profileNo") Long profileNo) {
-        
-        // Profile 및 Movie를 찾거나 생성합니다.
+    public ResponseEntity<?> toggleLike(@RequestParam Long movieId, @RequestParam Long profileNo) {
+        System.out.println("MovieId: " + movieId);
+        System.out.println("ProfileNo: " + profileNo);
+
         Profile profile = profileRepository.findById(profileNo)
                 .orElseThrow(() -> new ResourceNotFoundException("Profile not found with id " + profileNo));
         Movie movie = movieRepository.findById(movieId)
                 .orElseThrow(() -> new ResourceNotFoundException("Movie not found with id " + movieId));
-        
-        // 좋아요가 존재하는지 확인합니다.
-        Heart heart = heartRepository.findByProfileAndMovie(profile, movie);
-        if (heart != null) {
-            // 좋아요가 존재하면 삭제합니다.
-            heartRepository.delete(heart);
+
+        HeartId heartId = new HeartId(profile, movie);
+        Optional<Heart> heartOpt = heartRepository.findById(heartId);
+
+        if (heartOpt.isPresent()) {
+            heartRepository.delete(heartOpt.get());
         } else {
-            // 좋아요가 존재하지 않으면 추가합니다.
-            heartRepository.save(new Heart(profile, movie));
+            Heart heart = new Heart(profile, movie);
+            heartRepository.save(heart);
         }
-        
+
         return ResponseEntity.ok().build(); // 응답을 반환합니다.
     }
 }
