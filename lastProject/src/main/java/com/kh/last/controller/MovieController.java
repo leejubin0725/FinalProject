@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,11 +19,12 @@ import com.kh.last.model.vo.Heart;
 import com.kh.last.model.vo.HeartId;
 import com.kh.last.model.vo.Movie;
 import com.kh.last.model.vo.Profile;
+import com.kh.last.model.vo.WatchLog;
 import com.kh.last.repository.HeartRepository; // 추가
 import com.kh.last.repository.MovieRepository;
 import com.kh.last.repository.ProfileRepository; // 추가
 import com.kh.last.service.MovieService;
-import com.kh.last.model.vo.Heart;
+import com.kh.last.repository.WatchLogRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -97,4 +99,32 @@ public class MovieController {
 
         return ResponseEntity.ok().build(); // 응답을 반환합니다.
     }
+    @PostMapping("/api/watchlog")
+    public ResponseEntity<Void> addWatchLog(
+            @RequestParam Long movieId,
+            @RequestParam Long profileNo) {
+        Movie movie = movieRepository.findById(movieId)
+                .orElseThrow(() -> new ResourceNotFoundException("Movie not found with id " + movieId));
+        Profile profile = profileRepository.findById(profileNo)
+                .orElseThrow(() -> new ResourceNotFoundException("Profile not found with id " + profileNo));
+        
+        WatchLog watchLog = new WatchLog(profile, movie);
+        watchLogRepository.save(watchLog);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/api/movies/watchlog")
+    public ResponseEntity<Void> deleteWatchLog(
+            @RequestParam Long movieId,
+            @RequestParam Long profileNo) {
+        Movie movie = movieRepository.findById(movieId)
+                .orElseThrow(() -> new ResourceNotFoundException("Movie not found with id " + movieId));
+        Profile profile = profileRepository.findById(profileNo)
+                .orElseThrow(() -> new ResourceNotFoundException("Profile not found with id " + profileNo));
+        
+        watchLogRepository.deleteByProfileAndMovie(profile, movie);
+        return ResponseEntity.ok().build();
+    }
+    
+    
 }
