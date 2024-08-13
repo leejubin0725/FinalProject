@@ -62,10 +62,23 @@ const HomePage: React.FC = () => {
   // 최근 시청한 영화를 가져오는 API 호출
   React.useEffect(() => {
     const selectedProfile = sessionStorage.getItem('selectedProfile');
-    const profileId = selectedProfile ? parseInt(selectedProfile, 10) : null;
+    let profileNo = null;
 
-    if (profileId !== null) { // profileId가 유효할 때만 호출
-      axios.get(`http://localhost:8088/api/recent-movies?profileId=${profileId}`)
+    if (selectedProfile !== null) {
+      const profile = JSON.parse(selectedProfile);
+      profileNo = profile.profileNo;
+
+      if (profileNo === undefined || profileNo === null) {
+        console.error("Invalid profileNo:", profileNo);
+        return;
+      }
+    } else {
+      console.error("Profile not found in sessionStorage");
+      return;
+    }
+
+    if (profileNo !== null) {
+      axios.get(`http://localhost:8088/api/movies/recent-movies?profileNo=${profileNo}`)
         .then(response => {
           setRecentMovies(response.data);
         })
@@ -73,7 +86,9 @@ const HomePage: React.FC = () => {
           console.error('Error fetching recent movies:', error);
         });
     }
-  }, []); // profileId가 변하지 않으므로 빈 배열 사용
+  }, []);
+
+
 
   // 검색어에 따라 영화 필터링
   React.useEffect(() => {

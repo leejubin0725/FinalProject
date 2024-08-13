@@ -144,9 +144,14 @@ public class MovieController {
         }
     }
     
-    @GetMapping("/api/recent-movies")
-    public List<Movie> getRecentMovies(@RequestParam Long profileId) {
-        return watchLogRepository.findRecentMoviesByProfile(profileId);
+    @GetMapping("/recent-movies")
+    public ResponseEntity<List<Movie>> getRecentMovies(@RequestParam Long profileNo) {
+        List<Movie> recentMovies = watchLogRepository.findRecentMoviesByProfile(profileNo);
+        if (recentMovies == null || recentMovies.isEmpty()) {
+            return ResponseEntity.notFound().build(); // 404 Not Found 응답
+        }
+        return ResponseEntity.ok(recentMovies); // 200 OK 응답
     }
+
     
 }
