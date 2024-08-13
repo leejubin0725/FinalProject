@@ -8,15 +8,13 @@ const SubscribeSuccess: React.FC = () => {
     const [hasRequested, setHasRequested] = useState(false);
 
     useEffect(() => {
-        // 이미 요청이 실행되었으면 더 이상 실행하지 않음
         if (hasRequested) return;
 
-        setHasRequested(true); // 첫 실행 시 true로 설정하여 이후 중복 실행 방지
+        setHasRequested(true);
 
         console.log("useEffect 실행");
 
         const token = localStorage.getItem('authToken');
-        console.log("토큰:", token);
 
         if (!token) {
             console.error('JWT 토큰이 없습니다. 로그인 페이지로 이동합니다.');
@@ -24,25 +22,45 @@ const SubscribeSuccess: React.FC = () => {
             return;
         }
 
-        axios.post('http://localhost:8088/api/users/subscribe', null, {
-            headers: {
-                'Authorization': `Bearer ${token}`,
-            },
-            params: {
-                months: 1,
-            }
-        })
-            .then(response => {
+        const subscribeUser = async () => {
+            try {
+                const response = await axios.post('http://localhost:8088/api/users/subscribe', null, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    },
+                    params: {
+                        months: 1,
+                    }
+                });
+
                 console.log('구독이 성공적으로 처리되었습니다:', response.data);
+
+                // user 객체에서 이메일 추출
+                const userEmail = response.data.user.email;
+                console.log('사용자 이메일:', userEmail);
+
+                // 구독 성공 이메일 발송
+                if (userEmail) {
+                    try {
+                        await axios.post('http://localhost:8088/api/email/send-subscribe-success', { email: userEmail });
+                        console.log('구독 성공 이메일이 발송되었습니다.');
+                    } catch (error) {
+                        console.error('구독 성공 이메일 발송 중 오류 발생:', error);
+                    }
+                }
 
                 setTimeout(() => {
                     navigate('/profiles');
                 }, 5000);
-            })
-            .catch(error => {
+
+            } catch (error) {
                 console.error('구독 처리 중 오류 발생:', error);
-            });
-    }, [hasRequested, navigate]); // 의존성 배열에 hasRequested 추가
+            }
+        };
+
+        subscribeUser();
+
+    }, [hasRequested, navigate]);
 
     return (
         <div className={styles.subscribeSuccess}>
