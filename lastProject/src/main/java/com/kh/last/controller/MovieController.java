@@ -144,4 +144,9 @@ public class MovieController {
         }
     }
     
+    @GetMapping("/api/recent-movies")
+    public List<Movie> getRecentMovies(@RequestParam Long profileId) {
+        return watchLogRepository.findRecentMoviesByProfile(profileId);
+    }
+    
 }
