@@ -34,8 +34,8 @@ const Header: React.FC<HeaderProps> = ({ className = "", onSearchClick }) => {
           .then(response => {
             setUser(response.data);
 
-            // 선택된 프로필 정보를 localStorage에서 가져옴
-            const selectedProfileData = localStorage.getItem('selectedProfile');
+            // 선택된 프로필 정보를 세션 저장소에서 가져옴
+            const selectedProfileData = sessionStorage.getItem('selectedProfile');
             if (selectedProfileData) {
               const profile = JSON.parse(selectedProfileData);
               setSelectedProfile(profile);
@@ -72,10 +72,16 @@ const Header: React.FC<HeaderProps> = ({ className = "", onSearchClick }) => {
 
   const handleLogout = () => {
     localStorage.removeItem('authToken');
-    localStorage.removeItem('userData');
-    localStorage.removeItem('selectedProfile');
+    sessionStorage.removeItem('selectedProfile');
     navigate('/login');
   };
+
+  useEffect(() => {
+    if (selectedProfile) {
+      // 선택된 프로필을 세션 저장소에 저장
+      sessionStorage.setItem('selectedProfile', JSON.stringify(selectedProfile));
+    }
+  }, [selectedProfile]);
 
   return (
     <>
