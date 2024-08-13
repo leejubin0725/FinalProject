@@ -92,6 +92,68 @@ const MovieDetailPage: React.FC = () => {
   }, [movie]);
 
   useEffect(() => {
+    const addWatchLog = async () => {
+      if (movieId) {
+        const storedProfile = sessionStorage.getItem('selectedProfile');
+        if (storedProfile) {
+          const profile = JSON.parse(storedProfile);
+          const profileNo = profile.profileNo;
+          const movieIdNumber = parseInt(movieId, 10);
+  
+          if (!isNaN(movieIdNumber)) {
+            try {
+              // 같은 프로필과 영화에 대한 기존 시청 로그를 삭제합니다.
+              await axios.delete('http://localhost:8088/api/movies/watchlog', {
+                params: {
+                  movieId: movieIdNumber,
+                  profileNo
+                },
+                headers: {
+                  'Content-Type': 'application/json'
+                }
+              });
+  
+              // 새로운 시청 로그를 추가합니다.
+              await axios.post('http://localhost:8088/api/watchlog', null, {
+                params: {
+                  movieId: movieIdNumber,
+                  profileNo
+                },
+                headers: {
+                  'Content-Type': 'application/json'
+                }
+              });
+            } catch (error) {
+              if (error instanceof Error) {
+                // Error 타입으로 처리
+                console.error('시청 로그 관리 중 오류 발생:', error.message);
+              } else {
+                // Error가 아닌 경우 처리
+                console.error('예상치 못한 오류 발생:', error);
+              }
+            }
+          } else {
+            console.error('유효하지 않은 movieId:', movieId);
+          }
+        } else {
+          console.error('세션 스토리지에서 프로필 정보를 찾을 수 없습니다.');
+        }
+      } else {
+        console.error('유효하지 않은 movieId:', movieId);
+      }
+    };
+  
+    addWatchLog();
+  
+    return () => {
+      // 필요한 경우 정리 작업을 여기에 추가할 수 있습니다.
+    };
+  }, [movieId]);
+
+
+
+
+  useEffect(() => {
     // 좋아요 상태를 서버에서 가져오는 로직을 추가할 수 있습니다.
     // 예: axios.get(`http://localhost:8088/api/movies/${movieId}/like-status`)
     //   .then(response => setLiked(response.data.liked))

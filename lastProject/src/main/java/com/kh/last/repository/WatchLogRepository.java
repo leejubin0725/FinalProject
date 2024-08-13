@@ -1,15 +1,14 @@
 package com.kh.last.repository;
 
-import java.util.Optional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import com.kh.last.model.vo.Movie;
 import com.kh.last.model.vo.Profile;
 import com.kh.last.model.vo.WatchLog;
 import com.kh.last.model.vo.WatchLogId;
 
+@Repository
 public interface WatchLogRepository extends JpaRepository<WatchLog, WatchLogId> {
-    Optional<WatchLog> findFirstByProfileAndMovieOrderByIdDesc(Profile profile, Movie movie);
-    void deleteAllByProfileAndMovie(Profile profile, Movie movie);
+    void deleteByProfileAndMovie(Profile profile, Movie movie);
 }
