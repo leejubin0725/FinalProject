@@ -20,8 +20,6 @@ import useRelatedMovies from '../../components/Movies/useRelatedMovies';
 import useMoviesByCast from '../../components/Movies/useMoviesByCast';
 import { Movie } from '../../types/Movie';
 import VideoThumbnail from '../../../src/components/HomePage/VideoThumbnail';
-import { AxiosError } from 'axios';
-
 
 const MovieDetailPage: React.FC = () => {
   const { movieId } = useParams<{ movieId: string }>();
@@ -53,16 +51,7 @@ const MovieDetailPage: React.FC = () => {
     profileNo: number;  // 실제 프로필 번호를 받기 위해 수정 필요
   }
 
-
- 
-  
-  
-  
-  
-
-
   useEffect(() => {
-    
     if (movieId) {
       const movieIdNumber = parseInt(movieId, 10);
       if (!isNaN(movieIdNumber)) {
@@ -99,7 +88,7 @@ const MovieDetailPage: React.FC = () => {
           const profile = JSON.parse(storedProfile);
           const profileNo = profile.profileNo;
           const movieIdNumber = parseInt(movieId, 10);
-  
+
           if (!isNaN(movieIdNumber)) {
             try {
               // 기존 시청 로그를 삭제합니다.
@@ -112,7 +101,7 @@ const MovieDetailPage: React.FC = () => {
                   'Content-Type': 'application/json'
                 }
               });
-  
+
               // 새로운 시청 로그를 추가합니다.
               await axios.post('http://localhost:8088/api/movies/watchlog', null, {
                 params: {
@@ -140,16 +129,16 @@ const MovieDetailPage: React.FC = () => {
         console.error('유효하지 않은 movieId:', movieId);
       }
     };
-  
+
     // 비동기 함수 호출
     addWatchLog();
-  
+
     // 정리 작업 (필요한 경우)
     return () => {
       // 예: 정리 작업 코드 추가
     };
   }, [movieId]);
-  
+
 
 
 
@@ -170,66 +159,6 @@ const MovieDetailPage: React.FC = () => {
       }
     }
   }, [playing]);
-
-  useEffect(() => {
-    const addWatchLog = async () => {
-      if (movieId) {
-        const storedProfile = sessionStorage.getItem('selectedProfile');
-        if (storedProfile) {
-          const profile = JSON.parse(storedProfile);
-          const profileNo = profile.profileNo;
-          const movieIdNumber = parseInt(movieId, 10);
-  
-          if (!isNaN(movieIdNumber)) {
-            try {
-              // 같은 프로필과 영화에 대한 기존 시청 로그를 삭제합니다.
-              await axios.delete('http://localhost:8088/api/watchlog', {
-                params: {
-                  movieId: movieIdNumber,
-                  profileNo
-                },
-                headers: {
-                  'Content-Type': 'application/json'
-                }
-              });
-  
-              // 새로운 시청 로그를 추가합니다.
-              await axios.post('http://localhost:8088/api/watchlog', null, {
-                params: {
-                  movieId: movieIdNumber,
-                  profileNo
-                },
-                headers: {
-                  'Content-Type': 'application/json'
-                }
-              });
-            } catch (error) {
-              if (error instanceof Error) {
-                // Error 타입으로 처리
-                console.error('시청 로그 관리 중 오류 발생:', error.message);
-              } else {
-                // Error가 아닌 경우 처리
-                console.error('예상치 못한 오류 발생:', error);
-              }
-            }
-          } else {
-            console.error('유효하지 않은 movieId:', movieId);
-          }
-        } else {
-          console.error('세션 스토리지에서 프로필 정보를 찾을 수 없습니다.');
-        }
-      } else {
-        console.error('유효하지 않은 movieId:', movieId);
-      }
-    };
-  
-    addWatchLog();
-  
-    return () => {
-      // 필요한 경우 정리 작업을 여기에 추가할 수 있습니다.
-    };
-  }, [movieId]);
-
 
   const handleVolumeChange = useCallback((event: Event, newValue: number | number[]) => {
     const adjustedVolume = Math.min(newValue as number, 1);
@@ -403,50 +332,50 @@ const MovieDetailPage: React.FC = () => {
 
   const handleLikeClick = useCallback(() => {
     if (movie && movieId) {
-        const newLikedStatus = !liked;
-        setLiked(newLikedStatus);
+      const newLikedStatus = !liked;
+      setLiked(newLikedStatus);
 
-        const storedProfile = sessionStorage.getItem('selectedProfile');
+      const storedProfile = sessionStorage.getItem('selectedProfile');
 
-        if (storedProfile) {
-            const profile = JSON.parse(storedProfile);
-            const profileNo = profile.profileNo;
+      if (storedProfile) {
+        const profile = JSON.parse(storedProfile);
+        const profileNo = profile.profileNo;
 
-            // movieId를 숫자로 변환합니다.
-            const movieIdNumber = parseInt(movieId, 10);
+        // movieId를 숫자로 변환합니다.
+        const movieIdNumber = parseInt(movieId, 10);
 
-            if (!isNaN(movieIdNumber)) {
-                console.log('Sending request with movieId:', movieIdNumber, 'profileNo:', profileNo);
-                axios.post('http://localhost:8088/api/movies/toggle-like', null, {
-                    params: {
-                        movieId: movieIdNumber,
-                        profileNo
-                    },
-                    headers: {
-                        'Content-Type': 'application/json',
-                    }
-                })
-                .then(response => {
-                    console.log('Like status updated successfully');
-                })
-                .catch(error => {
-                    console.error('Error updating like status:', error.response?.data || error.message);
-                });
-            } else {
-                console.error('movieId is not a valid number');
+        if (!isNaN(movieIdNumber)) {
+          console.log('Sending request with movieId:', movieIdNumber, 'profileNo:', profileNo);
+          axios.post('http://localhost:8088/api/movies/toggle-like', null, {
+            params: {
+              movieId: movieIdNumber,
+              profileNo
+            },
+            headers: {
+              'Content-Type': 'application/json',
             }
+          })
+            .then(response => {
+              console.log('Like status updated successfully');
+            })
+            .catch(error => {
+              console.error('Error updating like status:', error.response?.data || error.message);
+            });
         } else {
-            console.error('No profile information found in session storage');
+          console.error('movieId is not a valid number');
         }
+      } else {
+        console.error('No profile information found in session storage');
+      }
     } else {
-        console.error('movieId or movie is not available');
+      console.error('movieId or movie is not available');
     }
-}, [movie, liked, movieId]);
+  }, [movie, liked, movieId]);
 
-  
-  
-  
-  
+
+
+
+
 
   const getSliderSettings = (movieCount: number) => ({
     dots: false,
@@ -543,14 +472,14 @@ const MovieDetailPage: React.FC = () => {
           </IconButton>
         </Box>
       </Box>
-      
+
       {/* Move like button here */}
       <Box className={styles.likeButtonWrapper}>
         <IconButton onClick={handleLikeClick} className={styles.likeButton}>
-          {liked ? <ThumbUpIcon style={{color : 'white'}}/> : <ThumbUpOffAltIcon style={{color : 'white'}} />}
+          {liked ? <ThumbUpIcon style={{ color: 'white' }} /> : <ThumbUpOffAltIcon style={{ color: 'white' }} />}
         </IconButton>
       </Box>
-      
+
       <Typography variant="body1" className={styles.description}>
         {movie?.description}
       </Typography>
