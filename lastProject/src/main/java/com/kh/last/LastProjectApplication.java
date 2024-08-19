@@ -33,4 +33,11 @@ public class LastProjectApplication {
 
         SpringApplication.run(LastProjectApplication.class, args);
     }
+    private static void setSystemProperty(String key, String value) {
+        if (value != null) {
+            System.setProperty(key, value);
+        } else {
+            System.out.println("Warning: Environment variable " + key + " is missing or null.");
+        }
+    }
 }
