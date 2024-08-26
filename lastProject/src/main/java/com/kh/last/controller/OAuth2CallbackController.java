@@ -27,7 +27,7 @@ public class OAuth2CallbackController {
         RestTemplate restTemplate = new RestTemplate();
         String tokenEndpoint = "https://oauth2.googleapis.com/token";
 
-        // Set up the request body parameters
+        // parameter 설정 
         Map<String, String> requestBody = new HashMap<>();
         requestBody.put("code", code);
         requestBody.put("client_id", clientId);
