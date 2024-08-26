@@ -43,6 +43,6 @@ public class OAuth2CallbackController {
 
         // Optionally: 토큰을 저장하거나 추가 API 호출에 사용함
 
-        return "redirect:/home"; // Redirect to main page after successful login
+        return "redirect:/home"; 
     }
 }
