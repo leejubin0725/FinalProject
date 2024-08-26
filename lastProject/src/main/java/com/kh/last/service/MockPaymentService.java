@@ -16,7 +16,7 @@ public class MockPaymentService {
     }
 
     public boolean executePayment(String paymentId, String payerId) {
-        // Mock logic for payment execution
+        // 결제 실행을 위한 Mock 로직
         return "MOCK_PAYMENT_ID".equals(paymentId) && "MOCK_PAYER_ID".equals(payerId);
     }
 }
