@@ -35,13 +35,13 @@ public class OAuth2CallbackController {
         requestBody.put("redirect_uri", redirectUri);
         requestBody.put("grant_type", "authorization_code");
 
-        // Make the POST request to the token endpoint
+        // 엔드포인트 설정
         Map<String, Object> response = restTemplate.postForObject(tokenEndpoint, requestBody, Map.class);
 
-        // Extract the access token from the response
+        // 응답에서 Access token 추출
         String accessToken = (String) response.get("access_token");
 
-        // Optionally: Save the token or use it to make further API calls
+        // Optionally: 토큰을 저장하거나 추가 API 호출에 사용함
 
         return "redirect:/home"; // Redirect to main page after successful login
     }
